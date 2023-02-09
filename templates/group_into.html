@@ -1,0 +1,167 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<link rel="stylesheet", type="text/css", href="../static/css/group_into.css" />
+<title>Food chosen</title> 
+{% endblock %} 
+{% block content %}
+<main>
+    
+    <!-- 1-3 manage group -->
+    <div id="manageGroupBlock" class="contentPositionCenter margin">
+        <!-- 1-3-1 edit member -->
+        <div id="manageGroupEdit" class="buttonFormat editBGC">
+            <div id="manageGroupEditContent" class="buttonContent">
+                編輯群組
+            </div>
+        </div>
+        <!-- 1-3-2 invit member -->
+        <div id="manageGroupInvite" class="buttonFormat addBGC">
+            <div id="manageGroupInviteContent" class="buttonContent">
+                邀請會員
+            </div>
+        </div>
+        <!-- 1-3-3 create order list -->
+        <div id="manageGroupCreateOrderList" class="buttonFormat createBGC">
+            <div id="manageGroupCreateOrderListContent" class="buttonContent">
+                建立團購
+            </div>
+        </div>
+    </div>
+    <!-- 1-4 separate -->
+    <div id="separateGroupInto1" class="separateGroupInto1"></div>
+    <!-- 1-5 manage order list -->
+    <div id="manageOrderListBlock" class="contentPositionCenter margin">
+        <!-- 1-5-1 order list record -->
+        <div id="managerOrderListRecord" class="buttonFormat recordBGC">
+            <div id="managerOrderListRecordContent" class="buttonContent">
+                團購紀錄
+            </div>
+        </div>
+        <!-- 1-5-2 order list Title -->
+        <div id="managerOrderListTitle" class="managerOrderListTitle">
+            <div id="managerOrderListTitleContent" class="titleWord">
+                正在進行的團購
+            </div>
+        </div>
+        <!-- 1-5-2 order list -->
+        <div id="managerOrderList" class="managerOrderList">
+            <!-- js inner -->
+        </div>
+        
+    </div>
+    <!-- 1-6 edit group -->
+    <div id="editGroupBlock" class="contentPositionCenter margin">
+        <div class="contentPositionCenter infoBackround inputValueBigBlock margin padding">
+            <!-- 1-6-1 edit group name -->
+            <div id="editGroupNameBlock" class="contentPositionCenter">
+                <div id="editGroupNameTitle" class="listContent">
+                    群組名稱
+                </div>
+                <div id="editGroupNameInput" class="userInfoInputBlock">
+                    <!-- Original group name -->
+                </div>
+            </div>
+            <!-- 1-6-2 edit group password -->
+            <div id="editGroupPasswordBlock" class="contentPositionCenter">
+                <div id="editGroupPasswordTitle" class="listContent">
+                    群組密碼
+                </div>
+                <div id="editGroupPasswordInput" class="userInfoInputBlock">
+                    <!-- ****** -->
+                </div>
+                <div id="editGroupNewPasswordTitle" class="listContent">
+                    新群組密碼
+                </div>
+                <div id="editGroupNewPasswordInput" class="userInfoInputBlock">
+                    <input type="password" id="editGroupNewPassword" class="userInfoInputValue" placeholder="輸入新群組密碼" name="editGroupNewPassword">
+                </div>
+            </div>
+            <div id="editGroupErrorOrOkMessage" class="editGroupErrorOrOkMessage">
+                <div id="editGroupErrorOrOkMessageContent" class="messageContent errorMessageC">
+
+                </div>
+            </div>
+        </div>
+        <!-- 1-6-3 submit -->
+        <!-- <div id="editGroupSubmit" class="editGroupSubmit">
+            <div id="editGroupSubmitContent" class="editGroupSubmitContent">
+                編輯群組
+            </div>
+        </div> -->
+        <!-- 1-6-4 delete submit -->
+        <div id="deleteGroupSubmit" class="buttonFormat deleteBGC">
+            <div id="deleteGroupSubmitContent" class="buttonContent">
+                刪除群組
+            </div>
+        </div>
+        <!-- 1-6-5 back submit -->
+        <div id="editBackGroupSubmit" class="buttonFormat backBGC">
+            <div id="editBackGroupSubmitContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+    <!-- 1-7 Are you sure to delete -->
+    
+    <div id="deleteConfirmBlock" class="deleteConfirmBlock popupWindowBGC">
+        <!-- 1-7-1 title -->
+        <div id="deleteConfirmTitle" class="titleWord">
+            是否要刪除群組
+        </div>
+        <div id="deleteGroupNewPasswordInput" class="userInfoInputBlock">
+            <input type="text" id="deleteGroupNewPassword" class="userInfoInputValue" placeholder="刪除前請輸入群組密碼" name="deleteGroupNewPassword">
+        </div>
+        <div id="deleteGroupErrorMeaasge" class="deleteGroupErrorMeaasge">
+            <div id="deleteGroupErrorMeaasgeContent" class="messageContent errorMessageC">
+            
+            </div>
+        </div>
+        <!-- 1-7-2 Yes or No -->
+        <div id="deleteConfirmButton" class="deleteConfirmButton">
+            <div id="deleteConfirmYesButton" class="smallButtonFormat confirmBGC">
+                <div id="deleteConfirmYesButtonContent" class="smallButtonContent">是</div>
+            </div>
+            <div id="deleteConfirmNoButton" class="smallButtonFormat backBGC">
+                <div id="deleteConfirmNoButtonContent" class="smallButtonContent">否</div>
+            </div>
+        </div>
+    </div>
+    <!-- 1-8 invite member -->
+    <div id="inviteMemberBlock" class="contentPositionCenter margin">
+        <div class="contentPositionCenter infoBackround inputValueBigBlock margin padding">
+            <!-- 1-8-1 enter invite member -->
+            <div id="inviteMemberEmailBlock" class="contentPositionCenter">
+                
+                <div id="inviteMemberEmailTitle" class="listContent">
+                    信箱
+                </div>
+                <div id="inviteMemberEmailInput" class="userInfoInputBlock">
+                    <input type="text" class="userInfoInputValue" id="inviteMemberEmail" placeholder="輸入信箱" name="inviteMemberEmail">
+                </div>
+            </div>
+            <div id="inviteMemberMessage" class="inviteMemberMessage">
+                <div id="inviteMemberMessageContent" class="messageContent errorMessageC">
+                    
+                </div>
+            </div>
+        </div>
+        <!-- 1-8-2 Confirm -->
+        <div id="inviteMemberSubmit" class="buttonFormat confirmBGC">
+            <div id="inviteMemberSubmitContent" class="buttonContent">
+                加入
+            </div>
+        </div>
+        <!-- 1-8-3 back submit -->
+        <div id="inviteBackGroupSubmit" class="buttonFormat backBGC">
+            <div id="inviteBackGroupSubmitContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/group_into.js') }}"></script>
+{% endblock %}

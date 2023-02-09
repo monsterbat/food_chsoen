@@ -1,0 +1,63 @@
+.buttonFormat{
+    display: flex;
+    width: 300px;
+    height: 30px;
+    padding: 2px;
+    margin: 10px 30px 5px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.buttonContent{
+    width: 90%;
+    display: flex;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 16px;
+    justify-content:center;
+    align-items:center;
+    color: #FFFFFF;
+    border-radius: 5px;
+    text-decoration: none;
+    /* 文字水平置中 */
+    position: relative;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    /*  */
+    
+}
+
+.smallButtonFormat{
+    display: flex;
+    width: 100px;
+    height: 20px;
+    padding: 2px;
+    margin: 10px 10px 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.smallButtonContent{
+    width: 90%;
+    display: flex;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 15px;
+    justify-content:center;
+    align-items:center;
+    color: #FFFFFF;
+    border-radius: 5px;
+    text-decoration: none;
+    /* 文字水平置中 */
+    position: relative;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    /*  */
+    
+}

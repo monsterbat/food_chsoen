@@ -1,0 +1,28 @@
+.homePageImg{
+    position: relative;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.smailIconOnTop{
+    /* position: relative; */
+    object-fit: cover;
+    border-radius:1000px;
+    width: 30px;
+    height: 30px;
+    /* position: absolute; */
+    /* display: inline-flex;  */
+    /* right: 15px; */
+    /* top:25%; */
+    /* z-index: 300; */
+    /* background: #cacccd; */
+    /* border-radius: 19px; */
+    cursor: pointer;   
+}
+
+.smailEditIcon{
+    object-fit: cover;
+    border-radius:1000px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;   
+}

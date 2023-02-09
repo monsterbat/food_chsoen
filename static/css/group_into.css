@@ -1,0 +1,22 @@
+.deleteConfirmBlock{
+    position:fixed;
+    /* position: absolute; */
+    top: 250px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    /* position: sticky; */
+    display: none;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+    z-index: 200;
+    width: 340px;
+    height: auto;
+    margin: 20px 0px 20px 0px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.deleteConfirmButton{
+    display:flex;
+}

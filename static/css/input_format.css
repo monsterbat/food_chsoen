@@ -1,0 +1,37 @@
+.userInfoInputBlock{
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    color: #757575;
+    justify-content: center;
+    align-items: center;
+
+    width: 250px;
+    height: 47px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    display: inline-flex;
+    margin: 10px;
+}
+.userInfoInputValue{
+    /* position: absolute; */
+    display: flex;
+    border: none;
+    outline: none;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    width: 250px;
+    height: 47px;
+    margin: 10px 0px 10px 0px;
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-weight: 250px;
+    font-size: 16px;
+    line-height: 13px;
+    align-items: center;
+    text-align: center;
+    color: #757575;
+    border-radius: 5px;
+}

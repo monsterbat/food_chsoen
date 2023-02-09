@@ -1,0 +1,286 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='css/order_menu.css') }}" />
+
+<title>Food chosen</title> 
+{% endblock %} 
+
+{% block content %}
+<main>
+    <!-- 1-3 menu title -->
+    <div id="menuItemsBlockBlock" class="contentPositionCenter margin">
+        <div id="menuItemsBlock" class="menuItemsBlock">      
+            <div id="menuItemsChoose" class="menuItemsChoose">
+                點餐
+            </div>
+            <div id="menuItemsMenu" class="menuItemsMenu">
+                餐點
+            </div>
+            <div id="menuItemsSize" class="menuItemsSize">
+                大小
+            </div>
+            <div id="menuItemsPrice" class="menuItemsPrice">
+                價錢
+            </div>
+            <div id="menuItemsNote" class="menuItemsNote">
+                備註
+            </div>
+        </div>
+        <div id="separate1" class="separateBlock"></div>
+    </div>
+    <!-- 1-5 menu list -->
+    <div id="menuListBlcok" class="contentPositionCenter margin">
+        <!-- Inner JS -->
+    </div>
+   
+    <!-- 1-7 menu button -->
+    <div id="menuButtonBlock" class="contentPositionCenter margin">
+        <div id="checkAllOrderMenuButton" class="buttonFormat recordBGC">
+            <div id="checkAllOrderMenuButtonContent" class="buttonContent">
+                成員點餐一覽
+            </div>
+        </div>
+        <div id="menuEditCreateButton" class="buttonFormat editBGC">
+            <div id="menuEditCreateButtonContent" class="buttonContent">
+                菜單修改新增
+            </div>
+        </div>
+        <div id="menuSubmitButton" class="buttonFormat confirmBGC">
+            <div id="menuSubmitButtonContent" class="buttonContent">
+                確認
+            </div>
+        </div>
+        <!-- 1-7 back submit -->
+        <div id="backGroupIntoSubmit" class="buttonFormat backBGC">
+            <div id="backOrderMenuMemberSubmitContent" class="buttonContent">
+                返回
+            </div>
+        </div> 
+    </div>
+ 
+    <!-- 1-8 check member order list -->
+    <div id="checkMemberOrderListBlock" class="contentPositionCenter margin">
+        <!-- 1-8-1 check member order list title -->
+        <div id="checkMemberOrderTitle" class="titleWord">
+            成員餐點一覽
+        </div>
+        <div id="separate" class="separateBlock"></div>
+        <!-- 1-8-3 menu order list title -->
+        <div id="menuMemberOrderListItemsBlock" class="menuMemberOrderListItemsBlock">
+            <div id="menuMemberOrderListmember" class="menuMemberOrderListmember">
+                成員
+            </div>
+            <div id="menuMemberOrderListMenu" class="menuMemberOrderListMenu">
+                餐點
+            </div>
+            <div id="menuMemberOrderListChoose" class="menuMemberOrderListChoose">
+                數量
+            </div>
+            <div id="menuMemberOrderListSize" class="menuMemberOrderListSize">
+                大小
+            </div>
+            <div id="menuMemberOrderListPrice" class="menuMemberOrderListPrice">
+                價錢
+            </div>
+            <div id="menuMemberOrderListNote" class="menuMemberOrderListNote">
+                備註
+            </div>
+        </div>
+        <div id="separate" class="separateBlock"></div>
+        <!-- 1-8-5 member order list -->
+        <div id="memberOrderListBlock" class="contentPositionCenter margin">
+            <!-- js inner -->
+        </div>
+        <div id="separate" class="separateBlock"></div>
+        <!-- 1-8-7 totel price -->
+        <div id="memberOrderListtotelPriceBlock" class="menuMemberOrderListItemsBlock margin">
+            <div id="memberOrderListtotelPriceTitle" class="memberOrderListtotelPriceTitle">
+                總價
+            </div>
+            <div></div><div></div><div></div>
+            <div id="memberOrderListtotelPrice" class="memberOrderListtotelPrice">
+            </div>
+            <div></div>
+        </div>
+        
+        <!-- 1-8-10 go to order submit -->
+        <div id="goToOrderSubmit" class="buttonFormat confirmBGC">
+            <div id="goToOrderSubmitContent" class="buttonContent">
+                點餐去！
+            </div>
+        </div>  
+        <!-- 1-8-9 back submit -->
+        <div id="backOrderMenuSubmit" class="buttonFormat backBGC">
+            <div id="backOrderMenuSubmitContent" class="buttonContent">
+                返回
+            </div>
+        </div>     
+    </div>
+    <!-- 1-9 check order list -->
+    <div id="checkOrderListBlock" class="contentPositionCenter margin">
+        <!-- 1-9-1 check order list title -->
+        <div id="checkOrderTitle" class="checkOrderTitle">
+            確認餐點
+        </div>
+        <!-- 1-9-2 separate -->
+        <div id="separateOrderMenu7" class="separateBlock"></div>
+        <!-- 1-9-3 menu order list title -->
+        <div id="menuOrderListItemsBlock" class="menuOrderListItemsBlock">
+            <div id="menuOrderListMenu" class="menuOrderListMenu">
+                餐點
+            </div>
+            <div id="menuOrderListSize" class="menuOrderListSize">
+                大小
+            </div>
+            <div id="menuOrderListChoose" class="menuOrderListChoose">
+                數量
+            </div>
+            <div id="menuOrderListPrice" class="menuOrderListPrice">
+                價錢
+            </div>
+            <div id="menuOrderListNote" class="menuOrderListNote">
+                備註
+            </div>
+        </div>
+        <!-- 1-9-4 separate -->
+        <div id="separateOrderMenu8" class="separateOrderMenu8"></div>
+        <!-- 1-9-5 member order list -->
+        <div id="checkUserOrderListBlock" class="checkUserOrderListBlock">
+            <!-- js inner -->
+        </div>
+        <!-- 1-9-6 separate -->
+        <div id="separateOrderMenu9" class="separateBlock"></div>
+        <!-- 1-9-7 totel price -->
+        <div id="orderListtotelPriceBlock" class="menuOrderListItemsBlock">
+            <div id="orderListtotelPriceTitle" class="orderListtotelPriceTitle">
+                總價
+            </div>
+            <div></div><div></div>
+            <div id="checkUserTotalPrice" class="checkUserTotalPrice">
+                <!-- js inner -->
+            </div>
+            <div></div>
+            
+        </div>
+        <!-- 1-9-8 separate -->
+        <div id="separateOrderMenu10" class="separateBlock"></div>
+        <!-- 1-9-9 edit order -->
+        <div id="editOrderSubmit" class="buttonFormat editBGC">
+            <div id="editOrderSubmitContent" class="buttonContent">
+                修改
+            </div>
+        </div>
+        <!-- 1-9-10 send out order -->
+        <div id="sendOutOrderSubmit" class="buttonFormat confirmBGC">
+            <div id="sendOutOrderSubmitContent" class="buttonContent">
+                送出
+            </div>
+        </div>       
+    </div>
+    <!-- 1-10 order is finish -->
+    <div id="orderIsDoneBlock" class="contentPositionCenter margin">
+        <div id="orderIsDoneTitle" class="orderIsCloseTitle titleWord">
+            訂單請求已發出
+        </div>
+        <div id="orderIsDoneSubmit" class="buttonFormat finishBGC">
+            <div id="orderIsDoneSubmitContent" class="buttonContent">
+                完成
+            </div>
+        </div>
+    </div>
+    <!-- 1-11 check order list -->
+    <div id="goOrderBlock" class="contentPositionCenter margin">
+        <!-- 1-11-1 check order list title -->
+        <div id="goOrderTitle" class="titleWord">
+            確認餐點
+        </div>
+        <!-- 1-11-2 separate -->
+        <div id="separateGoOrderMenu7" class="separateBlock"></div>
+        <!-- 1-11-3 menu order list title -->
+        <div id="menuGoOrderListItemsBlock" class="menuGoOrderListItemsBlock">
+            <div id="menuGoOrderListChoose" class="menuGoOrderListChoose">
+                點餐
+            </div>
+            <div id="menuGoOrderListSize" class="menuGoOrderListSize">
+                大小
+            </div>
+            <div id="menuGoOrderListQuantity" class="menuGoOrderListQuantity">
+                總數
+            </div>
+            <div id="menuGoOrderListPrice" class="menuGoOrderListPrice">
+                價錢
+            </div>
+        </div>
+        <!-- 1-11-4 separate -->
+        <div id="separateGoOrderMenu8" class="separateBlock"></div>
+        <!-- 1-11-5 member order list -->
+        <div id="checkUserGoOrderListBlock" class="checkUserGoOrderListBlock">
+            <!-- js inner -->
+        </div>
+        <!-- 1-11-6 separate -->
+        <div id="separateGoOrderMenu9" class="separateBlock"></div>
+        <!-- 1-11-7 totel price -->
+        <div id="goOrderTotelPriceBlock" class="menuGoOrderListItemsBlock">
+            <div id="goOrderTotelPriceTitle" class="goOrderTotelPriceTitle">
+                總價
+            </div>
+            <div></div><div></div>
+            <div id="goOrderTotelPrice" class="goOrderTotelPrice">
+                <!-- js inner -->
+            </div>
+            
+        </div>
+        <!-- 1-11-8 separate -->
+        <div id="separateGoOrderMenu10" class="separateGoOrderMenu10"></div>
+        <!-- 1-11-9 member price edit -->
+        <div id="memberPriceEditSubmit" class="buttonFormat editBGC">
+            <div id="memberPriceEditSubmitContent" class="buttonContent">
+                成員價錢修改
+            </div>
+        </div>
+
+        <!-- 1-11-10 Stop order -->
+        <div id="stopOrderSubmit" class="buttonFormat confirmBGC">
+            <div id="stopOrderSubmitContent" class="buttonContent">
+                結單
+            </div>
+        </div>   
+        <!-- 1-11-11 send out order -->
+        <div id="finishOrderSubmit" class="buttonFormat confirmBGC">
+            <div id="finishOrderSubmitContent" class="buttonContent">
+                已確認餐點無誤後關閉團購
+            </div>
+        </div>     
+        <!-- 1-11-12 back submit -->
+        <div id="backOrderMenuMemberSubmit" class="buttonFormat backBGC">
+            <div id="backOrderMenuMemberSubmitContent" class="buttonContent">
+                返回
+            </div>
+        </div>  
+    </div>
+
+    <!-- 1-12 order is close -->
+    <div id="orderIsCloseBlock" class="contentPositionCenter margin">
+        <div id="orderIsCloseTitle" class="orderIsCloseTitle titleWord">
+            訂單請求已發出
+        </div>
+        <div id="editGoOrderSubmit" class="buttonFormat editBGC">
+            <div id="editGoOrderSubmitContent" class="buttonContent">
+                菜單價錢修改
+            </div>
+        </div>
+        <div id="orderIsCloseSubmit" class="buttonFormat finishBGC">
+            <div id="orderIsCloseSubmitContent" class="buttonContent">
+                完成
+            </div>
+        </div>
+    </div>
+
+
+</main>
+{% endblock %} 
+
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/order_menu.js') }}"></script>
+{% endblock %}

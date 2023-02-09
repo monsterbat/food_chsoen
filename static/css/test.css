@@ -1,0 +1,16 @@
+$primary-color: #448899;
+
+.asd1{
+display: flex;
+background: $primary-color;
+}
+
+.asd2{
+display: block;
+background: $primary-color;
+}
+
+.asd3{
+display: none;
+background: $primary-color;
+}

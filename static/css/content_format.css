@@ -1,0 +1,36 @@
+.homePageTitleContent{
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 20px;
+    line-height: 16px;
+    font-weight: 400;
+    padding: 2px;
+    margin: 6px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.titleWord{
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 20px;
+    line-height: 16px;
+    font-weight: 400;
+    padding: 2px;
+    margin: 6px;
+    text-align: center;
+}
+
+.listContent{
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 17px;
+    line-height: 16px;
+    font-weight: 400;
+    padding: 2px;
+    margin: 0;
+    text-align: center;
+}
+
+

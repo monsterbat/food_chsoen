@@ -1,0 +1,143 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='css/create_menu.css') }}" />
+<title>Food chosen</title> 
+{% endblock %} 
+{% block content %}
+<main>
+    <!-- 1-3 create menu -->
+    <div id="createMenuBlock" class="contentPositionCenter margin">
+        <div class="contentPositionCenter infoBackround inputValueBigBlock margin padding">
+            <!-- 1-3-1 menu name -->
+            <div id="createMenuNameBlock" class="createMenuNameBlock">
+                <div id="createMenuNameTitle" class="listContent">
+                    餐點名稱
+                </div>
+                <!-- <div id="createMenuNameMust" class="createMenuNameMust">
+                    *
+                </div> -->
+                <div id="createMenuNameInput" class="userInfoInputBlock">
+                    <input type="text" class="userInfoInputValue" id="createMenuName" placeholder="" name="createMenuName">
+                </div>
+            </div>
+            <!-- 1-3-2 menu size -->
+            <div id="createMenuSizeBlock" class="createMenuSizeBlock">
+                <div id="createMenuSizeTitle" class="listContent">
+                    大小
+                </div>
+                <!-- <div id="createMenuSizeMust" class="createMenuSizeMust">
+                    *
+                </div> -->
+                <div id="createMenuSizeInput" class="userInfoInputBlock">
+                    <input type="text" class="userInfoInputValue" id="createMenuSize" placeholder="" name="createMenuSize">
+                </div>
+            </div>
+            <!-- 1-3-3 menu price -->
+            <div id="createMenuPriceBlock" class="createMenuPriceBlock">
+                <div id="createMenuPriceTitle" class="listContent">
+                    價錢
+                </div>
+                <!-- <div id="createMenuPriceMust" class="createMenuPriceMust">
+                    *
+                </div> -->
+                <div id="createMenuPriceInput" class="userInfoInputBlock">
+                    <input type="text" class="userInfoInputValue" id="createMenuPrice" placeholder="" name="createMenuPrice">
+                </div>
+            </div>
+            <!-- 1-3-4 Menu note -->
+            <div id="createMenuNoteBlock" class="createMenuNoteBlock">
+                <div id="createMenuNoteTitle" class="listContent">
+                    備註
+                </div>
+                <!-- <div id="createMenuNoteMust" class="createMenuNoteMust">
+                    *
+                </div> -->
+                <div id="createMenuNoteInput" class="userInfoInputBlock">
+                    <input type="text" class="userInfoInputValue" id="createMenuNote" placeholder="備註" name="createMenuNote">
+                </div>
+            </div>
+            <!-- 1-3-5 Error Message -->
+            <div id="createMenuErroeMessage" class="createMenuErroeMessage">
+                <div id="createMenuErroeMessageContent" class="messageContent errorMessageC">
+                </div>
+            </div>
+        </div>
+        <!-- 1-3-6 menu add submit -->
+        <div id="createMenuAddSubmit" class="buttonFormat addBGC">
+            <div id="createMenuAddSubmitContent" class="buttonContent">
+                新增
+            </div>
+        </div>
+
+    </div>
+    <!-- 1-4 separate -->
+    <div id="separate" class="separate"></div>
+    <!-- 1-5 already create menu title -->
+    <div id="createMenuAlreadyTitleBlock" class="contentPositionCenter margin">
+        <div id="createMenuAlreadyTitle" class="titleWord">
+            已建立餐點
+        </div>
+        <div id="separate" class="separateBlock"></div>
+        <div id="createMenuAlreadyItemsBlock" class="createMenuAlreadyItemsBlock">
+            <div id="createMenuAlreadyChoose" class="createMenuAlreadyChoose">
+                選擇
+            </div>
+            <div id="createMenuAlreadyMenu" class="createMenuAlreadyMenu">
+                餐點
+            </div>
+            <div id="createMenuAlreadySize" class="createMenuAlreadySize">
+                大小
+            </div>
+            <div id="createMenuAlreadyPrice" class="createMenuAlreadyPrice">
+                價錢
+            </div>
+            <div id="createMenuAlreadyNote" class="createMenuAlreadyNote">
+                備註
+            </div>
+        </div>
+    </div>
+    <!-- 1-6 separate -->
+    <div id="separate" class="separate"></div>
+    <!-- 1-7 already created menu -->
+    <div id="alreadyCreatedMenuBlcok" class="contentPositionCenter margin">
+        <!-- Inner JS -->
+    </div>
+    <!-- 1-8 menu button -->
+    <div id="createMenuButtonBlock" class="contentPositionCenter margin">
+        <!-- Error Message -->
+        <div id="createMenuErroeMessage2" class="createMenuErroeMessage2">
+            <div id="createMenuErroeMessageContent2" class="createMenuErroeMessageContent2">
+            </div>
+        </div>
+        <div id="createMenuEditMenuButton" class="buttonFormat editBGC">
+            <div id="createMenuEditMenuContent" class="buttonContent">
+                修改菜單
+            </div>
+        </div>
+        <div id="createMenuRemoveMenuButton" class="buttonFormat editBGC">
+            <div id="createMenuRemoveMenuButtonContent" class="buttonContent">
+                移除餐點
+            </div>
+        </div>
+        <div id="createMenuEditFinishMenuButton" class="buttonFormat confirmBGC">
+            <div id="createMenuEditFinishMenuContent" class="buttonContent">
+                修改完成
+            </div>
+        </div>
+        <div id="createMenuFinishButton" class="buttonFormat confirmBGC">
+            <div id="createMenuFinishContent" class="buttonContent">
+                完成
+            </div>
+        </div>
+        <div id="createMenuBackGroupSubmit" class="buttonFormat backBGC">
+            <div id="createMenuBackGroupSubmitContent" class="buttonContent">
+                返回訂購
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/create_menu.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<title>Food chosen</title> 
+{% endblock %} 
+
+{% block content %}
+<main>
+    <!-- 1-3 create order list -->
+    <div id="createOrderListBlock" class="contentPositionCenter margin">
+        <div class="contentPositionCenter infoBackround inputValueBigBlock margin padding">
+            <!-- 1-3-1 choose date -->
+            <div id="chooseDateBlock" class="chooseDateBlock">
+                <div id="chooseDateTitle" class="listContent">
+                    選擇日期
+                </div>
+                <div id="chooseDate" class="userInfoInputBlock">
+                    <input type="date" id="chooseDataInput" class="userInfoInputValue">
+                </div>
+            </div>
+            <!-- 1-3-2 choose time -->
+            <div id="chooseTimeBlock" class="chooseTimeBlock">
+                <div id="chooseTimeTitle" class="listContent">
+                    結單日期
+                </div>
+                <div id="chooseTime" class="userInfoInputBlock">
+                    <input type="time" id="chooseTimeInput" class="userInfoInputValue">
+                </div>
+            </div>
+            <!-- 1-3-3 choose store -->
+            <div id="chooseStoreBlock" class="chooseStoreBlock">
+                <div id="chooseStoreTitle" class="listContent">
+                    選擇店家
+                </div>
+                <div id="chooseStore" class="userInfoInputBlock">
+                    <select id="chooseStoreDropdown" class="userInfoInputValue">
+
+                    </select>
+                </div>
+            </div>
+            <!-- 1-3-4 Note -->
+            <div id="createOrderNoteBlock" class="createOrderNoteBlock">
+                <div id="createOrderNoteTitle" class="listContent">
+                    備註
+                </div>
+                <div id="createOrderNote" class="userInfoInputBlock">
+                    <input type="text" id="createOrderNoteInput" class="userInfoInputValue" placeholder="備註">
+                </div>
+            </div>
+            <!-- 1-3-5 Error Message -->
+            <div id="createOrderErroeMessage" class="createOrderErroeMessage">
+                <div id="createOrderErroeMessageContent" class="messageContent errorMessageC">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 1-4 Click group -->
+    <div id="createOrderListSubmitBlock" class="contentPositionCenter margin">
+        <!-- 1-4-1 ask FCS -->
+        <div id="askFoodChosen" class="buttonFormat foodChosenBGC">
+            <div id="askFoodChosenContent" class="buttonContent">
+                求救傅強森
+            </div>
+        </div>
+        <!-- 1-4-2 create store -->
+        <div id="createStore" class="buttonFormat createBGC">
+            <div id="createStoreContent" class="buttonContent">
+                創建店家
+            </div>
+        </div>
+        <!-- 1-4-3 submit -->
+        <div id="orderListSubmit" class="buttonFormat confirmBGC">
+            <div id="orderListSubmitContent" class="buttonContent">
+                確認
+            </div>
+        </div>
+        <!-- 1-4-4 back submit -->
+        <div id="createOrderBackGroupSubmit" class="buttonFormat backBGC">
+            <div id="createOrderBackGroupSubmitContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/create_order.js') }}"></script>
+{% endblock %}
