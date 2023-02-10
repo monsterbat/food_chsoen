@@ -153,6 +153,7 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
 
 # Change menu info
 def menu_patch():
+    print("MP1")
     # Get data from front-end
     change_menu_data = request.get_json()
     group_id = change_menu_data["groupId"]
@@ -258,5 +259,8 @@ def menu_patch():
 
 
     else:
-        data = v_menu.menu_patch_200()
-        return data
+        data = jsonify({
+            "ok":True,
+            "menuId":menu_id
+        })
+        return data, 200

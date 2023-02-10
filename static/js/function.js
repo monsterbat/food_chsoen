@@ -291,6 +291,7 @@ let menuOrderDataForAllMember = []
 let createMenuForOrderTrigger
 
 
+
 // Get API
 
 // Group
@@ -485,14 +486,31 @@ async function orderApiGet(orderListId){
     })
 }
 
+async function orderApiPatch(data){
+    return fetch(`/api/order`,{
+        method:"PATCH",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            "Content-Type":"application/json"
+        })
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data
+    })
+}
+
 // Status check
 async function userStatus(){
-    data = await userApiGet();
-    if(data.data == null || data.error == true){
+    let userApiGetResult = await userApiGet();
+    if(userApiGetResult.data == null || userApiGetResult.error == true){
         window.location.href = "/"
     }
     else{        
-        return data
+        let userNameInGroup = userApiGetResult.data.userName
+        console.log("userNameInGroupDD",userApiGetResult)
+        memberCenterName.textContent = userNameInGroup
+        return userApiGetResult
     }
 }
 

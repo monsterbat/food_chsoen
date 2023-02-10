@@ -32,16 +32,17 @@ def order_post():
     order_quantity = create_order_data["menuOrderQuantity"]
     menu_name = create_order_data["menuName"]
     menu_size = create_order_data["menuSize"]
-    order_price = create_order_data["menuPriceTotal"]
+    menu_price = create_order_data["menuPrice"]
+    order_price = int(menu_price)*int(order_quantity)
     order_note = create_order_data["menuNote"]
     print("C2",stop_time)
     # Find order list number id
     sql_command="""
     SELECT id
     FROM order_list 
-    WHERE store_id=%s AND group_id=%s AND user_id=%s AND stop_time=%s AND order_list_status=%s;
+    WHERE store_id=%s AND group_id=%s AND stop_time=%s AND order_list_status=%s;
     """
-    value_input = (store_id,group_id,user_id,stop_time,"alive")
+    value_input = (store_id,group_id,stop_time,"alive")
     order_list_check = query_data(sql_command,value_input)
     order_list_id = order_list_check[0]["id"]
     print("C3")
@@ -101,7 +102,7 @@ def order_get(page, keyword=None,orderListId=None):
     }
     # Create data    
     if order_info_check != []:
-        print("V1")
+        print("V1",order_info_check)
         for order_info_ls in order_info_check:
             order_id = order_info_ls["id"]
             user_id_member = order_info_ls["user_id"]
@@ -109,6 +110,7 @@ def order_get(page, keyword=None,orderListId=None):
             order_quantity = order_info_ls["order_quantity"]
             order_price = order_info_ls["order_price"]
             order_note = order_info_ls["order_note"]
+            print("v2",menu_id)
             # Find user name
             sql_command="""
             SELECT user_name
@@ -118,6 +120,7 @@ def order_get(page, keyword=None,orderListId=None):
             value_input=(user_id_member,"alive")
             user_name_check = query_data(sql_command,value_input)
             user_name = user_name_check[0]["user_name"]
+            print("v3",user_name)
             # Find menu name and size
             sql_command="""
             SELECT menu_name, menu_size
@@ -126,8 +129,10 @@ def order_get(page, keyword=None,orderListId=None):
             """
             value_input=(menu_id,"alive")
             menu_check = query_data(sql_command,value_input)
+            print("v3menu_size",menu_check)   
             menu_name = menu_check[0]["menu_name"]      
-            menu_size = menu_check[0]["menu_size"]          
+            menu_size = menu_check[0]["menu_size"]
+                   
             order_ls_data =  {
                 "userName":user_name,
                 "menuName":menu_name,
@@ -137,83 +142,138 @@ def order_get(page, keyword=None,orderListId=None):
                 "orderNote":order_note,
                 "orderId":order_id
                 }
+            print("order_ls_data",order_ls_data)
             order_list_data["order"].append(order_ls_data)
+        print("Ve",order_list_data)
     return jsonify(order_list_data) ,200
 
 # Change order_list info
-def order_list_patch():
+def order_patch():
     # Use cookie to know which user
     user_info = user_token_check()
     user_id = user_info["data"]["id"]
-    # Use cookie to get syore info
-    group_info = group_token_check()
-    group_id = group_info["data"]["id"]
 
     # Get data from front-end
     change_order_data = request.get_json()
-    order_id = change_order_data["orderId"]
+    group_id = change_order_data["groupId"]
+    user_update_id = change_order_data["userId"]
+    store_name = change_order_data["storeName"]
     order_list_id = change_order_data["orderListId"]
+    menu_name = change_order_data["menuName"]
+    menu_size = change_order_data["menuSize"]
     menu_new_name = change_order_data["menuNewName"]
     menu_new_size = change_order_data["menuNewSize"]
-    order_new_note = change_order_data["orderNewNote"]
+    order_quantity = change_order_data["orderQuantity"]
+    order_new_note = change_order_data["orderNote"]
     order_status = change_order_data["orderStatus"]
-
+    print("order_list_id",order_list_id)
+    print("store_name",store_name)
+    print("menu_name",menu_name)
+    print("menu_size",menu_size)
+    if order_status == "stop":
+        print("C1")
+        # Find store id
+        sql_command="""
+        SELECT id
+        FROM store 
+        WHERE group_id=%s AND store_name=%s AND store_status=%s;
+        """
+        value_input = (group_id,store_name,"alive")
+        store_id_check = query_data(sql_command,value_input)
+        store_id = store_id_check[0]["id"]
+        print("store_id",store_id_check)
+        # Find menu id
+        sql_command="""
+        SELECT id
+        FROM menu 
+        WHERE group_id=%s AND store_id=%s AND menu_name=%s AND menu_size=%s AND menu_status=%s;
+        """
+        value_input = (group_id,store_id,menu_name,menu_size,"stop")
+        menu_id_check = query_data(sql_command,value_input)
+        print("menu_id",menu_id_check)
+        menu_id = menu_id_check[0]["id"]
+        print("menu_id",menu_id_check)
+        # update user_order
+        sql_command="""
+        UPDATE user_order
+        SET order_status=%s
+        WHERE menu_id=%s AND order_status=%s;
+        """
+        value_input = (order_status,menu_id,"alive")
+        insert_or_update_data(sql_command,value_input)
+        print("C2")
+        data = v_order.order_patch_200()
+        return data
+    
     # Find store id
     sql_command="""
     SELECT store_id
     FROM order_list 
-    WHERE order_list_id=%s AND order_list_status=%s;
+    WHERE id=%s AND order_list_status=%s;
     """
     value_input = (order_list_id,"alive")
     store_id_check = query_data(sql_command,value_input)
-    store_id = store_id_check[0]["id"]
+    store_id = store_id_check[0]["store_id"]
 
-    # Change name size price together
-    if menu_new_name != None:
-        # Find new menu id
+    # Find menu id
+    sql_command="""
+    SELECT id, menu_price
+    FROM menu 
+    WHERE group_id=%s AND store_id=%s AND menu_name=%s AND menu_size=%s AND menu_status=%s;
+    """
+    value_input = (group_id,store_id,menu_name,menu_size,"alive")
+    menu_id_check = query_data(sql_command,value_input)
+    menu_id = menu_id_check[0]["id"]
+    menu_price = menu_id_check[0]["menu_price"]
+    print("C1menu_id",menu_id)
+    print("C1menu_price",menu_price)
+    print("user_update_id",user_update_id)
+    if user_update_id == None:
+        print("c2")
+        # Find user_order id, order_quantity
         sql_command="""
-        SELECT id, menu_price
-        FROM menu 
-        WHERE store_id=%s AND group_id=%s AND menu_name=%s AND menu_size=%s AND menu_status=%s;
+        SELECT id, order_quantity, user_id
+        FROM user_order 
+        WHERE order_list_id=%s AND menu_id=%s AND order_status=%s;
         """
-        value_input = (store_id,group_id,menu_new_name,menu_new_size,"alive")
-        menu_id_check = query_data(sql_command,value_input)
-        menu_new_id = menu_id_check[0]["id"]
-        menu_new_price = menu_id_check[0]["menu_price"]
+        value_input = (order_list_id,menu_id,"alive")
+        user_order_check = query_data(sql_command,value_input)
+        print("c3")
+        if user_order_check != []:
+            for user_order_check_ls in user_order_check:
+                usder_id_each = user_order_check_ls["user_id"]
+                # order price
+                # order quantity define
+                order_quantity_each = user_order_check_ls["order_quantity"]
+                if order_quantity != None:
+                    order_quantity_each = order_quantity
+                # calculate order price
+                order_total_price = int(order_quantity_each)*int(menu_price)
+                print("c4order_total_price",order_total_price)
+                # If Change menu
+                if menu_name != menu_new_name or menu_size != menu_new_size:
+                    # Find new menu id
+                    sql_command="""
+                    SELECT id, menu_price
+                    FROM menu 
+                    WHERE group_id=%s AND store_id=%s AND menu_name=%s AND menu_size=%s AND menu_status=%s;
+                    """
+                    value_input = (group_id,store_id,menu_new_name,menu_new_size,"alive")
+                    menu_id_check = query_data(sql_command,value_input)
+                    menu_new_id = menu_id_check[0]["id"]
+                    menu_new_price = menu_id_check[0]["menu_price"]
+                    order_total_price = int(order_quantity_each)*int(menu_new_price)
+                    # Not done yet!
 
-        # update store id
-        sql_command="""
-        UPDATE user_order
-        SET menu_id = %s, menu_price=%s
-        WHERE order_id = %s AND order_list_status=%s;
-        """
-        value_input = (menu_new_id,menu_new_price,order_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_order.order_patch_200()
-        return data
-
-    # Change size
-    if order_new_note != None:
-        # update order user id
-        sql_command="""
-        UPDATE user_order
-        SET order_note = %s
-        WHERE order_id = %s AND order_status=%s;
-        """
-        value_input = (order_new_note,order_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_order.order_patch_200()
-        return data
-
-    # Cancle the order
-    if order_status == "stop":
-        sql_command="""
-        UPDATE user_order
-        SET order_status = %s
-        WHERE order_id = %s AND order_list_status=%s;
-        """
-        value_input = ("stop",order_id,"alive")
-        insert_or_update_data(sql_command,value_input)
+                # update user_order
+                sql_command="""
+                UPDATE user_order
+                SET order_quantity = %s, order_price=%s
+                WHERE order_list_id=%s AND user_id=%s AND menu_id=%s AND order_status=%s;
+                """
+                value_input = (order_quantity_each,order_total_price,order_list_id,usder_id_each,menu_id,"alive")
+                insert_or_update_data(sql_command,value_input)
+                print("user_id",order_list_id)
         data = v_order.order_patch_200()
         return data
 

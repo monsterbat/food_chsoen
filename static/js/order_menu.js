@@ -114,6 +114,7 @@ let goOrderTotelPrice = document.getElementById("goOrderTotelPrice")
 // 1-11-9 member price edit 
 let memberPriceEditSubmit = document.getElementById("memberPriceEditSubmit")
 let memberPriceEditSubmitContent = document.getElementById("memberPriceEditSubmitContent")
+let memberPriceEditFinishSubmit = document.getElementById("memberPriceEditFinishSubmit")
 // 1-11-10 Stop order
 let stopOrderSubmit = document.getElementById("stopOrderSubmit")
 console.log(stopOrderSubmit)
@@ -161,7 +162,7 @@ async function onloadOrderMenuPage(){
     let groupApiData = await groupStatus(urlGroupName);
     groupApiData = groupApiData.group
     console.log("groupApiData",groupApiData)
-    for (i=0;i<Object.keys(groupApiData).length;i++){
+    for (let i=0;i<Object.keys(groupApiData).length;i++){
         if (groupApiData[i].groupName == urlGroupName){            
             groupId = groupApiData[i].groupId;
         }
@@ -172,7 +173,7 @@ async function onloadOrderMenuPage(){
     let storeApiGetData = await storeApiGet(urlGroupName)
     storeApiGetData = storeApiGetData.store
     console.log("storeApiGetData",storeApiGetData)
-    for (i=0;i<Object.keys(storeApiGetData).length;i++){
+    for (let i=0;i<Object.keys(storeApiGetData).length;i++){
         if (storeApiGetData[i].storeName == urlStoreName){            
             storeId = storeApiGetData[i].storeId;
         }
@@ -196,6 +197,7 @@ backOrderMenuMemberSubmit.addEventListener("click",backOrderMenuMemberSubmitClic
 finishOrderSubmit.addEventListener("click",finishOrderSubmitClick)
 orderIsCloseSubmit.addEventListener("click",orderIsCloseSubmitClick)
 backGroupIntoSubmit.addEventListener("click",backGroupIntoSubmitClick)
+memberPriceEditFinishSubmit.addEventListener("click",memberPriceEditFinishSubmitClick)
 // ==== Function ====
 
 // Ori page 
@@ -295,18 +297,13 @@ async function checkAllOrderMenuButtonClick(){
         console.log("KKKKKKKKKKKKKKKKKKKKKKKKK")
         let orderListStatus = "alive"
         checkOrderListStatus(orderListStatus)
-        if (orderListGetDataAlive.orderListStatus == "empty"){
-            // 
-        }
-        else{
-            let orderGetData = await orderApiGet(orderListId)
-            console.log("orderGetData",orderGetData)
-            menuOrderDataForAllMember = orderGetData.order
-            console.log("orderGetData",menuOrderDataForAllMember)
-            showAllMemberOrderListBlock(menuOrderDataForAllMember)
-            sortoutAllMemberOrderListBlock(menuOrderDataForAllMember)
-        }
 
+        let orderGetData = await orderApiGet(orderListId)
+        console.log("orderGetData",orderGetData)
+        menuOrderDataForAllMember = orderGetData.order
+        console.log("orderGetData",menuOrderDataForAllMember)
+        showAllMemberOrderListBlock(menuOrderDataForAllMember)
+        sortoutAllMemberOrderListBlock(menuOrderDataForAllMember)
     }
     if (orderListGetDataOrdering.orderListStatus == "ordering"){
         orderListId = orderListGetDataOrdering.orderListId
@@ -334,6 +331,7 @@ async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
         menuSize = menuOrderDataForAllMember[i]["menuSize"]
         orderQuantity = menuOrderDataForAllMember[i]["orderQuantity"]
         orderPrice = menuOrderDataForAllMember[i]["orderPrice"]
+        console.log("orderPrice",orderPrice)
         orderNote = menuOrderDataForAllMember[i]["orderNote"]
         // Show in 1-8
         createDivElement(memberOrderListBlockBlock,`memberOrderList${i}`, "menuMemberOrderListItemsBlock", null, "appendChild")
@@ -343,8 +341,11 @@ async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
         createDivElement(eval(`memberOrderList${i}`), `memberOrderListMenuSize${i}`, "memberOrderListMenuSize", menuSize)
         createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderPrice${i}`, "memberOrderListOrderPrice", orderPrice)
         createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderNote${i}`, "memberOrderListOrderNote", orderNote)
-        memberTotalPrice = memberTotalPrice+(menuPrice*orderQuantity)
-        console.log("memberTotalPrice",memberTotalPrice)
+        console.log("menuName1",menuName)
+        console.log("menuPrice1",menuPrice)
+        console.log("orderQuantity1",orderQuantity)
+        memberTotalPrice = memberTotalPrice+orderPrice/orderQuantity*orderQuantity
+        console.log("memberTotalPrice1",memberTotalPrice)
     }
     memberOrderListtotelPrice.textContent = memberTotalPrice
 }
@@ -362,8 +363,8 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
         orderDataList = {
             "menuName":menuNameValue,
             "menuSize":menuSizeValue,
-            "orderPrice":orderPriceValue,
-            "orderQuantity":Number(orderQuantityValue)
+            "orderPrice":parseInt(orderPriceValue),
+            "orderQuantity":parseInt(orderQuantityValue)
         }
         orderDataALL.push(orderDataList)
     }
@@ -371,6 +372,7 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
         let existing = acc.find(item => item.menuName === curr.menuName && item.menuSize === curr.menuSize);
         if (existing) {
             existing.orderQuantity += curr.orderQuantity;
+            existing.orderPrice += curr.orderPrice;
             console.log("existing.orderQuantity",existing.orderQuantity)
         } else {
             acc.push(curr);
@@ -383,15 +385,26 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
     for(i=0;i<Object.keys(orderDataSortout).length;i++){
         menuName = orderDataSortout[i]["menuName"]
         menuSize = orderDataSortout[i]["menuSize"]
-        orderQuantity = orderDataSortout[i]["orderQuantity"]
-        orderPrice = orderDataSortout[i]["orderPrice"] 
+        let orderQuantity = orderDataSortout[i]["orderQuantity"]
+        let orderPrice = orderDataSortout[i]["orderPrice"] 
+        console.log("orderQuantity!!!",orderQuantity)
+        console.log("orderPrice!!!",orderPrice)
+        let onePrice = parseInt(orderPrice)/parseInt(orderQuantity)
+        console.log("onePrice!!!",onePrice)
+        orderInputValue = JSON.stringify({
+            "menuName":menuName,
+            "menuSize":menuSize,
+            "orderPrice":orderPrice,
+            "orderQuantity":orderQuantity
+        })
         // Show in 1-8
         createDivElement(checkUserGoOrderListBlockBlock,`checkUserGoOrderList${i}`, "menuGoOrderListItemsBlock", null, "appendChild")
+        createInputElement(eval(`checkUserGoOrderList${i}`),addId=`checkUserGoOrderListMenuChoose${i}`,addClass="menuCheckbox", addText = null, appendForm = "appendChild",inputType = "radio", inputValue =orderInputValue,inputName = "manuEdit")
         createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListMenuName${i}`, "checkUserGoOrderListMenuName", menuName)
         createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListMenuSize${i}`, "checkUserGoOrderListMenuSize", menuSize)
         createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderQuantity${i}`, "checkUserGoOrderListOrderQuantity", orderQuantity)
-        createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderPrice${i}`, "checkUserGoOrderListOrderPrice", orderPrice)
-        memberTotalPriceGoOrder = memberTotalPriceGoOrder+(menuPrice*orderQuantity)
+        createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderPrice${i}`, "checkUserGoOrderListOrderPrice", onePrice)
+        memberTotalPriceGoOrder = memberTotalPriceGoOrder+onePrice*orderQuantity
         console.log("memberTotalPriceGoOrder",memberTotalPriceGoOrder)
     }
     goOrderTotelPrice.textContent = memberTotalPriceGoOrder
@@ -411,6 +424,8 @@ async function goToOrderSubmitClick(){
     orderIsDoneBlock.style.display = "none";
     goOrderBlock.style.display = "flex";
     orderIsCloseBlock.style.display = "none";
+    memberPriceEditFinishSubmit.style.display = "none";
+    memberPriceEditSubmit.style.display = "flex";
 }
 
 function backGroupIntoSubmitClick(){
@@ -430,12 +445,12 @@ async function showcheckOrderListBlock(menuOrderDataAll){
         menuSize = menuOrderDataAll[i]["menuSize"]
         menuPrice = menuOrderDataAll[i]["menuPrice"]
         menuNote = menuOrderDataAll[i]["menuNote"]
-        // menuInputValue = JSON.stringify({
-        //     "menuName":menuName,
-        //     "menuSize":menuSize,
-        //     "menuPrice":menuPrice,
-        //     "menuNote":menuNote
-        // })
+        menuInputValue = JSON.stringify({
+            "menuName":menuName,
+            "menuSize":menuSize,
+            "menuPrice":menuPrice,
+            "menuNote":menuNote
+        })
         createDivElement(checkUserOrderListBlockBlock,`checkUserOrderList${i}`, "menuOrderListItemsBlock", null, "appendChild")
         
         createDivElement(eval(`checkUserOrderList${i}`), `checkUserOrderMenuName${i}`, "checkUserOrderMenuName", menuName)
@@ -462,13 +477,12 @@ function editOrderSubmitClick(){
 }
 // 1-9 OK submit
 async function sendOutOrderSubmitClick(){
-    for (i=0;i<Object.keys(menuOrderDataAll).length;i++){
+    for (let i=0;i<Object.keys(menuOrderDataAll).length;i++){
         menuOrderQuantity = menuOrderDataAll[i]["menuOrderQuantity"]
         menuName = menuOrderDataAll[i]["menuName"]
         menuSize = menuOrderDataAll[i]["menuSize"]
         menuPrice = menuOrderDataAll[i]["menuPrice"]
         menuNote = menuOrderDataAll[i]["menuNote"]
-        menuPriceTotal = menuPrice*menuOrderQuantity
         console.log("STOPTime00000111111111000",urlStopTime)
         let data = {
             "urlStopTime":urlStopTime,
@@ -477,7 +491,7 @@ async function sendOutOrderSubmitClick(){
             "menuOrderQuantity":menuOrderQuantity,
             "menuName":menuName,
             "menuSize":menuSize,
-            "menuPriceTotal":menuPriceTotal,
+            "menuPrice":menuPrice,
             "menuNote":menuNote,            
         }
         console.log("C")
@@ -564,9 +578,12 @@ async function checkOrderListStatus(orderListStatus){
         
     }
     if (orderListStatus == "ordering"){
+        console.log("DddddddddorderListStatus",orderListStatus)
         stopOrderSubmit.style.display = "none";
         memberPriceEditSubmit.style.display = "flex";
-        finishOrderSubmit.style.display = "flex";        
+        finishOrderSubmit.style.display = "flex";  
+        console.log("finishOrderSubmit.style.display",finishOrderSubmit.style.display) 
+         
     }
     // if (orderListStatus == "finish"){
     //     menuItemsBlock.style.display = "none";
@@ -583,26 +600,133 @@ async function checkOrderListStatus(orderListStatus){
 }
 // 1-11-9 member price edit
 async function memberPriceEditSubmitClick(){
+    
+    let chosenMenu = document.querySelector('input[name=manuEdit]:checked');
+    console.log("chosenMenu",chosenMenu)
+    let chosenMenuId = chosenMenu.id;
+    console.log("chosenMenuId",chosenMenuId)
+    let menuNumber = chosenMenuId.replace(/^checkUserGoOrderListMenuChoose/g, "");
+    console.log("chosenMenuId",chosenMenu)
+    console.log("menuBlock",eval(`checkUserGoOrderListOrderPrice${menuNumber}`).textContent)
+
+    menuOriNoteValue = eval(`checkUserGoOrderListOrderPrice${menuNumber}`).textContent
+
+    replaceElement(eval(`checkUserGoOrderListOrderPrice${menuNumber}`), "input",`checkUserGoOrderListOrderPriceNew${menuNumber}`,"menuNew",menuOriNoteValue,inputType = "text")
+    let chosenMenuValue = JSON.parse(chosenMenu.value)
+    console.log("chosenMenuValue",chosenMenuValue)
+    memberPriceEditFinishSubmit.style.display = "flex"
+    memberPriceEditSubmit.style.display = "none"
+    finishOrderSubmit.style.display = "none"
+}
+// =============================================================================================================================
+async function memberPriceEditFinishSubmitClick(){
+    console.log("?")
+    let chosenMenu = document.querySelector('input[name=manuEdit]:checked');
+    console.log("chosenMenu",chosenMenu)    
+    let chosenMenuId = chosenMenu.id;
+    console.log("chosenMenuId",chosenMenuId)
+    let menuNumber = chosenMenuId.replace(/^checkUserGoOrderListMenuChoose/g, "");
+    console.log("menuNumber",menuNumber)
+    console.log("menuNewName",eval(`checkUserGoOrderListMenuChoose${menuNumber}`))
+    let menuNewValue = JSON.parse(eval(`checkUserGoOrderListMenuChoose${menuNumber}`).value)
+    console.log("menuNewNoteValue",eval(`checkUserGoOrderListMenuChoose${menuNumber}`).value)
+    
+    let menuName = menuNewValue.menuName
+    let menuSize = menuNewValue.menuSize
+    let menuNewPriceValue = eval(`checkUserGoOrderListOrderPriceNew${menuNumber}`).value
+    console.log("menuNewPriceValue",menuNewPriceValue)
+    let menuTotalQuantityValue = menuNewValue.orderQuantity
+    let dataPatchMenu = {
+        "storeName":urlStoreName,
+        "groupId":groupId,
+        "menu":{
+            "menuName":menuName,
+            "menuSize":menuSize,
+            "menuPrice":"",
+            "menuNote":"null",
+            "menuNewName":menuName,
+            "menuNewSize":menuSize,
+            "menuNewPrice":menuNewPriceValue,
+            "menuNewNote":"null",
+            "menuNewStatus":"alive"
+            }
+    }
+    let menuApiPatchData = await menuApiPatch(dataPatchMenu)
+    let menuId = menuApiPatchData.menuId
+    console.log("menuId",menuId)
+    let dataPatchOrder = {
+        "groupId":groupId,
+        "userId":null,
+        "orderListId":orderListId,
+        "storeName":urlStoreName,
+        "menuName":menuName,
+        "menuSize":menuSize,
+        "menuNewName":menuName,
+        "menuNewSize":menuSize,
+        "orderQuantity":null,
+        "orderStatus":"alive",
+        "orderNote":null
+    }
+    let orderApiPatchResult = await orderApiPatch(dataPatchOrder)
+    console.log("orderApiPatch",orderApiPatchResult)
+    
+    replaceElement(eval(`checkUserGoOrderListOrderPriceNew${menuNumber}`), "div",`checkUserGoOrderListOrderPrice${menuNumber}`,"checkUserGoOrderListOrderPrice",menuNewPriceValue,inputType = "text")
+    
+    
+    memberPriceEditFinishSubmit.style.display = "none"
+    memberPriceEditSubmit.style.display = "flex"
+
+
+   
+    let itemsDivNumber = checkUserGoOrderListBlockBlock.getElementsByTagName("div");
+    let itemsDivNumberLength = itemsDivNumber.length
+    let itemsDivQuantity = itemsDivNumberLength/5
+    let editedTotalPrice = 0
+    for (let i=0;i<itemsDivQuantity;i++){
+        let totalQuantity = eval(`checkUserGoOrderListOrderQuantity${i}`).textContent
+        let totalPrice = eval(`checkUserGoOrderListOrderPrice${i}`).textContent
+        console.log("totalQuantity",totalQuantity)
+        console.log("totalPrice",totalPrice)
+        let itemtotalPrice = Number(totalQuantity)*Number(totalPrice)
+        console.log("itemtotalPrice",itemtotalPrice)
+        editedTotalPrice = editedTotalPrice + itemtotalPrice
+    }
+    goOrderTotelPrice.textContent = editedTotalPrice
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+// =============================================================================================================================
 async function backOrderMenuMemberSubmitClick(){
-        menuItemsBlock.style.display = "none";
-        // separateOrderMenu1.style.display = "none";
-        menuListBlcok.style.display = "none";
-        // separateOrderMenu2.style.display = "none";
-        menuButtonBlock.style.display = "none";
-        checkMemberOrderListBlock.style.display = "flex";
-        checkOrderListBlock.style.display = "none";
-        orderIsDoneBlock.style.display = "none";
-        goOrderBlock.style.display = "none";
-        orderIsCloseBlock.style.display = "none";       
+    menuItemsBlock.style.display = "none";
+    // separateOrderMenu1.style.display = "none";
+    menuListBlcok.style.display = "none";
+    // separateOrderMenu2.style.display = "none";
+    menuButtonBlock.style.display = "none";
+    checkMemberOrderListBlock.style.display = "flex";
+    checkOrderListBlock.style.display = "none";
+    orderIsDoneBlock.style.display = "none";
+    goOrderBlock.style.display = "none";
+    orderIsCloseBlock.style.display = "none";       
 }
 
 async function finishOrderSubmitClick(){
     let data = {
+        "joinUserEmail":null,
         "orderListId":orderListId,
-        "groupId":groupId
+        "groupId":groupId,
+        "groupName":null
     }
     let billApiPostResult = await billApiPost(data)
     console.log("billApiPostResult",billApiPostResult)
@@ -627,6 +751,7 @@ async function finishOrderSubmitClick(){
             "newOrderListNote":null
         }
         let orderListApiPatchResult = await orderListApiPatch(data)
+        console.log("orderListApiPatchResult",orderListApiPatchResult)
         
     }
     else{

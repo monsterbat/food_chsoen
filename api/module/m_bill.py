@@ -24,10 +24,52 @@ def bill_post():
     user_info = user_token_check()
     user_email = user_info["data"]["user_email"]
     user_id = user_info["data"]["id"]
+    # Get data
     create_bill_data = request.get_json()
     print("create_bill_data",create_bill_data)
+    join_user_email = create_bill_data["joinUserEmail"]
     order_list_id = create_bill_data["orderListId"]
     group_id = create_bill_data["groupId"]
+    group_name = create_bill_data["groupName"]
+
+    # Calculate time
+    current_time_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    bill_time = current_time_code
+
+    if join_user_email != None:
+        print("billC1")
+        init_order_id = 1
+        init_order_price = 0
+        balance = 0
+        # Use token get email then get id to join foreign key
+        sql_command="""
+        SELECT id
+        FROM user 
+        WHERE user_email=%s AND user_status=%s;
+        """
+        value_input = (join_user_email,"alive")
+        join_user_id = query_data(sql_command,value_input)
+        join_user_id = join_user_id[0]["id"]
+        print("billC2")
+        # group id
+        sql_command="""
+        SELECT id
+        FROM user_group 
+        WHERE group_name=%s AND group_status=%s
+        """
+        value_input = (group_name,"alive")
+        group_info_check = query_data(sql_command,value_input)
+        group_id = group_info_check[0]["id"]
+
+        # 
+        sql_command = """
+        INSERT INTO bill (user_id,group_id,order_id, order_price, balance, bill_time, bill_status,bill_judgment)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s);
+        """
+        value_input = (join_user_id,group_id,init_order_id,init_order_price,balance,bill_time,"alive","")
+        insert_or_update_data(sql_command,value_input)
+        data = v_bill.bill_post_200()
+        return data
     # Find bill list number id
     sql_command="""
     SELECT id, user_id, order_price
@@ -77,10 +119,6 @@ def bill_post():
 
         #Calculate balance
         balance = int(user_balance) - int(order_price)
-
-        # Calculate time
-        current_time_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        bill_time = current_time_code
 
         # Input information 
         sql_command = """

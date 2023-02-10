@@ -114,6 +114,7 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         """
         value_input=(group_id,store_id,urlStopTime, getStatus)
         order_list_info_check = query_data(sql_command,value_input)
+        print("123order_list_info_check",order_list_info_check)
         if order_list_info_check == []:
             print("?")
             order_list_result = {
@@ -241,8 +242,7 @@ def order_list_patch():
         """
         value_input = (new_store_id,order_list_id,"alive")
         insert_or_update_data(sql_command,value_input)
-        data = v_order_list.order_list_patch_200()
-        return data
+        
 
     # Change new_order_list_manager
     if new_order_list_manager_email != None:
@@ -264,8 +264,7 @@ def order_list_patch():
         """
         value_input = (new_order_list_manager_id,order_list_id,"alive")
         insert_or_update_data(sql_command,value_input)
-        data = v_order_list.order_list_patch_200()
-        return data
+ 
 
     # Change stop time
     if new_stop_time != None:
@@ -276,20 +275,31 @@ def order_list_patch():
         """
         value_input = (new_stop_time,order_list_id,"alive")
         insert_or_update_data(sql_command,value_input)
-        data = v_order_list.order_list_patch_200()
-        return data
-
+ 
     # Change order_list_status 
     if order_list_status != None and order_list_status != "alive":
-        sql_command="""
-        UPDATE order_list
-        SET order_list_status = %s
-        WHERE id = %s AND order_list_status=%s;
-        """
-        value_input = (order_list_status,order_list_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_order_list.order_list_patch_200()
-        return data
+        if order_list_status == "ordering":
+            sql_command="""
+            UPDATE order_list
+            SET order_list_status = %s
+            WHERE id = %s AND order_list_status=%s;
+            """
+            value_input = (order_list_status,order_list_id,"alive")
+
+            print("value_input",value_input)
+            print("order_list_status",order_list_status)
+            insert_or_update_data(sql_command,value_input)           
+        if order_list_status == "finish":
+            sql_command="""
+            UPDATE order_list
+            SET order_list_status = %s
+            WHERE id = %s AND order_list_status=%s;
+            """
+            value_input = (order_list_status,order_list_id,"ordering")
+
+            print("value_input",value_input)
+            print("order_list_status",order_list_status)
+            insert_or_update_data(sql_command,value_input)
 
     # Change order_list_new_note
     if new_order_list_note != None:
@@ -300,12 +310,10 @@ def order_list_patch():
         """
         value_input = (new_order_list_note,order_list_id,"alive")
         insert_or_update_data(sql_command,value_input)
-        data = v_order_list.order_list_patch_200()
-        return data
 
     else:
-        errorr_message = v_order_list.order_list_patch_400_else()
-        return errorr_message
+        data = v_order_list.order_list_patch_200()
+        return data
 
 # get order list status
 def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlStopTime=None):

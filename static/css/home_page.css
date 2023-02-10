@@ -29,7 +29,7 @@ header nav{
 }
 
 header nav .topTitleText:hover{
-    color: #5363be;
+    color: #ffffff;
 }
 header nav .topTitleText{
     width: 100%;
@@ -40,7 +40,7 @@ header nav .topTitleText{
     font-weight: 700;
     font-size: 30px;
     line-height: 34px;
-    color: #448899;
+    color: #ffffff;
     text-decoration: none;
 }
 

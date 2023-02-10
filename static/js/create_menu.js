@@ -76,7 +76,7 @@ async function onloadCreateMenuPage(){
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
-    // pageTitleContent.textContent = urlGroupName;
+    
     let groupApiData = await groupStatus(urlGroupName);
     groupApiData = groupApiData.group
     console.log("groupApiData",groupApiData)
@@ -95,7 +95,7 @@ async function onloadCreateMenuPage(){
             storeId = storeApiGetData[i].storeId;
         }
     }
-
+    pageTitleContent.textContent = "建立「"+urlStoreName+"」的菜單";
     // console.log("checkurlGroupName",urlGroupName)
     generateMenu(urlGroupName,urlStoreName)
 
@@ -289,6 +289,23 @@ async function createMenuRemoveMenuButtonClick(){
             }
     }
     let menuApiPatchResult = await menuApiPatch(data);
+    console.log("menuApiPatchResult",menuApiPatchResult)
+    let dataPatchOrder = {
+        "groupId":groupId,
+        "userId":null,
+        "orderListId":orderListId,
+        "storeName":urlStoreName,
+        "menuName":menuNewNameValue,
+        
+        "menuSize":menuNewSizeValue,
+        "menuNewName":null,
+        "menuNewSize":null,
+        "orderQuantity":null,
+        "orderStatus":"stop",
+        "orderNote":null
+    }
+    let orderApiPatchResult = await orderApiPatch(dataPatchOrder);
+    console.log("orderApiPatchResult",orderApiPatchResult)
     location.reload()
 }
 

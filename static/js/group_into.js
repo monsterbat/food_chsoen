@@ -80,6 +80,8 @@ async function onloadThisPage(){
     let groupApiData = await groupStatus(urlGroupName);
     console.log("getgroup",groupApiData)
     groupApiData = groupApiData.group
+    groupId = groupApiData.groupId
+    console.log()
     let groupManager = ""
     console.log("groupApiData",groupApiData)
     for (i=0;i<Object.keys(groupApiData).length;i++){
@@ -158,7 +160,7 @@ function editGroupNameButtonClick(){
 async function finishGroupNameButtonClick(){
     editGroupNewNameInputValue = editGroupNewNameInput.value
     if (editGroupNewNameInputValue != urlGroupName){
-        data = {
+        let data = {
             "groupName":urlGroupName,
             "groupNewName":editGroupNewNameInputValue,
             "groupPassword":null,
@@ -204,7 +206,7 @@ async function finishGroupPasswordButtonClick(){
     editGroupOriPasswordInputValue = editGroupOriPasswordInput.value
     editGroupNewPasswordInputValue = editGroupNewPassword.value
     if (editGroupOriPasswordInputValue != editGroupNewPasswordInputValue && editGroupNewPasswordInputValue != ""){
-        data = {
+        let data = {
             "groupName":urlGroupName,
             "groupNewName":null,
             "groupPassword":editGroupOriPasswordInputValue,
@@ -254,7 +256,7 @@ function deleteGroupSubmitClick(){
 async function deleteConfirmYesButtonClick(){
     deleteGroupNewPasswordValue = deleteGroupNewPassword.value
     if (deleteGroupNewPasswordValue != ""){
-        data = {
+        let data = {
             "groupName":urlGroupName,
             "groupNewName":null,
             "groupPassword":deleteGroupNewPasswordValue,
@@ -294,12 +296,13 @@ function manageGroupInviteClick(){
     manageGroupBlock.style.display = "none";
     separateGroupInto1.style.display = "none";
     manageOrderListBlock.style.display = "none";
+    pageTitleContent.textContent = "邀請會員"
 }
 
 async function inviteMemberSubmitClick(){
     inviteMemberEmailValue = inviteMemberEmail.value;
     if (inviteMemberEmailValue != ""){
-        data = {
+        let data = {
             "joinUserEmail":inviteMemberEmailValue,
             "groupName":urlGroupName,
             "groupPassword":"null",
@@ -309,6 +312,14 @@ async function inviteMemberSubmitClick(){
         result = await groupApiPut(data)
         console.log("result",result)
         if (result.ok == true){
+            let data = {
+                "joinUserEmail":inviteMemberEmailValue,
+                "orderListId":null,
+                "groupId":null,
+                "groupName":urlGroupName
+            }
+            let billApiPostResult = await billApiPost(data)
+            console.log("billApiPostResult",billApiPostResult)
             inviteMemberMessageContent.textContent = "已加入成員，請繼續輸入或返回群組"
         }
         else{
@@ -328,6 +339,7 @@ function inviteBackGroupSubmitClick(){
     manageGroupBlock.style.display = "flex";
     separateGroupInto1.style.display = "flex";
     manageOrderListBlock.style.display = "flex";
+    pageTitleContent.textContent = urlGroupName;
 }
 
 function manageGroupCreateOrderListClick(){
@@ -369,16 +381,22 @@ async function groupApiPut(data){
 async function checkAllOrderMenuButtonClick(){
     urlStoreName = "";
     urlStopTime = "";
-    let orderListGetData = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,"alive")
-    console.log("orderListGetData",orderListGetData)
-    let orderListData = orderListGetData.orderList;
-    if (orderListData != null){
-        showAllGrooupOrderListBlock(orderListData)
+    let orderListGetDataAlive = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,"alive")
+    console.log("orderListGetDataAlive",orderListGetDataAlive)
+    let orderListDataAlive = orderListGetDataAlive.orderList;
+    if (orderListDataAlive != null){
+        showAllGrooupOrderAliveListBlock(orderListDataAlive)
     }
-    
+    let orderListGetDataOrdering = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,"ordering")
+    console.log("orderListGetDataOrdering",orderListGetDataOrdering)
+    let orderListDataOrdering = orderListGetDataOrdering.orderList;
+    if (orderListDataOrdering != null){
+        createDivElement(managerOrderList,`separate`, "separateBlock", null, "appendChild")
+        showAllGrooupOrderListOrderingBlock(orderListDataOrdering)
+    }
 }
 
-async function showAllGrooupOrderListBlock(orderListData){
+async function showAllGrooupOrderAliveListBlock(orderListData){
     createDivElement(managerOrderList,`managerOrderListBlock`, "contentPositionCenter", null, "appendChild")
     for(i=0;i<Object.keys(orderListData).length;i++){
         orderListId = orderListData[i]["orderListId"]
@@ -391,7 +409,28 @@ async function showAllGrooupOrderListBlock(orderListData){
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3]
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName
-        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "appendChild", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}`)
+        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}`)
         createDivElement(eval(`managerOrderList${i}`), `managerOrderListContent${i}`, "buttonContent", orderListContent)
+    }
+}
+
+async function showAllGrooupOrderListOrderingBlock(orderListData){
+    
+    createDivElement(managerOrderList,`alreadyOrdering`, "titleWord", "已經結單的團購", "appendChild")
+    createDivElement(managerOrderList,`managerOrderListOrderingBlock`, "contentPositionCenter", null, "appendChild")
+    
+    for(i=0;i<Object.keys(orderListData).length;i++){
+        orderListId = orderListData[i]["orderListId"]
+        storeName = orderListData[i]["storeName"]
+        orderUserName = orderListData[i]["orderUserName"]
+        stopTime = orderListData[i]["stopTime"]
+        stopTimeUrl = "stopTime:"+stopTime
+        orderListNote = orderListData[i]["orderListNote"]
+        let stopTimeArray = stopTime.split('-');
+        let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
+        let stopTimeTime = stopTimeArray[3]
+        let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName
+        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}`)
+        createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent", orderListContent)
     }
 }

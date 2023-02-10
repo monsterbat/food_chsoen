@@ -51,13 +51,6 @@ backGroupSubmit.addEventListener("click",backSubmit)
 createGroupSubmit.addEventListener("click",createGroup)
 
 // ==== Function ====
-async function userStatus(){
-    let userApiGetResult = await userApiGet()
-    let userNameInGroup = userApiGetResult.data.userName
-    console.log("userNameInGroupDD",userApiGetResult)
-    memberCenterName.textContent = userNameInGroup
-}
-
 function pageTitleContentChooseGroup(){
     pageTitleContent.textContent = "請選擇或創建群組"
 }
