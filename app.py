@@ -1,7 +1,6 @@
 # import project function
 import sys
 sys.path.append('api/function')
-from group_token import *
 
 from flask import *
 from flask_cors import CORS
