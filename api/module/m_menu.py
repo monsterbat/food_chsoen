@@ -4,8 +4,6 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
-from group_token import *
-from store_token import *
 
 sys.path.append('api/view')
 import v_menu
@@ -19,10 +17,8 @@ import time
 
 # Create menu account
 def menu_post():
-    print("c1")
     # Get data from front-end
     create_menu_data = request.get_json()
-    print("create_menu_data",create_menu_data)
     store_name = create_menu_data["storeName"]
     group_id = create_menu_data["groupId"]
     menu_name = create_menu_data["menu"]["menuName"]
@@ -31,7 +27,6 @@ def menu_post():
     menu_status = create_menu_data["menu"]["menuStatus"]
     menu_note = create_menu_data["menu"]["menuNote"]
     # Use store_name find store id
-    print("c1menu_name",menu_name)
     sql_command="""
     SELECT id
     FROM store 
@@ -40,7 +35,6 @@ def menu_post():
     value_input = (group_id,store_name,"alive")
     store_id_check = query_data(sql_command,value_input)
     store_id = store_id_check[0]["id"]
-    print("store_id",store_id)
     # Check menu repeat
     sql_command="""
     SELECT menu_name
@@ -49,10 +43,8 @@ def menu_post():
     """
     value_input = (menu_name,group_id,store_id,menu_size,"alive")
     menu_name_check = query_data(sql_command,value_input)
-    print("menu_name_check",menu_name_check)
     # If no repeat save it
     if menu_name_check == []:
-        print("INTO menu_name_check")
         # Input information 
         sql_command = """
         INSERT INTO menu (menu_name, menu_size, menu_price, menu_status, group_id, store_id, menu_note)
@@ -60,7 +52,6 @@ def menu_post():
         """
         value_input = (menu_name, menu_size, menu_price, menu_status, group_id, store_id, menu_note)
         insert_or_update_data(sql_command,value_input)
-        print("Done")
         data = v_menu.menu_post_200()
         return data
     else:
@@ -69,8 +60,6 @@ def menu_post():
 
 # Check menu info
 def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
-    print("urlGroupName",urlGroupName)
-    print("urlStoreName",urlStoreName)
     # Define page Qty
     one_page_quanity=100
     data_start=int(page*one_page_quanity)
@@ -87,7 +76,6 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
     value_input = (urlGroupName,"alive")
     group_info_check = query_data(sql_command,value_input)
     group_id = group_info_check[0]["id"]
-    print("C1",group_id)
 
     # store id
     sql_command="""
@@ -98,7 +86,6 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
     value_input = (urlStoreName,group_id,"alive")
     store_info_check = query_data(sql_command,value_input)
     store_id = store_info_check[0]["id"]
-    print("C2",store_id)
 
     # Use group_id to check menu info
     sql_command="""
@@ -109,7 +96,7 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
     """
     value_input=(group_id,store_id, menu_name_keyword,"alive" , data_start,one_page_quanity+1)
     menu_info_check = query_data(sql_command,value_input)
-    print("menu_info_check",menu_info_check)
+
     # No data
     if menu_info_check == []:
         menu_data = {
@@ -153,7 +140,6 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
 
 # Change menu info
 def menu_patch():
-    print("MP1")
     # Get data from front-end
     change_menu_data = request.get_json()
     group_id = change_menu_data["groupId"]
@@ -169,7 +155,6 @@ def menu_patch():
     menu_new_note = change_menu_data["menu"]["menuNewNote"]
 
     # Use store_name find store id
-    print("c1menu_name",menu_name)
     sql_command="""
     SELECT id
     FROM store 
@@ -256,7 +241,6 @@ def menu_patch():
         """
         value_input = (menu_new_note,menu_id,"alive")
         insert_or_update_data(sql_command,value_input)
-
 
     else:
         data = jsonify({

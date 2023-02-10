@@ -19,8 +19,6 @@ connector_pool = mysql.connector.pooling.MySQLConnectionPool(
 	pool_name = MySQL_pool_name,
 	pool_size = 5,
 )
-def ff():
-    print("ddd")
     
 def query_data_read(sql_command):
     conn=connector_pool.get_connection()

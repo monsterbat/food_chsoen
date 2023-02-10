@@ -17,7 +17,6 @@ header{
     justify-content: center;
     align-items: center;
     z-index: 100;
-    /* border: 1px solid #E8E8E8; */
 }
 main{
     width:100%;
@@ -53,8 +52,6 @@ header nav .memberCenterBlock{
 }
 .memberCenterAvator{
     margin: 5px 5px 0px 25px;
-    /* top:10px */
-    /* padding: 10px; */
 }
 .pageTitle{
     display: flex;
@@ -71,7 +68,6 @@ header nav .memberCenterBlock{
     justify-content: center;
     align-items: center;
     z-index: 100;
-    /* border: 1px solid #E8E8E8; */
 }
 .pageTitle .pageTitleContent{
     display: flex;
@@ -89,7 +85,6 @@ header nav .memberCenterBlock{
 .blockScreenFilter{
     position: fixed;
     display: none;
-    /* position: absolute; */
     background-color: #000000;
     z-index: 150;
     width: 100%;
@@ -101,8 +96,6 @@ header nav .memberCenterBlock{
     width: 300px;
     height: 0px;
     margin: 5px;
-    /* Gray 300 */
-    
     border: 1px solid #E8E8E8;
 }
 

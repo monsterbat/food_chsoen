@@ -4,8 +4,6 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
-from group_token import *
-from store_token import *
 
 sys.path.append('api/view')
 import v_bill
@@ -26,7 +24,6 @@ def bill_post():
     user_id = user_info["data"]["id"]
     # Get data
     create_bill_data = request.get_json()
-    print("create_bill_data",create_bill_data)
     join_user_email = create_bill_data["joinUserEmail"]
     order_list_id = create_bill_data["orderListId"]
     group_id = create_bill_data["groupId"]
@@ -37,7 +34,6 @@ def bill_post():
     bill_time = current_time_code
 
     if join_user_email != None:
-        print("billC1")
         init_order_id = 1
         init_order_price = 0
         balance = 0
@@ -50,7 +46,6 @@ def bill_post():
         value_input = (join_user_email,"alive")
         join_user_id = query_data(sql_command,value_input)
         join_user_id = join_user_id[0]["id"]
-        print("billC2")
         # group id
         sql_command="""
         SELECT id
@@ -86,7 +81,6 @@ def bill_post():
         order_id = user_order_check_ls["id"]
         order_user_id = user_order_check_ls["user_id"]
         order_price = user_order_check_ls["order_price"]
-        print("order_price",order_price)
         # Find balance
         sql_command="""
         SELECT balance
@@ -109,7 +103,6 @@ def bill_post():
             reload_price_total = 0
             for reload_price_check_ls in reload_price_check:
                 reload_price_check_ls_each = reload_price_check_ls["reload_price"]
-                print("reload_price_check_ls_each",reload_price_check_ls_each)
                 reload_price_total = reload_price_total + int(reload_price_check_ls_each)
             user_balance = reload_price_total
         else:

@@ -4,8 +4,6 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
-from group_token import *
-from store_token import *
 
 sys.path.append('api/view')
 import v_reload
@@ -20,9 +18,8 @@ import datetime
 
 # Create reload account
 def reload_post():
-    # Use cookie to get group info
-    group_info = group_token_check()
-    group_id = group_info["data"]["id"]
+    # group_id @@@@@@@@@@@Not yet
+    group_id =""
     # Use cookie to know which user
     user_info = user_token_check()
     user_email = user_info["data"]["user_email"]

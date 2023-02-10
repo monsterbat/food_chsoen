@@ -4,7 +4,6 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
-from group_token import *
 
 sys.path.append('api/view')
 import v_store
@@ -31,7 +30,6 @@ def store_post():
     store_delivery_condition = create_store_data["storeDeliveryCondition"]
     store_note =  create_store_data["storeNote"]
     join_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    print("??",store_delivery_condition)
     # Check store repeat
     sql_command="""
     SELECT store_name
@@ -40,10 +38,8 @@ def store_post():
     """
     value_input = (store_name,group_id,"alive")
     store_name_check = query_data(sql_command,value_input)
-    print("c1")
     # If no repeat save it
     if store_name_check == []:
-        print("c2")
         # Input information 
         sql_command = """
         INSERT INTO store (store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, store_status, group_id, store_note, store_order_time, store_order_frequence, store_distance, store_price_range, store_latest_data)
@@ -51,7 +47,6 @@ def store_post():
         """
         value_input = (store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, "alive",group_id,store_note, "null", "null", "null", "null", join_time)
         insert_or_update_data(sql_command,value_input)
-        print("c3")
         data = v_store.store_post_200()
         return data
     else:
@@ -76,7 +71,6 @@ def store_get(page, keyword=None, urlGroupName=None):
     value_input = (urlGroupName,"alive")
     group_info_check = query_data(sql_command,value_input)
     group_id = group_info_check[0]["id"]
-    print("C1",group_id)
     # Use group_id to check store info
     sql_command="""
     SELECT id, store_name, store_address, store_phone_number, store_type, store_price_range, store_open_time, store_delivery_condition, store_order_time, store_order_frequence, store_distance, store_latest_data, store_status, store_note
@@ -86,11 +80,8 @@ def store_get(page, keyword=None, urlGroupName=None):
     """
     value_input=(group_id,store_name_keyword,store_type_keyword,"alive",data_start,one_page_quanity+1)
     store_info_check = query_data(sql_command,value_input)
-    # print("store_info_check",store_info_check)
-    print("OK")
     # No data
     if store_info_check == []:
-        print("X")
         store_data = {
             "nextPage":None,
             "store":None
@@ -148,9 +139,8 @@ def store_get(page, keyword=None, urlGroupName=None):
 
 # Change store info
 def store_patch():
-    # Use cookie to get syore info
-    group_info = group_token_check()
-    group_id = group_info["data"]["id"]
+    # group_id @@@@@@@@@@@Not yet
+    group_id = ""
     # Get data from front-end
     change_store_data = request.get_json()
     store_name = change_store_data["storeName"]

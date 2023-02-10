@@ -4,8 +4,6 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
-from group_token import *
-from store_token import *
 
 sys.path.append('api/view')
 import v_order
@@ -19,7 +17,6 @@ import time
 
 # Create order account
 def order_post():
-    print("c1")
     # Use cookie to know which user
     user_info = user_token_check()
     user_email = user_info["data"]["user_email"]
@@ -35,7 +32,6 @@ def order_post():
     menu_price = create_order_data["menuPrice"]
     order_price = int(menu_price)*int(order_quantity)
     order_note = create_order_data["menuNote"]
-    print("C2",stop_time)
     # Find order list number id
     sql_command="""
     SELECT id
@@ -45,7 +41,6 @@ def order_post():
     value_input = (store_id,group_id,stop_time,"alive")
     order_list_check = query_data(sql_command,value_input)
     order_list_id = order_list_check[0]["id"]
-    print("C3")
     # Find menu id
     sql_command="""
     SELECT id
@@ -55,7 +50,6 @@ def order_post():
     value_input = (group_id,store_id,menu_name,menu_size,"alive")
     menu_id_check = query_data(sql_command,value_input)
     menu_id = menu_id_check[0]["id"]
-    print("C4")
     # Input information 
     sql_command = """
     INSERT INTO user_order (order_list_id, user_id, menu_id, order_quantity, order_price, order_status, order_note)
@@ -63,7 +57,6 @@ def order_post():
     """
     value_input = (order_list_id,user_id,menu_id,order_quantity,order_price,"alive",order_note)
     insert_or_update_data(sql_command,value_input)
-    print("C5")
     data = v_order.order_post_200()
     return data
 
@@ -85,7 +78,6 @@ def order_get(page, keyword=None,orderListId=None):
     """
     value_input=(order_list_id,"alive")
     order_info_check = query_data(sql_command,value_input)
-    print("order_info_check",order_info_check)
     # No data
     if order_info_check == []:
         order_list_data = {
@@ -102,7 +94,6 @@ def order_get(page, keyword=None,orderListId=None):
     }
     # Create data    
     if order_info_check != []:
-        print("V1",order_info_check)
         for order_info_ls in order_info_check:
             order_id = order_info_ls["id"]
             user_id_member = order_info_ls["user_id"]
@@ -110,7 +101,6 @@ def order_get(page, keyword=None,orderListId=None):
             order_quantity = order_info_ls["order_quantity"]
             order_price = order_info_ls["order_price"]
             order_note = order_info_ls["order_note"]
-            print("v2",menu_id)
             # Find user name
             sql_command="""
             SELECT user_name
@@ -120,7 +110,6 @@ def order_get(page, keyword=None,orderListId=None):
             value_input=(user_id_member,"alive")
             user_name_check = query_data(sql_command,value_input)
             user_name = user_name_check[0]["user_name"]
-            print("v3",user_name)
             # Find menu name and size
             sql_command="""
             SELECT menu_name, menu_size
@@ -129,7 +118,6 @@ def order_get(page, keyword=None,orderListId=None):
             """
             value_input=(menu_id,"alive")
             menu_check = query_data(sql_command,value_input)
-            print("v3menu_size",menu_check)   
             menu_name = menu_check[0]["menu_name"]      
             menu_size = menu_check[0]["menu_size"]
                    
@@ -142,9 +130,7 @@ def order_get(page, keyword=None,orderListId=None):
                 "orderNote":order_note,
                 "orderId":order_id
                 }
-            print("order_ls_data",order_ls_data)
             order_list_data["order"].append(order_ls_data)
-        print("Ve",order_list_data)
     return jsonify(order_list_data) ,200
 
 # Change order_list info
@@ -166,12 +152,7 @@ def order_patch():
     order_quantity = change_order_data["orderQuantity"]
     order_new_note = change_order_data["orderNote"]
     order_status = change_order_data["orderStatus"]
-    print("order_list_id",order_list_id)
-    print("store_name",store_name)
-    print("menu_name",menu_name)
-    print("menu_size",menu_size)
     if order_status == "stop":
-        print("C1")
         # Find store id
         sql_command="""
         SELECT id
@@ -181,7 +162,6 @@ def order_patch():
         value_input = (group_id,store_name,"alive")
         store_id_check = query_data(sql_command,value_input)
         store_id = store_id_check[0]["id"]
-        print("store_id",store_id_check)
         # Find menu id
         sql_command="""
         SELECT id
@@ -190,9 +170,7 @@ def order_patch():
         """
         value_input = (group_id,store_id,menu_name,menu_size,"stop")
         menu_id_check = query_data(sql_command,value_input)
-        print("menu_id",menu_id_check)
         menu_id = menu_id_check[0]["id"]
-        print("menu_id",menu_id_check)
         # update user_order
         sql_command="""
         UPDATE user_order
@@ -201,7 +179,6 @@ def order_patch():
         """
         value_input = (order_status,menu_id,"alive")
         insert_or_update_data(sql_command,value_input)
-        print("C2")
         data = v_order.order_patch_200()
         return data
     
@@ -225,11 +202,7 @@ def order_patch():
     menu_id_check = query_data(sql_command,value_input)
     menu_id = menu_id_check[0]["id"]
     menu_price = menu_id_check[0]["menu_price"]
-    print("C1menu_id",menu_id)
-    print("C1menu_price",menu_price)
-    print("user_update_id",user_update_id)
     if user_update_id == None:
-        print("c2")
         # Find user_order id, order_quantity
         sql_command="""
         SELECT id, order_quantity, user_id
@@ -238,7 +211,6 @@ def order_patch():
         """
         value_input = (order_list_id,menu_id,"alive")
         user_order_check = query_data(sql_command,value_input)
-        print("c3")
         if user_order_check != []:
             for user_order_check_ls in user_order_check:
                 usder_id_each = user_order_check_ls["user_id"]
@@ -249,7 +221,6 @@ def order_patch():
                     order_quantity_each = order_quantity
                 # calculate order price
                 order_total_price = int(order_quantity_each)*int(menu_price)
-                print("c4order_total_price",order_total_price)
                 # If Change menu
                 if menu_name != menu_new_name or menu_size != menu_new_size:
                     # Find new menu id
@@ -273,7 +244,6 @@ def order_patch():
                 """
                 value_input = (order_quantity_each,order_total_price,order_list_id,usder_id_each,menu_id,"alive")
                 insert_or_update_data(sql_command,value_input)
-                print("user_id",order_list_id)
         data = v_order.order_patch_200()
         return data
 

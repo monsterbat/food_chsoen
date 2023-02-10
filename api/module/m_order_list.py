@@ -4,8 +4,6 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
-from group_token import *
-from store_token import *
 
 sys.path.append('api/view')
 import v_order_list
@@ -92,10 +90,8 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
     value_input = (urlGroupName,"alive")
     group_info_check = query_data(sql_command,value_input)
     group_id = group_info_check[0]["id"]
-    print("olc1")
     # Already in orderlist to find orderlist id
     if urlStoreName != "" and urlStopTime != "":
-        print("olc2",getStatus)
         # Use store_name find store id
         sql_command="""
         SELECT id
@@ -105,7 +101,6 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         value_input = (urlStoreName,group_id,"alive")
         store_id_check = query_data(sql_command,value_input)
         store_id = store_id_check[0]["id"]
-        print("olc3")
         # Find order list info
         sql_command="""
         SELECT id, user_id, stop_time, order_list_note
@@ -114,20 +109,16 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         """
         value_input=(group_id,store_id,urlStopTime, getStatus)
         order_list_info_check = query_data(sql_command,value_input)
-        print("123order_list_info_check",order_list_info_check)
         if order_list_info_check == []:
-            print("?")
             order_list_result = {
                 "orderListStatus":"empty"
             }
             return jsonify(order_list_result) ,200
-        print("(group_id,store_id,urlStopTime",group_id,store_id,urlStopTime)
-        print("√",order_list_info_check)
+        
         order_list_id = order_list_info_check[0]["id"]
         order_user_name = order_list_info_check[0]["user_id"]
         stop_time = order_list_info_check[0]["stop_time"]
         order_list_note = order_list_info_check[0]["order_list_note"]
-        print("olc4",order_list_id)
         order_list_data =  {
                 "orderListId":order_list_id,
                 "storeName":urlStoreName,
@@ -139,7 +130,6 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         return jsonify(order_list_data) ,200
 
     # Use group_id to check order_list info
-    print("J1")
     sql_command="""
     SELECT id, store_id,user_id, stop_time, order_list_note
     FROM order_list
@@ -148,7 +138,7 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
     """
     value_input=(group_id, getStatus, data_start,one_page_quanity+1)
     order_list_info_check = query_data(sql_command,value_input)
-    print("J2",order_list_info_check)
+
     # No data
     if order_list_info_check == []:
         order_list_data = {
@@ -171,7 +161,6 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
     # Create data
     if order_list_info_check != []:
         for order_list_ls in order_list_info_check:
-            print("J2")
             order_list_id = order_list_ls["id"]
             store_id = order_list_ls["store_id"]
             order_user_id = order_list_ls["user_id"]
@@ -186,7 +175,6 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
             """
             value_input = (store_id,"alive")
             store_name_check = query_data(sql_command,value_input)
-            print("J3",store_name_check)
             store_name = store_name_check[0]["store_name"]
             # Find order name
             sql_command="""
@@ -285,9 +273,6 @@ def order_list_patch():
             WHERE id = %s AND order_list_status=%s;
             """
             value_input = (order_list_status,order_list_id,"alive")
-
-            print("value_input",value_input)
-            print("order_list_status",order_list_status)
             insert_or_update_data(sql_command,value_input)           
         if order_list_status == "finish":
             sql_command="""
@@ -296,9 +281,6 @@ def order_list_patch():
             WHERE id = %s AND order_list_status=%s;
             """
             value_input = (order_list_status,order_list_id,"ordering")
-
-            print("value_input",value_input)
-            print("order_list_status",order_list_status)
             insert_or_update_data(sql_command,value_input)
 
     # Change order_list_new_note
@@ -337,10 +319,8 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
     value_input = (urlGroupName,"alive")
     group_info_check = query_data(sql_command,value_input)
     group_id = group_info_check[0]["id"]
-    print("olc1")
     # Already in orderlist to find orderlist id
     if urlStoreName != "" and urlStopTime != "":
-        print("olc2")
         # Use store_name find store id
         sql_command="""
         SELECT id
@@ -350,7 +330,6 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
         value_input = (urlStoreName,group_id,"alive")
         store_id_check = query_data(sql_command,value_input)
         store_id = store_id_check[0]["id"]
-        print("olc3")
         # Find order list info
         sql_command="""
         SELECT id, user_id, stop_time, order_list_note
@@ -359,13 +338,10 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
         """
         value_input=(group_id,store_id,urlStopTime, "alive")
         order_list_info_check = query_data(sql_command,value_input)
-        print("(group_id,store_id,urlStopTime",group_id,store_id,urlStopTime)
-        print("√",order_list_info_check)
         order_list_id = order_list_info_check[0]["id"]
         order_user_name = order_list_info_check[0]["user_id"]
         stop_time = order_list_info_check[0]["stop_time"]
         order_list_note = order_list_info_check[0]["order_list_note"]
-        print("olc4")
         order_list_data =  {
                 "orderListId":order_list_id,
                 "storeName":urlStoreName,
@@ -376,7 +352,6 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
         return jsonify(order_list_data) ,200
 
     # Use group_id to check order_list info
-    print("J1")
     sql_command="""
     SELECT id, store_id,user_id, stop_time, order_list_note
     FROM order_list
@@ -385,7 +360,6 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
     """
     value_input=(group_id, "alive", data_start,one_page_quanity+1)
     order_list_info_check = query_data(sql_command,value_input)
-    print("J2",order_list_info_check)
     # No data
     if order_list_info_check == []:
         order_list_data = {
@@ -408,7 +382,6 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
     # Create data
     if order_list_info_check != []:
         for order_list_ls in order_list_info_check:
-            print("J2")
             order_list_id = order_list_ls["id"]
             store_id = order_list_ls["store_id"]
             order_user_id = order_list_ls["user_id"]
@@ -423,7 +396,6 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
             """
             value_input = (store_id,"alive")
             store_name_check = query_data(sql_command,value_input)
-            print("J3",store_name_check)
             store_name = store_name_check[0]["store_name"]
             # Find order name
             sql_command="""

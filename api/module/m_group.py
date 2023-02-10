@@ -151,16 +151,12 @@ def group_get(page, keyword=None):
 
 # Change group name or password
 def group_patch():
-    print("C0")
     change_group_data = request.get_json()
-    print("change_group_data",change_group_data)
     group_name = change_group_data["groupName"]
     group_new_name = change_group_data["groupNewName"]
     group_password = change_group_data["groupPassword"]
     group_new_password = change_group_data["groupNewPassword"]
     group_status = change_group_data["groupStatus"]
-    print("group_password",group_password)
-    print("group_new_password",group_new_password)
     # Change name
     if group_new_name != None:
         # Check group name repeat
@@ -186,10 +182,7 @@ def group_patch():
             return errorr_message
 
     # Change password
-    print("group_password",group_password)
-    print("group_new_password",group_new_password)
     if group_password != None and group_new_password !=None and group_new_password !="" and group_password != group_new_password:
-        print("C1")
         sql_command="""
         SELECT group_password
         FROM user_group 
@@ -198,9 +191,7 @@ def group_patch():
         value_input = (group_name,"alive")
         group_check = query_data(sql_command,value_input)
         group_password_check = group_check[0]["group_password"]
-        print("C2",group_password_check)
         if decode_hash(group_password, group_password_check) == True:
-            print("C3")
             group_new_password = create_hash(group_new_password)
             sql_command="""
             UPDATE user_group
@@ -209,7 +200,6 @@ def group_patch():
             """
             value_input = (group_new_password,group_name,"alive")
             insert_or_update_data(sql_command,value_input)
-            print("C4")
             data = v_group.group_patch_200()
             return data
         else:
@@ -238,14 +228,12 @@ def group_patch():
             """        
             value_input = ("stop",group_name,"alive")
             insert_or_update_data(sql_command,value_input)
-            print("here")
             data = v_group.group_patch_200()
             return data
         else:
             errorr_message = v_group.group_patch_400_wrong_pw()
             return errorr_message
     else:
-        print("S")
         errorr_message = v_group.group_patch_400_else()
         return errorr_message
 
@@ -264,7 +252,6 @@ def group_put():
     group_name = join_group_data["groupName"]
     group_password = join_group_data["groupPassword"]
     use_for = join_group_data["useFor"]
-    print("C1")
     # Check password
     sql_command="""
     SELECT group_password
@@ -274,9 +261,7 @@ def group_put():
     value_input = (group_name,"alive")
     group_check = query_data(sql_command,value_input)
     group_password_check = group_check[0]["group_password"]
-    print("C2")
     if decode_hash(group_password, group_password_check) == True or use_for == "invite":
-        print("C3")
         # Use token get email then get id to join foreign key
         sql_command="""
         SELECT id
@@ -285,9 +270,7 @@ def group_put():
         """
         value_input = (join_user_email,"alive")
         join_user_id = query_data(sql_command,value_input)
-        print("C4")
         if join_user_id != []:
-            print("C5")
             # Find group_id
             sql_command="""
             SELECT id
@@ -297,7 +280,6 @@ def group_put():
             value_input = (group_name,"alive")
             group_id = query_data(sql_command,value_input)
             group_id = group_id[0]["id"]
-            print("C6")
             # Check id the joinner had join the group or not
             join_user_id = join_user_id[0]["id"]
             sql_command="""
@@ -307,10 +289,8 @@ def group_put():
             """
             value_input = (join_user_id,group_id,"alive")
             group_join_check = query_data(sql_command,value_input)
-            print("C7")
             # If no repeat save it
             if group_join_check == []:
-                print("c8")
                 # Input joinner information 
                 join_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
                 sql_command = """
@@ -319,11 +299,9 @@ def group_put():
                 """
                 value_input = (join_user_id,group_id,join_time,"alive")
                 insert_or_update_data(sql_command,value_input)
-                print("c9")
                 data = v_group.group_put_200()
                 return data
             else:
-                print("c10  ")
                 join_time = group_join_check[0]["join_time"]
                 errorr_message = v_group.group_put_400_already_join(join_time)
                 return errorr_message
