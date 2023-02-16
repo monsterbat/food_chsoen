@@ -10,8 +10,6 @@ import v_menu
 
 # import python function
 from flask import *
-import jwt
-import time
 
 ### Module function ###
 
@@ -66,7 +64,7 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
 
     # keyword generate can be OK to name and type
     menu_name_keyword = "%"+keyword+"%"
-
+ 
     # group id
     sql_command="""
     SELECT id

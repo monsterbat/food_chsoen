@@ -23,7 +23,10 @@ def bill():
 
     if request.method == "GET":
         try:
-            message = m_bill.bill_get()
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            message = m_bill.bill_get(page, keyword, urlGroupName)
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
@@ -48,3 +51,14 @@ def bill():
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_bill.route("/api/bill/reload", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
+def bill_reload():
+    if request.method == "POST":
+        print("V#")
+        try:
+            message = m_bill.bill_reload_post()
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500
+        

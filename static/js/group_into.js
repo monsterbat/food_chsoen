@@ -4,6 +4,7 @@ let manageGroupBlock = document.getElementById("manageGroupBlock");
 let manageGroupEdit = document.getElementById("manageGroupEdit");
 let manageGroupInvite = document.getElementById("manageGroupInvite");
 let manageGroupCreateOrderList = document.getElementById("manageGroupCreateOrderList");
+let reloadButton = document.getElementById("reloadButton");
 // spacer
 let separateGroupInto1 = document.getElementById("separateGroupInto1");
 // Manage order list
@@ -112,9 +113,23 @@ deleteConfirmNoButton.addEventListener("click",deleteConfirmNoButtonClick);
 // // invite member
 inviteMemberSubmit.addEventListener("click",inviteMemberSubmitClick);
 inviteBackGroupSubmit.addEventListener("click",inviteBackGroupSubmitClick);
+// 
+reloadButton.addEventListener("click",reloadButtonClick);
+
+
+// order history
+managerOrderListRecord.addEventListener("click",rmanagerOrderListRecordClick);
 
 
 // ==== Function ====
+
+function displayNoneGroupGroupInto(){
+
+}
+
+async function reloadButtonClick(){
+    window.location.href = `/group/${urlGroupName}/reload`;
+}
 
 async function editGroupDisplayOrNot(userId,groupManager){
     if (userId == groupManager){
@@ -278,7 +293,7 @@ async function inviteMemberSubmitClick(){
         result = await groupApiPut(data);
         if (result.ok == true){
             let data = {
-                "joinUserEmail":inviteMemberEmailValue,
+                "billUserEmail":inviteMemberEmailValue,
                 "orderListId":null,
                 "groupId":null,
                 "groupName":urlGroupName
@@ -359,17 +374,17 @@ async function checkAllOrderMenuButtonClick(){
 async function showAllGrooupOrderAliveListBlock(orderListData){
     createDivElement(managerOrderList,`managerOrderListBlock`, "contentPositionCenter", null, "appendChild");
     for(i=0;i<Object.keys(orderListData).length;i++){
-        orderListId = orderListData[i]["orderListId"];
-        storeName = orderListData[i]["storeName"];
-        orderUserName = orderListData[i]["orderUserName"];
-        stopTime = orderListData[i]["stopTime"];
-        stopTimeUrl = "stopTime:"+stopTime;
-        orderListNote = orderListData[i]["orderListNote"];
+        let orderListId = orderListData[i]["orderListId"];
+        let storeName = orderListData[i]["storeName"];
+        let orderUserName = orderListData[i]["orderUserName"];
+        let stopTime = orderListData[i]["stopTime"];
+        let stopTimeUrl = "stopTime:"+stopTime;
+        let orderListNote = orderListData[i]["orderListNote"];
         let stopTimeArray = stopTime.split('-');
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}`);
+        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}/alive`);
         createDivElement(eval(`managerOrderList${i}`), `managerOrderListContent${i}`, "buttonContent", orderListContent);
     };
 };
@@ -378,17 +393,21 @@ async function showAllGrooupOrderListOrderingBlock(orderListData){
     createDivElement(managerOrderList,`alreadyOrdering`, "titleWord", "已經結單的團購", "appendChild");
     createDivElement(managerOrderList,`managerOrderListOrderingBlock`, "contentPositionCenter", null, "appendChild");
     for(i=0;i<Object.keys(orderListData).length;i++){
-        orderListId = orderListData[i]["orderListId"];
-        storeName = orderListData[i]["storeName"];
-        orderUserName = orderListData[i]["orderUserName"];
-        stopTime = orderListData[i]["stopTime"];
-        stopTimeUrl = "stopTime:"+stopTime;
-        orderListNote = orderListData[i]["orderListNote"];
+        let orderListId = orderListData[i]["orderListId"];
+        let storeName = orderListData[i]["storeName"];
+        let orderUserName = orderListData[i]["orderUserName"];
+        let stopTime = orderListData[i]["stopTime"];
+        let stopTimeUrl = "stopTime:"+stopTime;
+        let orderListNote = orderListData[i]["orderListNote"];
         let stopTimeArray = stopTime.split('-');
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}`);
+        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}/ordering`);
         createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent", orderListContent);
     }
+}
+
+function rmanagerOrderListRecordClick(){
+    window.location.href = `/group/${urlGroupName}/order_history`
 }

@@ -6,15 +6,33 @@
 {% endblock %} 
 {% block content %}
 <main>
-    
-    <!-- 1-3 manage group -->
-    <div id="manageGroupBlock" class="contentPositionCenter margin">
-        <!-- 1-3-1 edit member -->
+    <div id="mainPagePopup" class="contentPositionCenter margin">
         <div id="manageGroupEdit" class="buttonFormat editBGC">
             <div id="manageGroupEditContent" class="buttonContent">
                 編輯群組
             </div>
         </div>
+        <div id="managerOrderListRecord" class="buttonFormat recordBGC">
+            <div id="managerOrderListRecordContent" class="buttonContent">
+                團購紀錄
+            </div>
+        </div>
+        <div id="createStore" class="buttonFormat createBGC">
+            <div id="createStoreContent" class="buttonContent">
+                建立店家
+            </div>
+        </div>
+        <div id="reloadButton" class="buttonFormat createBGC">
+            <div id="createStoreContent" class="buttonContent">
+                儲值
+            </div>
+        </div>
+    </div>
+
+    <!-- 1-3 manage group -->
+    <div id="manageGroupBlock" class="contentPositionCenter margin">
+        <!-- 1-3-1 edit member -->
+
         <!-- 1-3-2 invit member -->
         <div id="manageGroupInvite" class="buttonFormat addBGC">
             <div id="manageGroupInviteContent" class="buttonContent">
@@ -33,15 +51,6 @@
     <!-- 1-5 manage order list -->
     <div id="manageOrderListBlock" class="contentPositionCenter margin">
         <!-- 1-5-1 order list record -->
-
-
-        <!-- <div id="managerOrderListRecord" class="buttonFormat recordBGC">
-            <div id="managerOrderListRecordContent" class="buttonContent">
-                團購紀錄
-            </div>
-        </div> -->
-
-
         <!-- 1-5-2 order list Title -->
         <div id="separate" class="separateBlock"></div>
         <div id="managerOrderListTitle" class="managerOrderListTitle">

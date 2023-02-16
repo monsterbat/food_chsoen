@@ -1,0 +1,25 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='css/') }}" />
+<title>Food chosen</title> 
+{% endblock %} 
+{% block content %}
+<main>
+    <div id="orderHistoryBlock" class="contentPositionCenter margin">
+        <div id="orderHistoryTitle" class="">
+            歷史訂單記錄
+        </div>
+        <div id="orderHistoryListBlock" class="contentPositionCenter margin">
+        </div>
+        <div id="backToGroupButton" class="buttonFormat backBGC">
+            <div id="backToGroupButtonContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/order_history.js') }}"></script>
+{% endblock %}

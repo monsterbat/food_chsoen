@@ -1,0 +1,41 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<link rel="stylesheet", type="text/css", href="../static/css" />
+<title>Food chosen</title> 
+{% endblock %} 
+{% block content %}
+<main>
+    <div id="reloadPageBlcok" class="contentPositionCenter margin">
+        <div class="contentPositionCenter margin">
+            <div class="listContent">
+                目前餘額
+            </div>
+            <div id="currentBalance" class="">
+                
+            </div>
+            <div class="listContent">
+                儲值金額
+            </div>
+            <div id="reloadPriceInput" class="">
+                <input type="text" id="reloadPrice" class="userInfoInputValue" placeholder="輸入儲值金額" name="reloadPrice">
+            </div>
+            <div id="reloadResultContent" class="">
+            </div>
+        </div>
+        <div id="reloadToBillButton" class="buttonFormat createBGC">
+            <div id="reloadToBillContent" class="buttonContent">
+                儲值
+            </div>
+        </div>        
+        <div id="backToGroupIntoButton" class="buttonFormat backBGC">
+            <div id="backToGroupIntoContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/reload.js') }}"></script>
+{% endblock %}

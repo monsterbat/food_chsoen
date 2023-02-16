@@ -20,25 +20,25 @@
         <!-- 1-1 header -->
         <header id="topFreezeBackgroung" class="topFreezeBackgroung">
             <!-- 1-1-1 -->
-            <nav class="">
+            <nav id="topNav" class="">
                 <div id="topLeftTitle" class="topLeftTitle">
                     <a id="topLeftTitleText" class="topLeftTitleText" href="/group">
                         Food chosen
                     </a>                            
                 </div>
             <!-- 1-1-2 -->
-                <div id="memberCenterBlock" class="memberCenterBlock">
+                <a id="memberCenterBlock" class="memberCenterBlock" href="/member_center">
                     <div id="memberCenterAvator" class="memberCenterAvator">
                         <img class="smailIconOnTop" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}">
                     </div>
                     <div id="memberCenterName" class="memberCenterName">
                         
                     </div>
-                </div>
+                </a>
             </nav>
         </header>
             <!-- 1-2 page title -->
-            <div id="pageTitle" class="pageTitle">
+            <div id="pageTitle" class="pageTitle button">
                 <div id="pageTitleContent" class="pageTitleContent">
                 </div>
             </div>
@@ -95,6 +95,7 @@
         </footer>
         <!-- Javascript -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/function.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/api.js') }}"></script>
 {% block js %}
         <script type="text/javascript" src="{{ url_for('static', filename='js/group.js') }}"></script>
 {% endblock %}

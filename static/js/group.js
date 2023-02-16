@@ -39,14 +39,22 @@ let backGroupSubmit = document.getElementById("backGroupSubmit");
 let backGroupSubmitContent = document.getElementById("backGroupSubmitContent");
 // ==== onload ===
 createGroupBlock.style.display = "none";
+onloadGroupPage();
 addGroupShow();
 pageTitleContentChooseGroup();
 userStatus();
 // ==== create event listener ====
 backGroupSubmit.addEventListener("click",backSubmit);
 createGroupSubmit.addEventListener("click",createGroup);
+memberCenterBlock.addEventListener("click",memberCenterBlockClick);
 
 // ==== Function ====
+async function onloadGroupPage(){
+    let userApiData = await userStatus();
+    let userId = userApiData.data.userId;
+    let userName = userApiData.data.userName;
+    currentUserName = userName
+}
 function pageTitleContentChooseGroup(){
     pageTitleContent.textContent = "請選擇或創建群組";
 };
@@ -95,25 +103,33 @@ async function createGroup(){
         createGroupErrorContent.textContent = "填寫項目請勿留空";
     }
     else{
-        await fetch(`/api/group`,{
-            method:"POST",
-            body:JSON.stringify(data),
-            headers:new Headers({
-                "Content-Type":"application/json"
-            })
-        }).then(function(response){
-            return response.json();
-        }).then(function(data){
-            if(data.ok == true){
-                location.reload();
+        let groupApiPostResult = await groupApiPost(data)
+        if(groupApiPostResult.ok == true){
+            let data = {
+                "billUserEmail":currentUserName,
+                "orderListId":null,
+                "groupId":null,
+                "groupName":createGroupNameValue
             };
-            if(data.error == true){
+            let billApiPostResult = await billApiPost(data);
+            if (billApiPostResult.ok == true){
+                location.reload();
+            }
+            if (billApiPostResult.error == true){
                 createGroupErrorContent.style.display = "block";
                 createGroupErrorContent.textContent = data.message;
-            };
-        })
+            }
+        };
+        if(groupApiPostResult.error == true){
+            createGroupErrorContent.style.display = "block";
+            createGroupErrorContent.textContent = data.message;
+        };
     };
 };
+
+function memberCenterBlockClick(){
+    window.location = `/member_center`
+}
 
 // IntersectionObserver
 let target = document.querySelector("footer");

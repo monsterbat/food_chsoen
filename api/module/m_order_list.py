@@ -5,13 +5,18 @@ from MySQL_con import *
 from hash_code import *
 from user_token import *
 
+sys.path.append('api/function/sql_command')
+from sql_command.sql_user_info import *
+from sql_command.sql_group_info import *
+from sql_command.sql_store_info import *
+from sql_command.sql_order_list_info import *
+from sql_command.sql_bill_info import *
+
 sys.path.append('api/view')
 import v_order_list
 
 # import python function
 from flask import *
-import jwt
-import time
 import datetime
 
 ### Module function ###
@@ -413,6 +418,63 @@ def order_list_status_get(page, keyword=None,urlGroupName=None,urlStoreName=None
                 "orderUserName":order_user_name,
                 "stopTime":stop_time,
                 "orderListNote":order_list_note
+                }
+            order_list_data["orderList"].append(order_list_ls_data)
+
+    return jsonify(order_list_data) ,200
+
+def order_list_history_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlStopTime=None,getStatus=None):
+    # Define page Qty
+    one_page_quanity=100
+    data_start=int(page*one_page_quanity)
+
+    # Use cookie to know which user
+    user_info = user_token_check()
+    if user_info["data"] == None:
+        errorr_message = v_order_list.order_list_get_403()
+        return errorr_message
+    user_id = user_info["data"]["id"]
+
+    group_id = sql_group_name_find_id(urlGroupName, "alive")
+    # Find order list info
+    order_list_info_check = sql_get_group_muti_order_list_info(group_id,"finish",data_start,one_page_quanity)
+    # No data
+    if order_list_info_check == []:
+        order_list_data = {
+            "nextPage":None,
+            "orderList":None
+        }
+        return jsonify(order_list_data) ,200
+    # page judge
+    if len(order_list_info_check)==one_page_quanity+1:
+        next_page=page+1
+        order_list_info_check.pop()
+    else:
+        next_page=None
+
+    order_list_data = {
+        "nextPage":next_page,
+        "orderList":[]
+    }
+    # Create data
+    if order_list_info_check != []:
+        for order_list_ls in order_list_info_check:
+            order_list_id = order_list_ls["id"]
+            store_id = order_list_ls["store_id"]
+            order_user_id = order_list_ls["user_id"]
+            stop_time = order_list_ls["stop_time"]
+            order_list_note = order_list_ls["order_list_note"]
+            # Find store name
+            store_name = sql_store_id_find_name_alive_and_stop(store_id)
+            # Find order name
+            order_user_name = sql_user_id_find_name(order_user_id)
+            order_list_ls_data =  {
+                "orderListId":order_list_id,
+                "storeName":store_name,
+                "orderUserName":order_user_name,
+                "stopTime":stop_time,
+                "orderListNote":order_list_note,
+                "orderListStatus":getStatus
                 }
             order_list_data["orderList"].append(order_list_ls_data)
 

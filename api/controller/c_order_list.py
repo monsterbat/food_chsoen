@@ -42,3 +42,24 @@ def order_list():
             return jsonify(error="true", message=f"{ex}"), 500
 
 
+@c_order_list.route("/api/order_list/history", methods=["POST", "GET", "PATCH"])
+def order_list_history():
+    if request.method == "POST":
+        try:
+            message = m_order_list.order_list_post()
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500
+
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            urlStoreName = request.args.get("urlStoreName",False)
+            urlStopTime = request.args.get("urlStopTime",False)
+            getStatus = request.args.get("getStatus",False)
+            message = m_order_list.order_list_history_get(page, keyword,urlGroupName,urlStoreName,urlStopTime,getStatus)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500

@@ -67,3 +67,4 @@ def user_token_delete():
     token_del = Response('delete cookies')
     token_del = jsonify({"ok":True})
     token_del.set_cookie(key='token', value='', expires=0)
+    return token_del

@@ -5,13 +5,21 @@ from MySQL_con import *
 from hash_code import *
 from user_token import *
 
+sys.path.append('api/function/sql_command')
+from sql_command.sql_user_info import *
+from sql_command.sql_group_info import *
+from sql_command.sql_order_info import *
+from sql_command.sql_order_list_info import *
+from sql_command.sql_store_info import *
+from sql_command.sql_menu_info import *
+from sql_command.sql_bill_info import *
+
+
 sys.path.append('api/view')
 import v_order
 
 # import python function
 from flask import *
-import jwt
-import time
 
 ### Module function ###
 
@@ -138,13 +146,13 @@ def order_patch():
     # Use cookie to know which user
     user_info = user_token_check()
     user_id = user_info["data"]["id"]
-
+    print("c0")
     # Get data from front-end
     change_order_data = request.get_json()
     group_id = change_order_data["groupId"]
     user_update_id = change_order_data["userId"]
-    store_name = change_order_data["storeName"]
     order_list_id = change_order_data["orderListId"]
+    store_name = change_order_data["storeName"]
     menu_name = change_order_data["menuName"]
     menu_size = change_order_data["menuSize"]
     menu_new_name = change_order_data["menuNewName"]
@@ -152,7 +160,9 @@ def order_patch():
     order_quantity = change_order_data["orderQuantity"]
     order_new_note = change_order_data["orderNote"]
     order_status = change_order_data["orderStatus"]
+    print("CH",change_order_data)
     if order_status == "stop":
+        print("c1")
         # Find store id
         sql_command="""
         SELECT id
@@ -186,12 +196,14 @@ def order_patch():
     sql_command="""
     SELECT store_id
     FROM order_list 
-    WHERE id=%s AND order_list_status=%s;
+    WHERE id=%s;
     """
-    value_input = (order_list_id,"alive")
+    print("order_list_id",order_list_id)
+    value_input = (order_list_id,)
     store_id_check = query_data(sql_command,value_input)
+    
+    print("store_id_check",store_id_check)
     store_id = store_id_check[0]["store_id"]
-
     # Find menu id
     sql_command="""
     SELECT id, menu_price
@@ -202,7 +214,9 @@ def order_patch():
     menu_id_check = query_data(sql_command,value_input)
     menu_id = menu_id_check[0]["id"]
     menu_price = menu_id_check[0]["menu_price"]
+    print("menu_id_check",menu_id_check)
     if user_update_id == None:
+        print("c2")
         # Find user_order id, order_quantity
         sql_command="""
         SELECT id, order_quantity, user_id
@@ -212,17 +226,22 @@ def order_patch():
         value_input = (order_list_id,menu_id,"alive")
         user_order_check = query_data(sql_command,value_input)
         if user_order_check != []:
+            print("c3",user_order_check)
             for user_order_check_ls in user_order_check:
                 usder_id_each = user_order_check_ls["user_id"]
+                print("usder_id_each",usder_id_each)
                 # order price
                 # order quantity define
                 order_quantity_each = user_order_check_ls["order_quantity"]
+                print("order_quantity_each",order_quantity_each)
                 if order_quantity != None:
                     order_quantity_each = order_quantity
                 # calculate order price
                 order_total_price = int(order_quantity_each)*int(menu_price)
+                print("order_total_price",order_total_price)
                 # If Change menu
                 if menu_name != menu_new_name or menu_size != menu_new_size:
+                    print("C4",order_total_price)
                     # Find new menu id
                     sql_command="""
                     SELECT id, menu_price
@@ -250,3 +269,66 @@ def order_patch():
     else:
         errorr_message = v_order.order_patch_400_else()
         return errorr_message
+
+
+def order_user_get(page, keyword=None,getStatus=None):
+    # Define page Qty
+    one_page_quanity=100
+    data_start=int(page*one_page_quanity)
+    # Use cookie to know which user
+    user_info = user_token_check()
+    user_id = user_info["data"]["id"]
+    # order list number should be get
+    order_status = getStatus
+    order_id = ""
+    order_list_id = ""
+    order_user_name = ""
+    # Use user id to find all user order order info
+    order_info_check = sql_user_id_get_muti_order_info(user_id,order_status,data_start,one_page_quanity)
+    print("order_info_check",order_info_check)
+    # No data
+    if order_info_check == []:
+        order_data = {
+            "nextPage":None,
+            "order":None
+        }
+        return jsonify(order_data) ,200
+
+    order_data = {
+            "nextPage":None,
+            "order":[]
+    }
+    # Create data    
+    if order_info_check != []:
+        for order_info_ls in order_info_check:
+            order_id = order_info_ls["id"]
+            order_list_id = order_info_ls["order_list_id"]
+            menu_id = order_info_ls["menu_id"]
+            order_quantity = order_info_ls["order_quantity"]
+            order_price = order_info_ls["order_price"]
+            order_note = order_info_ls["order_note"]
+
+            # Find menu name and size
+            menu_info = sql_menu_id_find_info(menu_id)
+            store_id = menu_info[0]["store_id"]
+            menu_name = menu_info[0]["menu_name"]
+            menu_size = menu_info[0]["menu_size"]
+
+            order_list_info = sql_order_list_id_find_info(order_list_id)
+            stop_time = order_list_info[0]["stop_time"]
+
+            store_name = sql_store_id_find_name_alive_and_stop(store_id)
+
+            order_ls_data =  {
+                "orderListId":order_list_id,
+                "storeName":store_name,
+                "stopTime":stop_time,
+                "menuName":menu_name,
+                "menuSize":menu_size,
+                "orderQuantity":order_quantity,
+                "orderPrice":order_price,
+                "orderNote":order_note
+                }
+            order_data["order"].append(order_ls_data)
+        print(order_data)
+    return jsonify(order_data) ,200

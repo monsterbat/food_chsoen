@@ -10,8 +10,6 @@ import v_user
 
 # import python function
 from flask import *
-import jwt
-import time
 
 ### Module function ###
 
@@ -76,7 +74,6 @@ def user_patch():
         errorr_message = v_user.user_get_403()
         return errorr_message, 403
     user_email = user_info["data"]["user_email"]
-
     # Get data from front-end
     change_user_data = request.get_json()
     user_new_name = change_user_data["userNewName"]
@@ -141,7 +138,7 @@ def user_patch():
             SET user_password = %s
             WHERE user_email = %s AND user_status=%s;
             """
-            value_input = (user_new_password,user_email)
+            value_input = (user_new_password,user_email,"alive")
             insert_or_update_data(sql_command,value_input)
             data = v_user.user_patch_200()
             return data, 200
@@ -185,6 +182,5 @@ def user_put():
 
 # User logout
 def user_delete():
-    user_token_delete()
-    data = v_user.user_delete_200()
-    return data, 200
+    token_del = user_token_delete()
+    return token_del, 200

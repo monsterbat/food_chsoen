@@ -137,6 +137,7 @@ async function onloadOrderMenuPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
+    currentUserEmail = userApiData.data.userEmail;
     urlGroupName = getGroupNameFromUrl();
     urlStopTime = getOrderListStopTimeFromUrl();
     urlStopTime1 = urlStopTime.split(":")[1];
@@ -159,6 +160,8 @@ async function onloadOrderMenuPage(){
         };
     };
     createMenuList(urlGroupName,urlStoreName);
+    let orderListStatusForThisPage
+    orderListStatusForThisPage = checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime);
 }
 // ==== create event listener ====
 menuSubmitButton.addEventListener("click",menuSubmitButtonClick);
@@ -281,6 +284,28 @@ async function checkAllOrderMenuButtonClick(){
         sortoutAllMemberOrderListBlock(menuOrderDataForAllMember);
     };
 };
+
+async function checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime){
+    let getStatusAlive = "alive";
+    let getStatusOrdering = "ordering";
+
+    let orderListGetDataAlive = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusAlive);
+    let orderListGetDataOrdering = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusOrdering);
+    if (orderListGetDataAlive.orderListStatus == "alive"){
+        orderListStatusForThisPage = "alive"
+    };
+    if (orderListGetDataOrdering.orderListStatus == "ordering"){
+        checkAllOrderMenuButtonClick()
+        menuItemsBlock.style.display = "none";
+        menuListBlcok.style.display = "none";
+        menuButtonBlock.style.display = "none";
+        checkMemberOrderListBlock.style.display = "flex";
+        checkOrderListBlock.style.display = "none";
+        orderIsDoneBlock.style.display = "none";
+        separate1.style.display = "none";
+        orderListStatusForThisPage = "ordering"
+    };
+};
 // 1-7 Check member function
 async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
     let memberTotalPrice = 0;
@@ -308,6 +333,7 @@ async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
 async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
     let memberTotalPriceGoOrder = 0;
     let orderDataALL = [];
+    console.log("menuOrderDataForAllMember",menuOrderDataForAllMember)
     for(i=0;i<Object.keys(menuOrderDataForAllMember).length;i++){
         userNameValue = menuOrderDataForAllMember[i]["userName"];
         menuNameValue = menuOrderDataForAllMember[i]["menuName"];
@@ -323,6 +349,7 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
         };
         orderDataALL.push(orderDataList);
     };
+    console.log("orderDataALL",orderDataALL)
     let orderDataSortout = orderDataALL.reduce((acc, curr) => {
         let existing = acc.find(item => item.menuName === curr.menuName && item.menuSize === curr.menuSize);
         if (existing) {
@@ -454,11 +481,17 @@ function orderIsDoneSubmitClick(){
 
 // 1-8
 async function backOrderMenuSubmitClick(){
-    location.reload();
+    if (orderListStatusForThisPage == "ordering"){
+        window.location.href = `/group/${urlGroupName}`;
+    }
+    if (orderListStatusForThisPage == "alive"){
+        location.reload();
+    }
+    
 };
 // 1-11
 function editGoOrderSubmitClick(){
-    window.location.href = `/group/${urlGroupName}/${urlStoreName}/order_edit`;
+    window.location.href = `/group/${urlGroupName}/${urlStoreName}`;
 };
 
 async function stopOrderSubmitClick(){
@@ -548,7 +581,6 @@ async function memberPriceEditFinishSubmitClick(){
         "orderNote":null
     };
     let orderApiPatchResult = await orderApiPatch(dataPatchOrder);
-    
     replaceElement(eval(`checkUserGoOrderListOrderPriceNew${menuNumber}`), "div",`checkUserGoOrderListOrderPrice${menuNumber}`,"checkUserGoOrderListOrderPrice",menuNewPriceValue,inputType = "text");
     
     memberPriceEditFinishSubmit.style.display = "none";
@@ -565,6 +597,7 @@ async function memberPriceEditFinishSubmitClick(){
         editedTotalPrice = editedTotalPrice + itemtotalPrice;
     }
     goOrderTotelPrice.textContent = editedTotalPrice;
+    finishOrderSubmit.style.display = "flex";
 
 };
 
@@ -581,7 +614,7 @@ async function backOrderMenuMemberSubmitClick(){
 
 async function finishOrderSubmitClick(){
     let data = {
-        "joinUserEmail":null,
+        "billUserEmail":null,
         "orderListId":orderListId,
         "groupId":groupId,
         "groupName":null

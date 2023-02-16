@@ -10,8 +10,6 @@ import v_group
 
 # import python function
 from flask import *
-import jwt
-import time
 import datetime
 
 ### Module function ###

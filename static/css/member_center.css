@@ -1,0 +1,19 @@
+.accountInfoItems{
+    display: grid;
+    width: 300px;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* box-sizing: border-box;
+    width: 100%; */
+    text-align: center;
+    margin: 2px;
+}
+
+.orderHistory{
+    display: grid;
+    width: 300px;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* box-sizing: border-box;
+    width: 100%; */
+    text-align: center;
+    margin: 2px;
+}

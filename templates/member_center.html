@@ -1,0 +1,129 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<link rel="stylesheet", type="text/css", href="../static/css/member_center.css" />
+<title>Food chosen</title> 
+{% endblock %} 
+{% block content %}
+<main>
+    <div id="userCenterBlock" class="contentPositionCenter margin">
+        <div id="topNameAndAvatorBlock" class="flex">
+            <div id="topAvatorBlock" class="">
+                <img id="topAvator" class="smailEditIcon" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}">
+            </div>
+            <div id="topAvatorEditButton" class="">
+                <img id="topAvatorEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+            </div>
+            <div id="topAvatorFinishButton" class="">
+                <img id="topAvatorFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+            </div>
+            <div id="topNameBlock" class="">
+                <div id="topName" class="">
+                    User Name
+                </div>
+            </div>
+            <div id="topNameEditButton" class="">
+                <img id="topNameEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+            </div>
+            <div id="topNameFinishButton" class="">
+                <img id="topNameFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+            </div>
+        </div>
+        <div id="userNameMessage" class=""></div>
+        <div id="userCenterSelectBlock" class="flex">
+            <div id="userProfileButton" class="">
+                <div id="userProfileButtonContent" class="">
+                    個人資料
+                </div>
+            </div>
+            <div id="userOrderHistoryButton" class="">
+                <div id="userOrderHistoryButtonContent" class="">
+                    點餐履歷
+                </div>
+            </div>
+        </div>
+        <!-- 1-3 -->
+        <div id="userProfileBlock" class="contentPositionCenter margin">
+            <div id="userNameBlock" class="flex">
+                <div id="userNameTitle" class="">
+                    姓名：
+                </div>
+                <div id="userNameShowBlock" class="">
+                    <div id="userNameShow" class=""></div>
+                </div>
+                <div id="userNameEditButton" class="">
+                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+                </div>
+                <div id="userNameFinishButton" class="">
+                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+                </div>
+            </div>
+            <div id="userNameMessage" class=""></div>
+
+            <div id="userEmailBlock" class="flex">
+                <div id="userEmailTitle" class="">
+                    信箱：
+                </div>
+                <div id="userEmailShowBlock" class="">
+                    <div id="userEmailShow" class=""></div>
+                </div>
+                <div id="userEmailEditButton" class="">
+                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+                </div>
+                <div id="userEmailFinishButton" class="">
+                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+                </div>
+            </div>
+            <div id="userEmailMessage" class=""></div>
+            <!-- 1-3-3 -->
+            <div id="userPasswordBlock" class="flex">
+                <div id="userPasswordTitle" class="">
+                    密碼：
+                </div>
+                <div id="userPasswordShowBlock" class="">
+                    <div id="userPasswordShow" class=""></div>
+                </div>
+                <div id="userPasswordEditButton" class="">
+                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+                </div>
+                <div id="userPasswordFinishButton" class="">
+                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+                </div>
+            </div>
+            <!-- 1-3-3* -->
+            <div id="userNewPasswordBlock" class="flex">
+                <div id="userNewPasswordTitle" class="">
+                    新密碼：
+                </div>
+                <div id="userNewPasswordShowBlock" class="">
+                    <input type="password" id="userNewPasswordShow" class="userInfoInputValue" placeholder="輸入新密碼" name="userNewPasswordShow">
+                </div>
+            </div>
+            <div id="userPasswordMessage" class=""></div>
+            <!-- 1-3-4 -->
+            <div id="separate" class="separateBlock"></div>
+            <!-- 1-3-5 -->
+            <div id="accountInfoTitle" class="">
+                帳戶資訊
+            </div>
+            <div id="accountInfoItems" class="accountInfoItems">
+                <div id="accountInfoGrouop" class="">群組</div>
+                <div id="accountInfoBalance" class="">餘額</div>
+                <div id="accountInfoReload" class="">儲值</div>
+            </div>
+            <div id="separate" class="separateBlock"></div>
+            <div id="accountInfoListBlock" class="">
+
+            </div>
+        </div>
+        <!-- 1-4 -->
+        <div id="userOrderHistoryBlock" class="">
+            
+        </div>
+
+    </div>
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/member_center.js') }}"></script>
+{% endblock %}

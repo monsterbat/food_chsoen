@@ -5,10 +5,6 @@ sys.path.append('api/function')
 from flask import *
 from flask_cors import CORS
 
-# url chinese ability
-import urllib.parse
-
-
 import api.controller.c_group as c_group
 import api.controller.c_user as c_user
 import api.controller.c_order_list as c_order_list
@@ -35,7 +31,6 @@ app.register_blueprint(c_order.c_order)
 app.register_blueprint(c_reload.c_reload)
 app.register_blueprint(c_bill.c_bill)
 
-print()
 
 # Pages
 @app.route("/")
@@ -51,32 +46,41 @@ def in_group(group_name):
 
 @app.route("/group/<group_name>/create_order")
 def create_order(group_name):
-	print("create_order")
 	return render_template("create_order.html")
 
 @app.route("/group/<group_name>/create_store")
 def create_store(group_name):
-	print("create_store")
 	return render_template("create_store.html")
+
+@app.route("/group/<group_name>/reload")
+def reload(group_name):
+	return render_template("reload.html")
+
+@app.route("/group/<group_name>/order_history")
+def order_history(group_name):
+	return render_template("order_history.html")
 
 @app.route("/group/<group_name>/<store_name>")
 def create_menu(group_name,store_name):
-	print("create_menu",group_name)
 	return render_template("create_menu.html")
 
 @app.route("/group/<group_name>/<store_name>/order_edit")
 def create_menu_order_edit(group_name,store_name):
-	print("create_menu",group_name)
 	return render_template("create_menu.html")
 
-@app.route("/group/<group_name>/<store_name>/<stop_time>")
-def order_menu(group_name,store_name,stop_time):
-	print("order_menu",group_name)
+@app.route("/group/<group_name>/<store_name>/<stop_time>/<order_status>")
+def order_menu(group_name,store_name,stop_time,order_status):
 	return render_template("order_menu.html")
 
 @app.route("/group/dd")
 def test():
 	return render_template("menu.html")
 
+
+@app.route("/member_center")
+def member_center():
+	return render_template("member_center.html")
+
+
 app.debug = True
-app.run(host = "0.0.0.0",port=3000)
+app.run(host = "0.0.0.0",port=80)

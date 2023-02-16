@@ -51,3 +51,15 @@ def order():
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_order.route("/api/order/user", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
+def order_user():
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            getStatus = request.args.get("getStatus",False)
+            message = m_order.order_user_get(page,keyword,getStatus)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500
