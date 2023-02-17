@@ -146,7 +146,6 @@ def order_patch():
     # Use cookie to know which user
     user_info = user_token_check()
     user_id = user_info["data"]["id"]
-    print("c0")
     # Get data from front-end
     change_order_data = request.get_json()
     group_id = change_order_data["groupId"]
@@ -160,9 +159,7 @@ def order_patch():
     order_quantity = change_order_data["orderQuantity"]
     order_new_note = change_order_data["orderNote"]
     order_status = change_order_data["orderStatus"]
-    print("CH",change_order_data)
     if order_status == "stop":
-        print("c1")
         # Find store id
         sql_command="""
         SELECT id
@@ -198,11 +195,9 @@ def order_patch():
     FROM order_list 
     WHERE id=%s;
     """
-    print("order_list_id",order_list_id)
     value_input = (order_list_id,)
     store_id_check = query_data(sql_command,value_input)
     
-    print("store_id_check",store_id_check)
     store_id = store_id_check[0]["store_id"]
     # Find menu id
     sql_command="""
@@ -214,9 +209,7 @@ def order_patch():
     menu_id_check = query_data(sql_command,value_input)
     menu_id = menu_id_check[0]["id"]
     menu_price = menu_id_check[0]["menu_price"]
-    print("menu_id_check",menu_id_check)
     if user_update_id == None:
-        print("c2")
         # Find user_order id, order_quantity
         sql_command="""
         SELECT id, order_quantity, user_id
@@ -226,22 +219,17 @@ def order_patch():
         value_input = (order_list_id,menu_id,"alive")
         user_order_check = query_data(sql_command,value_input)
         if user_order_check != []:
-            print("c3",user_order_check)
             for user_order_check_ls in user_order_check:
                 usder_id_each = user_order_check_ls["user_id"]
-                print("usder_id_each",usder_id_each)
                 # order price
                 # order quantity define
                 order_quantity_each = user_order_check_ls["order_quantity"]
-                print("order_quantity_each",order_quantity_each)
                 if order_quantity != None:
                     order_quantity_each = order_quantity
                 # calculate order price
                 order_total_price = int(order_quantity_each)*int(menu_price)
-                print("order_total_price",order_total_price)
                 # If Change menu
                 if menu_name != menu_new_name or menu_size != menu_new_size:
-                    print("C4",order_total_price)
                     # Find new menu id
                     sql_command="""
                     SELECT id, menu_price
@@ -273,7 +261,7 @@ def order_patch():
 
 def order_user_get(page, keyword=None,getStatus=None):
     # Define page Qty
-    one_page_quanity=100
+    one_page_quanity=20
     data_start=int(page*one_page_quanity)
     # Use cookie to know which user
     user_info = user_token_check()
@@ -285,7 +273,6 @@ def order_user_get(page, keyword=None,getStatus=None):
     order_user_name = ""
     # Use user id to find all user order order info
     order_info_check = sql_user_id_get_muti_order_info(user_id,order_status,data_start,one_page_quanity)
-    print("order_info_check",order_info_check)
     # No data
     if order_info_check == []:
         order_data = {
@@ -294,8 +281,14 @@ def order_user_get(page, keyword=None,getStatus=None):
         }
         return jsonify(order_data) ,200
 
+    if len(order_info_check)==one_page_quanity+1:
+        next_page=page+1
+        order_info_check.pop()
+    else:
+        next_page=None
+
     order_data = {
-            "nextPage":None,
+            "nextPage":next_page,
             "order":[]
     }
     # Create data    
@@ -330,5 +323,4 @@ def order_user_get(page, keyword=None,getStatus=None):
                 "orderNote":order_note
                 }
             order_data["order"].append(order_ls_data)
-        print(order_data)
     return jsonify(order_data) ,200

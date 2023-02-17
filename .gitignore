@@ -149,6 +149,7 @@ settings.json
 # python
 test.py
 tamp.py
+SeleniumP.py
 
 # JS
 cc.js
@@ -156,3 +157,12 @@ cc.js
 # HTML
 test.html
 test2.html
+
+# Docker
+Dockerfile
+requirements.txt
+requirements1.txt
+
+# google chrome driver
+chromedriver
+LICENSE.chromedriver

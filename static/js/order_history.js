@@ -18,7 +18,7 @@ async function onloadOrderHistoryPage(){
     currentUserEmail = userApiData.data.userEmail;
     urlGroupName = getGroupNameFromUrl();
     pageTitleContent.textContent = urlGroupName;
-    let groupApiData = await groupStatus(urlGroupName);
+    let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     groupId = groupApiData.groupId;
     let groupManager = "";

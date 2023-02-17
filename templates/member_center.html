@@ -44,7 +44,7 @@
         </div>
         <!-- 1-3 -->
         <div id="userProfileBlock" class="contentPositionCenter margin">
-            <div id="userNameBlock" class="flex">
+            <!-- <div id="userNameBlock" class="flex">
                 <div id="userNameTitle" class="">
                     姓名：
                 </div>
@@ -58,7 +58,7 @@
                     <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
                 </div>
             </div>
-            <div id="userNameMessage" class=""></div>
+            <div id="userNameMessage" class=""></div> -->
 
             <div id="userEmailBlock" class="flex">
                 <div id="userEmailTitle" class="">
@@ -117,12 +117,15 @@
             </div>
         </div>
         <!-- 1-4 -->
-        <div id="userOrderHistoryBlock" class="">
+        <div id="userOrderHistoryBlock" class="contentPositionCenter margin">
             
         </div>
 
     </div>
 </main>
+<div id="continueDownloadData" class="">
+    繼續下拉
+</div>
 {% endblock %} 
 {% block js %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/member_center.js') }}"></script>

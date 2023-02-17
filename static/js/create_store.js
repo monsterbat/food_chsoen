@@ -63,7 +63,7 @@ async function onloadCreateStorePage(){
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
     pageTitleContent.textContent = "建立店家";
-    let groupApiData = await groupStatus(urlGroupName);
+    let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     
     for (i=0;i<Object.keys(groupApiData).length;i++){

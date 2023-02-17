@@ -23,7 +23,9 @@ def group():
 
     if request.method == "GET":
         try:
+            print("request.args",request.args)
             page = int(request.args.get("page",0))
+            print("groupInfoPage",page)
             keyword = request.args.get("keyword",False)
             message = m_group.group_get(page,keyword)
             return message
@@ -47,6 +49,21 @@ def group():
     if request.method == "DELETE":
         try:
             message = m_group.group_delete()
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500
+        
+
+@c_group.route("/api/group/info", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
+def group_info():
+    if request.method == "GET":
+        try:
+            print("cc0")
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            getStatus = request.args.get("getStatus",False)
+            message = m_group.group_get_info(page,keyword,urlGroupName,getStatus)
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500

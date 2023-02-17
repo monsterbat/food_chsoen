@@ -143,7 +143,7 @@ async function onloadOrderMenuPage(){
     urlStopTime1 = urlStopTime.split(":")[1];
     urlStopTime2 = urlStopTime.split(":")[2];
     urlStopTime = urlStopTime1+":"+urlStopTime2
-    let groupApiData = await groupStatus(urlGroupName);
+    let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     for (let i=0;i<Object.keys(groupApiData).length;i++){
         if (groupApiData[i].groupName == urlGroupName){            
@@ -333,7 +333,6 @@ async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
 async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
     let memberTotalPriceGoOrder = 0;
     let orderDataALL = [];
-    console.log("menuOrderDataForAllMember",menuOrderDataForAllMember)
     for(i=0;i<Object.keys(menuOrderDataForAllMember).length;i++){
         userNameValue = menuOrderDataForAllMember[i]["userName"];
         menuNameValue = menuOrderDataForAllMember[i]["menuName"];
@@ -349,7 +348,6 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
         };
         orderDataALL.push(orderDataList);
     };
-    console.log("orderDataALL",orderDataALL)
     let orderDataSortout = orderDataALL.reduce((acc, curr) => {
         let existing = acc.find(item => item.menuName === curr.menuName && item.menuSize === curr.menuSize);
         if (existing) {
@@ -362,6 +360,7 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
     }, []);
 
     createDivElement(checkUserGoOrderListBlock,`checkUserGoOrderListBlockBlock`, "checkUserGoOrderListBlockBlock", null, "appendChild");
+    console.log("")
     for(i=0;i<Object.keys(orderDataSortout).length;i++){
         menuName = orderDataSortout[i]["menuName"];
         menuSize = orderDataSortout[i]["menuSize"];

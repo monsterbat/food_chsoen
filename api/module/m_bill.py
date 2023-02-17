@@ -27,12 +27,10 @@ def bill_post():
     user_id = user_info["data"]["id"]
     # Get data
     create_bill_data = request.get_json()
-    print("create_bill_data",create_bill_data)
     bill_user_email = create_bill_data["billUserEmail"]
     order_list_id = create_bill_data["orderListId"]
     group_id = create_bill_data["groupId"]
     group_name = create_bill_data["groupName"]
-    print("c1")
     # Calculate time
     current_time_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     bill_time = current_time_code
@@ -57,7 +55,6 @@ def bill_post():
     if user_order_check ==[]:
         data = v_bill.bill_post_200()
         return data
-    print("user_order_check",user_order_check)
     for user_order_check_ls in user_order_check:
         order_id = user_order_check_ls["id"]
         order_user_id = user_order_check_ls["user_id"]

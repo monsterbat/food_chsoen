@@ -44,7 +44,7 @@ async function onloadThisPage(){
     userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
     pageTitleContent.textContent = "建立團購";
-    let groupApiData = await groupStatus(urlGroupName);
+    let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     let groupManager = "";
     for (i=0;i<Object.keys(groupApiData).length;i++){

@@ -77,7 +77,7 @@ async function onloadCreateMenuPage(){
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
     
-    let groupApiData = await groupStatus(urlGroupName);
+    let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     for (i=0;i<Object.keys(groupApiData).length;i++){
         if (groupApiData[i].groupName == urlGroupName){            

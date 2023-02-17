@@ -271,36 +271,7 @@ function getSplit4FromUrl(){
     return split4;
 }
 
-// 
-let page = 0;
-let keyword = "";
-let urlGroupName = "";
-let urlStoreName = "";
-let urlStopTime = "";
-let groupId = "";
-let storeId = "";
-let orderListId = "";
-let userName = "";
-let userId = "";
-let getStatus = "alive";
-// group_into
-let deleteGroupNewPasswordValue = "";
-let orderListData
-// create_menu.js
-let menuOriNameValue = "";
-let menuOriSizeValue = "";
-let menuOriPriceValue = "";
-let menuOriNoteValue = "";
 
-// order_menu
-let menuOrderDataAll = [] ;
-let menuOrderDataForAllMember = [];
-
-// Trigger
-let createMenuForOrderTrigger;
-
-let currentUserName
-let currentUserEmail
 
 
 // Status check
@@ -316,26 +287,13 @@ async function userStatus(){
     }
 };
 
-async function groupStatus(urlGroupName){
-    data = await groupApiGet();
+async function groupStatus(urlGroupName,getStatus){
+    data = await groupInfoApiGet(urlGroupName,getStatus);
     if(data.group == null || data.error == true){
-        window.location.href = "/";
+        // window.location.href = "/";
     }
     else{
-        groupVerify = "fail";
-        groupList = data.group;
-        for(i=0;i<Object.keys(groupList).length;i++){
-            groupName = groupList[i]["groupName"]
-            if (urlGroupName == groupName){
-                groupVerify = "pass";
-            }
-        }
-        if (groupVerify == "pass"){
-            return data
-        }
-        else{
-            window.location.href = "/"
-        };
+        return data;
     };
 };
 

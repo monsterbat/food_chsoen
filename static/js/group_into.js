@@ -71,9 +71,12 @@ async function onloadThisPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
+    console.log("userApiData",userApiData)
     urlGroupName = getGroupNameFromUrl();
+    console.log("urlGroupName",urlGroupName)
     pageTitleContent.textContent = urlGroupName;
-    let groupApiData = await groupStatus(urlGroupName);
+    let groupApiData = await groupStatus(urlGroupName,"alive");
+    console.log("groupApiData",groupApiData)
     groupApiData = groupApiData.group;
     groupId = groupApiData.groupId;
     let groupManager = "";
@@ -360,18 +363,29 @@ async function checkAllOrderMenuButtonClick(){
     urlStopTime = "";
     let orderListGetDataAlive = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,"alive");
     let orderListDataAlive = orderListGetDataAlive.orderList;
+    if (orderListDataAlive == null){
+        createDivElement(managerOrderList,`separate`, "separateBlock", null, "appendChild");
+        ifNoOrderListShow();
+    }
     if (orderListDataAlive != null){
+        createDivElement(managerOrderList,`separate`, "separateBlock", null, "appendChild");
         showAllGrooupOrderAliveListBlock(orderListDataAlive);
-    };
+    }
     let orderListGetDataOrdering = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,"ordering");
     let orderListDataOrdering = orderListGetDataOrdering.orderList;
     if (orderListDataOrdering != null){
         createDivElement(managerOrderList,`separate`, "separateBlock", null, "appendChild");
         showAllGrooupOrderListOrderingBlock(orderListDataOrdering);
     };
-};
 
+};
+async function ifNoOrderListShow(){
+    let noDataResponse = "尚未建立團購，請點選上方建立團購"
+    createDivElement(managerOrderList,`managerOrderListNoData`,"",noDataResponse,"appendChild")
+}
 async function showAllGrooupOrderAliveListBlock(orderListData){
+    let managerOrderListAliveTitleContent = "正在進行的團購"
+    createDivElement(managerOrderList,`managerOrderListAliveTitle`,"titleWord",managerOrderListAliveTitleContent, "appendChild")
     createDivElement(managerOrderList,`managerOrderListBlock`, "contentPositionCenter", null, "appendChild");
     for(i=0;i<Object.keys(orderListData).length;i++){
         let orderListId = orderListData[i]["orderListId"];
@@ -389,8 +403,9 @@ async function showAllGrooupOrderAliveListBlock(orderListData){
     };
 };
 
-async function showAllGrooupOrderListOrderingBlock(orderListData){    
-    createDivElement(managerOrderList,`alreadyOrdering`, "titleWord", "已經結單的團購", "appendChild");
+async function showAllGrooupOrderListOrderingBlock(orderListData){ 
+    let alreadyOrderingContent = "已經結單的團購"
+    createDivElement(managerOrderList,`alreadyOrdering`, "titleWord", alreadyOrderingContent, "appendChild");
     createDivElement(managerOrderList,`managerOrderListOrderingBlock`, "contentPositionCenter", null, "appendChild");
     for(i=0;i<Object.keys(orderListData).length;i++){
         let orderListId = orderListData[i]["orderListId"];

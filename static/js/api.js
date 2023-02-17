@@ -16,7 +16,7 @@ async function groupApiPost(data){
     })
 };
 async function groupApiGet(){
-    return fetch(`/api/group?page=${page}&keyword=${keyword}`,{
+    return fetch(`/api/group?page=${groupGetPage}&keyword=${keyword}`,{
         method:"GET",
     }).then(function(response){
         return response.json();
@@ -50,6 +50,16 @@ async function groupApiPut(data){
         return data;
     })
 };
+async function groupInfoApiGet(urlGroupName,getStatus){
+    return fetch(`/api/group/info?page=${groupInfoPage}&keyword=${keyword}&urlGroupName=${urlGroupName}&getStatus=${getStatus}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
+
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // User
 async function userApiGet(){
@@ -207,7 +217,7 @@ async function orderApiPost(data){
     })
 };
 async function orderApiGet(orderListId){
-    return fetch(`/api/order?page=${page}&keyword=${keyword}&orderListId=${orderListId}`,{
+    return fetch(`/api/order?page=${page}&keyword=${orderUserKeyword}&orderListId=${orderListId}`,{
         method:"GET",
     }).then(function(response){
         return response.json();
@@ -228,8 +238,9 @@ async function orderApiPatch(data){
         return data;
     })
 };
+// member center use only
 async function orderUserApiGet(getStatus){
-    return fetch(`/api/order/user?page=${page}&keyword=${keyword}&getStatus=${getStatus}`,{
+    return fetch(`/api/order/user?page=${orderUserApiGetPage}&keyword=${keyword}&getStatus=${getStatus}`,{
         method:"GET",
     }).then(function(response){
         return response.json();

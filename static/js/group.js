@@ -40,55 +40,50 @@ let backGroupSubmitContent = document.getElementById("backGroupSubmitContent");
 // ==== onload ===
 createGroupBlock.style.display = "none";
 onloadGroupPage();
-addGroupShow();
-pageTitleContentChooseGroup();
-userStatus();
 // ==== create event listener ====
 backGroupSubmit.addEventListener("click",backSubmit);
 createGroupSubmit.addEventListener("click",createGroup);
 memberCenterBlock.addEventListener("click",memberCenterBlockClick);
+addGroupBlock.addEventListener("click",addGroupBlockClick);
 
 // ==== Function ====
 async function onloadGroupPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
-    currentUserName = userName
-}
-function pageTitleContentChooseGroup(){
+    currentUserName = userName;
     pageTitleContent.textContent = "請選擇或創建群組";
-};
+}
+
 function pageTitleContentAddGroup(){
     pageTitleContent.textContent = "新增群組";
 };
 
-function addGroupShow(){
-    createElement(allGroupBlock, "div", "addGroupBlock", "buttonFormat createBGC");
-    createElement(addGroupBlock, "div", "addGroupContent", "buttonContent", "新增群組");
-    addGroupBlock.addEventListener("click",addGroup);
-};
 
-function addGroup(){
+
+function addGroupBlockClick(){
     allGroupBlock.style.display = "none";
     createGroupBlock.style.display = "flex";
     pageTitleContentAddGroup();
-}
+};
 
 function backSubmit(){
     allGroupBlock.style.display = "flex";
     createGroupBlock.style.display = "none";
     pageTitleContentChooseGroup();
-}
+};
 
 async function generateGroup(){
     let getGroupData = await groupApiGet();
     groupList = getGroupData.group;
     for(i=0;i<Object.keys(groupList).length;i++){
         groupName = groupList[i]["groupName"];
-        createElement(allGroupBlock, "a", `groupBlock${i}`, "buttonFormat groupBGC", null, "appendChild", `/group/${groupName}`);
-        createElement(eval(`groupBlock${i}`), "div", `groupContent${i}`, "buttonContent", groupName);
+        createAElement(allGroupBlock, `groupBlock${groupGetPage}${i}`, "buttonFormat groupBGC", null, "appendChild", `/group/${groupName}`);
+        createDivElement(eval(`groupBlock${groupGetPage}${i}`), `groupContent${groupGetPage}${i}`, "buttonContent", groupName);
     };
-    page = getGroupData.nextPage;
+    groupGetPage = getGroupData.nextPage;
+    console.log("groupGetPage",groupGetPage)
+    // return page
 };
 
 async function createGroup(){
@@ -131,12 +126,12 @@ function memberCenterBlockClick(){
     window.location = `/member_center`
 }
 
-// IntersectionObserver
+// IntersectionObserverasy
 let target = document.querySelector("footer");
 let callback = (entries,observer) => {
-    entries.forEach(entry => {
-        if (page != null) {
-            generateGroup(); 
+    entries.forEach(async function(entry){
+        if (groupGetPage != null) {
+            await generateGroup(); 
         } 
         else {
             observer.unobserve(target);
@@ -160,7 +155,6 @@ const options = {
 };
 
 let observer = new IntersectionObserver(callback, options);
-let onloadCount = 0;
 
 observer.observe(target);
 

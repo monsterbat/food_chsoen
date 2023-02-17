@@ -47,6 +47,11 @@
         <main>
             <!-- 1-3 choose group -->
             <div id="allGroupBlock" class="contentPositionCenter margin">
+                <div id="addGroupBlock" class="buttonFormat createBGC">
+                    <div id="addGroupContent" class="buttonContent">
+                        新增群組
+                    </div>
+                </div>
                 <!-- js inner -->
             </div>
             <!-- 1-4 create group -->
@@ -96,6 +101,7 @@
         <!-- Javascript -->
         <script type="text/javascript" src="{{ url_for('static', filename='js/function.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/api.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/gobal_varibiable.js') }}"></script>
 {% block js %}
         <script type="text/javascript" src="{{ url_for('static', filename='js/group.js') }}"></script>
 {% endblock %}

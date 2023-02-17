@@ -5,6 +5,10 @@ from MySQL_con import *
 from hash_code import *
 from user_token import *
 
+sys.path.append('api/function/sql_command')
+from sql_command.sql_user_info import *
+from sql_command.sql_group_info import *
+
 sys.path.append('api/view')
 import v_group
 
@@ -72,6 +76,7 @@ def group_post():
 
 # Check group info
 def group_get(page, keyword=None):
+    print("page",page)
     # Define page Qty
     one_page_quanity=12
     data_start=int(page*one_page_quanity)
@@ -83,48 +88,34 @@ def group_get(page, keyword=None):
         errorr_message = v_group.group_get_403()
         return errorr_message
     user_email = user_info["data"]["user_email"]
-    # Use email to check which group user have
-    sql_command="""
-    SELECT group_id 
+
+    sql_command = """
+    SELECT user_group.id, user_group.group_name, user_group.group_manager
     FROM user
-    INNER JOIN user_in_group 
-    ON user.id=user_in_group.user_id
-    WHERE user.user_email = %s AND user_in_group_status=%s AND user.user_status=%s;
+    INNER JOIN user_in_group ON user.id = user_in_group.user_id
+    INNER JOIN user_group ON user_in_group.group_id = user_group.id
+    WHERE user.user_email = %s
+    AND user_in_group.user_in_group_status = %s
+    AND user.user_status = %s
+    AND user_group.group_status = %s
+    ORDER BY id DESC
+    LIMIT %s, %s;
     """
-    value_input=(user_email,"alive","alive")
-    group_id = query_data(sql_command,value_input)
+    value_input=(user_email,"alive","alive","alive",data_start,one_page_quanity+1)
+    group_data_list = query_data(sql_command,value_input)
+
+
     # If no group
-    if group_id == []:
+    if group_data_list == []:
         group_data = {
             "nextPage":None,
             "group":None
         }
         return jsonify(group_data) ,200
 
-    # Use group id to find all group name
-    group_name_all = []
-    group_manager_all = []
-    group_id_all = []
-    for group_id_ls in group_id:
-        group_id_ls = group_id_ls["group_id"]
-        sql_command="""
-        SELECT group_name, group_manager
-        FROM user_group 
-        WHERE id=%s AND group_name LIKE %s AND group_status=%s
-        LIMIT %s, %s;
-        """
-        value_input = (group_id_ls, group_keyword,"alive",data_start,one_page_quanity+1)
-        group_info_check = query_data(sql_command,value_input)
-        if group_info_check != []:
-            group_name = group_info_check[0]["group_name"]
-            group_manager = group_info_check[0]["group_manager"]
-            group_id_all.append(group_id_ls)
-            group_name_all.append(group_name)
-            group_manager_all.append(group_manager)
-    # page judge
-    if len(group_name_all)==one_page_quanity+1:
+    if len(group_data_list)==one_page_quanity+1:
         next_page=page+1
-        group_name_all.pop()
+        group_data_list.pop()
     else:
         next_page=None
 
@@ -133,18 +124,23 @@ def group_get(page, keyword=None):
         "group":[]
     }
 
-    if group_name_all != []:
-        for i in range(len(group_name_all)):
-            group_info = {"groupName": group_name_all[i], "groupManager": group_manager_all[i],"groupId":group_id_all[i]}
+    if group_data_list != []:
+        for i in range(len(group_data_list)):
+            group_info = {
+                "groupName": group_data_list[i]["group_name"], 
+                "groupManager": group_data_list[i]["group_manager"],
+                "groupId":group_data_list[i]["id"]
+                }
             group_data["group"].append(group_info)
     
     # If no group
-    if group_name_all == []:
+    if group_data_list == []:
         group_data = {
             "nextPage":None,
             "group":None
         }
         return jsonify(group_data) ,200
+    print("group_data",group_data)
     return jsonify(group_data) ,200
 
 # Change group name or password
@@ -343,3 +339,20 @@ def group_delete():
     
     data = v_group.group_delete_200()
     return data
+
+def group_get_info(page, keyword=None,urlGroupName=None,getStatus=None):
+    user_info = user_token_check()
+    if user_info["data"] == None:
+        errorr_message = v_group.group_get_403()
+        return errorr_message
+    user_email = user_info["data"]["user_email"]
+    group_info = sql_group_name_find_info(urlGroupName,getStatus)
+    group_data = {
+        "nextPage":None,
+        "group":[{
+                "groupName": urlGroupName, 
+                "groupManager": group_info[0]["group_manager"],
+                "groupId":group_info[0]["id"]
+        }]
+    }
+    return jsonify(group_data) ,200
