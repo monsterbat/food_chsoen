@@ -110,10 +110,8 @@ async function createStoreSubmitClick(){
         else{
             resultMessage = result.message;
             editGroupErrorOrOkMessageContent.textContent = resultMessage;
-        };
-        
-    };
-        
+        };        
+    };        
 };
 
 function createStroeBackGroupSubmitClick(){

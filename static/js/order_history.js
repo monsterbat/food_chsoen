@@ -5,7 +5,7 @@ let orderHistoryListBlock = document.getElementById("orderHistoryListBlock");
 let backToGroupButton = document.getElementById("backToGroupButton");
 // ==== Create element ====
 // ==== onload ====
-onloadOrderHistoryPage()
+onloadOrderHistoryPage();
 // ==== create event listener ====
 backToGroupButton.addEventListener("click",backToGroupButtonClick);
 // ==== Function ====
@@ -32,8 +32,8 @@ async function onloadOrderHistoryPage(){
 }
 
 async function orderHistoryListShow(){
-    let orderListHistoryApiGetResult = await orderListHistoryApiGet(urlGroupName,"","","finish")
-    let orderListData = orderListHistoryApiGetResult.orderList
+    let orderListHistoryApiGetResult = await orderListHistoryApiGet(urlGroupName,"","","finish");
+    let orderListData = orderListHistoryApiGetResult.orderList;
     createDivElement(orderHistoryListBlock,`orderHistoryListBlockBlock`, "contentPositionCenter", null, "appendChild");
     for(i=0;i<Object.keys(orderListData).length;i++){
         let orderListId = orderListData[i]["orderListId"];
@@ -53,4 +53,4 @@ async function orderHistoryListShow(){
 
 function backToGroupButtonClick(){
     window.location = `/group/${urlGroupName}`;
-}
+};

@@ -82,7 +82,6 @@ async function generateGroup(){
         createDivElement(eval(`groupBlock${groupGetPage}${i}`), `groupContent${groupGetPage}${i}`, "buttonContent", groupName);
     };
     groupGetPage = getGroupData.nextPage;
-    console.log("groupGetPage",groupGetPage)
     // return page
 };
 
@@ -109,11 +108,11 @@ async function createGroup(){
             let billApiPostResult = await billApiPost(data);
             if (billApiPostResult.ok == true){
                 location.reload();
-            }
+            };
             if (billApiPostResult.error == true){
                 createGroupErrorContent.style.display = "block";
                 createGroupErrorContent.textContent = data.message;
-            }
+            };
         };
         if(groupApiPostResult.error == true){
             createGroupErrorContent.style.display = "block";
@@ -123,7 +122,7 @@ async function createGroup(){
 };
 
 function memberCenterBlockClick(){
-    window.location = `/member_center`
+    window.location = `/member_center`;
 }
 
 // IntersectionObserverasy
@@ -135,7 +134,7 @@ let callback = (entries,observer) => {
         } 
         else {
             observer.unobserve(target);
-        }  ;      
+        };      
     });
 };
 

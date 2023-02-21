@@ -59,7 +59,26 @@ let accountInfoTitle = document.getElementById("accountInfoTitle");
 let accountInfoItems = document.getElementById("accountInfoItems");
 let accountInfoListBlock = document.getElementById("accountInfoListBlock");
 let userOrderHistoryBlock = document.getElementById("userOrderHistoryBlock");
-let target = document.getElementById("continueDownloadData");
+
+// IntersectionObserverasy Setting
+let historyTarget = document.getElementById("continueDownloadHistoryData");
+let groupTarget = document.getElementById("continueDownloadGroupData");
+let headerDiv = document.querySelector("header");
+let mainDIV = document.querySelector("main");
+
+let headerDivHeight = headerDiv.offsetHeight;
+let sloganDivHeight = mainDIV.offsetHeight;
+let windowHeight = window.innerHeight;
+
+let rootMarginTop = (headerDivHeight+sloganDivHeight)-windowHeight;
+
+const options = {
+  root: null,
+  rootMargin: `${rootMarginTop}px 0px 0px 0px`,
+  threshold: 0,
+};
+
+
 // ==== Create element ====
 
 // ==== onload ====
@@ -84,7 +103,8 @@ function userProfileButtonClick(){
     // userOrderHistoryButton.style.backgroundColor = ""
     userProfileBlock.style.display = "flex";
     userOrderHistoryBlock.style.display = "none";
-    target.style.display = "none";
+    historyTarget.style.display = "none";
+    groupTarget.style.display = "flex";
 }
 
 function userOrderHistoryButtonClick(){
@@ -92,12 +112,14 @@ function userOrderHistoryButtonClick(){
     // userOrderHistoryButton.style.backgroundColor = ""
     userProfileBlock.style.display = "none";
     userOrderHistoryBlock.style.display = "flex";
-    target.style.display = "flex";
+    historyTarget.style.display = "flex";
+    groupTarget.style.display = "none";
 }
 
 async function onloadMemberCenterPage(){
     userProfileButtonClick()
-    target.style.display = "none";
+    historyTarget.style.display = "none";
+    groupTarget.style.display = "flex";
     userNewPasswordBlock.style.display = "none";
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
@@ -109,7 +131,7 @@ async function onloadMemberCenterPage(){
     // userNameShow.textContent = userName;
     userEmailShow.textContent = userEmail;
     userPasswordShow.textContent = "******";
-    accountInfoListBlockShow();
+    // accountInfoListBlockShow();
     // userOrderHistoryShow();
 }
 
@@ -135,56 +157,43 @@ async function topNameAndAvatorBlockShow(userName){
 
 async function accountInfoListBlockShow(){
     let groupApiGetResult = await groupApiGet();
-    groupList = groupApiGetResult.group
+    let groupList = groupApiGetResult.group
     for(i=0;i<Object.keys(groupList).length;i++){
         let groupId = groupList[i]["groupId"];
         let groupName = groupList[i]["groupName"];
-        let billApiGetResult = await billApiGet(groupName)
+        let billApiGetResult = await billApiGet(groupName);
         let userBalance = billApiGetResult.userBalance
         userBalance = Number(userBalance)
         let reloadClass = ""
         if (userBalance<0){
             reloadClass = ""
         }
-        createDivElement(accountInfoListBlock,`accountInfoList${i}`,"accountInfoItems", null, "appendChild")
-        createDivElement(eval(`accountInfoList${i}`),`groupNameInfo${i}`, "", groupName, "appendChild");
-        createDivElement(eval(`accountInfoList${i}`),`groupBalanceInfo${i}`, "", userBalance, "appendChild");
-        createAElement(eval(`accountInfoList${i}`),`goToReloadInfo${i}`, reloadClass, null, "appendChild",`/group/${groupName}/reload`);
-        createDivElement(eval(`goToReloadInfo${i}`),`goToReloadContent${i}`, "", "儲值去", "appendChild");
+        createDivElement(accountInfoListBlock,`accountInfoList${groupGetPage}${i}`,"accountInfoItems", null, "appendChild")
+        createDivElement(eval(`accountInfoList${groupGetPage}${i}`),`groupNameInfo${groupGetPage}${i}`, "", groupName, "appendChild");
+        createDivElement(eval(`accountInfoList${groupGetPage}${i}`),`groupBalanceInfo${groupGetPage}${i}`, "", userBalance, "appendChild");
+        createAElement(eval(`accountInfoList${groupGetPage}${i}`),`goToReloadInfo${groupGetPage}${i}`, reloadClass, null, "appendChild",`/group/${groupName}/reload`);
+        createDivElement(eval(`goToReloadInfo${groupGetPage}${i}`),`goToReloadContent${groupGetPage}${i}`, "", "儲值去", "appendChild");
     };
+    groupGetPage = groupApiGetResult.nextPage
 }
 
-// // IntersectionObserverasy
-// let target = document.querySelector("footer");
-// let callback = (entries,observer) => {
-//     entries.forEach(async function(entry){
-//         if (groupGetPage != null) {
-//             await generateGroup(); 
-//         } 
-//         else {
-//             observer.unobserve(target);
-//         }  ;      
-//     });
-// };
+// IntersectionObserverasy
+let dd=0
+let callbackGroup = (entries,observer) => {
+    entries.forEach(async function(entry){
+        if (groupGetPage != null) {
+            await accountInfoListBlockShow(); 
+            dd+=1
+        } 
+        else {
+            observer.unobserve(groupTarget);
+        }  ;      
+    });
+};
 
-// let headerDiv = document.querySelector("header");
-// let mainDIV = document.querySelector("main");
+let observerGroup = new IntersectionObserver(callbackGroup, options);
 
-// let headerDivHeight = headerDiv.offsetHeight;
-// let sloganDivHeight = mainDIV.offsetHeight;
-// let windowHeight = window.innerHeight;
-
-// let rootMarginTop = (headerDivHeight+sloganDivHeight)-windowHeight;
-
-// const options = {
-//   root: null,
-//   rootMargin: `${rootMarginTop}px 0px 0px 0px`,
-//   threshold: 0,
-// };
-
-// let observer = new IntersectionObserver(callback, options);
-
-// observer.observe(target);
+observerGroup.observe(groupTarget);
 
 
 
@@ -192,8 +201,7 @@ async function accountInfoListBlockShow(){
 async function userOrderHistoryShow(){
     let getStatus = "alive";
     let orderUserApiGetResult = await orderUserApiGet(getStatus);
-    console.log("orderUserApiGetResult",orderUserApiGetResult)
-    let orders = orderUserApiGetResult.order
+    let orders = orderUserApiGetResult.order;
 
     const groupedOrders = orders.reduce((acc, order) => {
         const key = `${order.orderListId}_${order.stopTime}_${order.storeName}`;
@@ -233,19 +241,19 @@ async function userOrderHistoryShow(){
         let orderListId = orderDataSortout[i].orderListId;
         let stopTime = orderDataSortout[i].stopTime;
         let stopTimeDate = stopTime.split('-')[0]+"-"+stopTime.split('-')[1]+"-"+stopTime.split('-')[2];
-        let stopTimeTime = stopTime.split('-')[3]
+        let stopTimeTime = stopTime.split('-')[3];
         let storeName = orderDataSortout[i].storeName;
         // 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild")
-        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStopTimeDate${orderUserApiGetPage}${i}`,"", stopTimeDate, "appendChild")
-        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStopTimeTime${orderUserApiGetPage}${i}`,"", stopTimeTime, "appendChild")
-        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStoreName${orderUserApiGetPage}${i}`,"", storeName, "appendChild")
+        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStopTimeDate${orderUserApiGetPage}${i}`,"", stopTimeDate, "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStopTimeTime${orderUserApiGetPage}${i}`,"", stopTimeTime, "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStoreName${orderUserApiGetPage}${i}`,"", storeName, "appendChild");
 
         // 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild")
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleMenu${orderUserApiGetPage}${i}`,"", "餐點", "appendChild")
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderQuantity${orderUserApiGetPage}${i}`,"", "份數", "appendChild")
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderPrice${orderUserApiGetPage}${i}`,"", "價錢", "appendChild")
+        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleMenu${orderUserApiGetPage}${i}`,"", "餐點", "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderQuantity${orderUserApiGetPage}${i}`,"", "份數", "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderPrice${orderUserApiGetPage}${i}`,"", "價錢", "appendChild");
 
         orderDataSortoutItems = orderDataSortout[i].items;
         let thisOrderTotalPrice = 0;
@@ -255,55 +263,42 @@ async function userOrderHistoryShow(){
             let menuTogether = menuName+" "+menuSize;
             let orderPrice = orderDataSortoutItems[j].orderPrice;
             let orderQuantity = orderDataSortoutItems[j].orderQuantity;
-            createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`,"orderHistory", null, "appendChild")
-            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListMenu${orderUserApiGetPage}${i}${j}`,"", menuTogether, "appendChild")
-            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListOrderQuantity${orderUserApiGetPage}${i}${j}`,"", orderQuantity, "appendChild")
-            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListOrderPrice${orderUserApiGetPage}${i}${j}`,"", orderPrice, "appendChild")
-            thisOrderTotalPrice = Number(thisOrderTotalPrice)+Number(orderPrice)
+            createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`,"orderHistory", null, "appendChild");
+            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListMenu${orderUserApiGetPage}${i}${j}`,"", menuTogether, "appendChild");
+            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListOrderQuantity${orderUserApiGetPage}${i}${j}`,"", orderQuantity, "appendChild");
+            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListOrderPrice${orderUserApiGetPage}${i}${j}`,"", orderPrice, "appendChild");
+            thisOrderTotalPrice = Number(thisOrderTotalPrice)+Number(orderPrice);
         };
 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListSeparateBar${orderUserApiGetPage}${i}`,"", null, "appendChild")
+        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListSeparateBar${orderUserApiGetPage}${i}`,"", null, "appendChild");
         // 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListTotal${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild")
-        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalTitle${orderUserApiGetPage}${i}`,"", "總價", "appendChild")
-        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalDiv${orderUserApiGetPage}${i}`,"", null, "appendChild")
-        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalPrice${orderUserApiGetPage}${i}`,"", thisOrderTotalPrice, "appendChild")
+        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListTotal${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
+        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalTitle${orderUserApiGetPage}${i}`,"", "總價", "appendChild");
+        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalDiv${orderUserApiGetPage}${i}`,"", null, "appendChild");
+        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalPrice${orderUserApiGetPage}${i}`,"", thisOrderTotalPrice, "appendChild");
     }
-    orderUserApiGetPage = orderUserApiGetResult.nextPage
+    orderUserApiGetPage = orderUserApiGetResult.nextPage;
     // return page
 }
 
 // IntersectionObserverasy
 
-let callback = (entries,observer) => {
+let callbackHistory = (entries,observer) => {
     entries.forEach(async function(entry){
         if (orderUserApiGetPage != null) {
             await userOrderHistoryShow(); 
         } 
         else {
-            observer.unobserve(target);
-        }  ;      
+            observer.unobserve(historyTarget);
+        };      
     });
 };
 
-let headerDiv = document.querySelector("header");
-let mainDIV = document.querySelector("main");
 
-let headerDivHeight = headerDiv.offsetHeight;
-let sloganDivHeight = mainDIV.offsetHeight;
-let windowHeight = window.innerHeight;
 
-let rootMarginTop = (headerDivHeight+sloganDivHeight)-windowHeight;
+let observerHistory = new IntersectionObserver(callbackHistory, options);
 
-const options = {
-  root: null,
-  rootMargin: `${rootMarginTop}px 0px 0px 0px`,
-  threshold: 0,
-};
-
-let observer = new IntersectionObserver(callback, options);
-
-observer.observe(target);
+observerHistory.observe(historyTarget);
 
 // Edit 
 async function topAvatorEditButtonClick(){
@@ -328,7 +323,7 @@ async function topNameFinishButtonClick(){
         "userPassword":null,
         "userNewPassword":null,
         "userStatus":"alive"
-    }
+    };
     let userApiPatchResult = await userApiPatch(data);
     if (userApiPatchResult.ok == true){
         replaceToDivElement(topNameNew,`topName`,"",topNameValue);
@@ -337,7 +332,7 @@ async function topNameFinishButtonClick(){
         userNameMessage.textContent = "名稱更新完成";
         userNameMessage.style.display = "flex";
         userNameMessage.style.color = "green";
-    }
+    };
     if (userApiPatchResult.error == true){
         userNameMessage.style.display = "flex";
         userNameMessage.style.color = "red";
@@ -361,7 +356,7 @@ async function userEmailFinishButtonClick(){
         "userPassword":null,
         "userNewPassword":null,
         "userStatus":"alive"
-    }
+    };
     let userApiPatchResult = await userApiPatch(data);
     if (userApiPatchResult.ok == true){
         replaceToDivElement(userEmailShowNew,`userEmailShow`,"",userEmailShowNewValue);
@@ -370,12 +365,12 @@ async function userEmailFinishButtonClick(){
         userEmailMessage.style.display = "flex";
         userEmailMessage.style.color = "green";
         userEmailMessage.textContent = "信箱更新完成";
-    }
+    };
     if (userApiPatchResult.error == true){
         userEmailMessage.style.display = "flex";
         userEmailMessage.style.color = "red";
         userEmailMessage.textContent = userApiPatchResult.message;
-    }
+    };
 
 }
 async function userPasswordEditButtonClick(){
@@ -385,7 +380,7 @@ async function userPasswordEditButtonClick(){
     replaceToInputElement(userPasswordShow, `userPasswordShowNew`,"","",inputType = "password");
     userPasswordEditButton.style.display = "none";
     userPasswordFinishButton.style.display = "flex";
-}
+};
 async function userPasswordFinishButtonClick(){
     let userPasswordShowNew = document.getElementById("userPasswordShowNew");
     let userNewPasswordShow = document.getElementById("userNewPasswordShow");
@@ -397,7 +392,7 @@ async function userPasswordFinishButtonClick(){
         "userPassword":userPasswordShowNewValue,
         "userNewPassword":userNewPasswordShowValue,
         "userStatus":"alive"
-    }
+    };
     let userApiPatchResult = await userApiPatch(data);
     if (userApiPatchResult.ok == true){
         replaceToDivElement(userPasswordShowNew,`userPasswordShow`,"","******");
@@ -407,10 +402,10 @@ async function userPasswordFinishButtonClick(){
         userPasswordMessage.style.display = "flex";
         userPasswordMessage.style.color = "green";
         userPasswordMessage.textContent = "密碼更新完成";
-    }
+    };
     if (userApiPatchResult.error == true){
         userPasswordMessage.style.display = "flex";
         userPasswordMessage.style.color = "red";
         userPasswordMessage.textContent = userApiPatchResult.message;
-    }
-}
+    };
+};

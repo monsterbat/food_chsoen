@@ -4,26 +4,27 @@ let createMenuBlock = document.getElementById("createMenuBlock");
 // 1-3-1 menu name
 let createMenuNameBlock = document.getElementById("createMenuNameBlock");
 let createMenuNameTitle = document.getElementById("createMenuNameTitle");
-let createMenuNameMust = document.getElementById("createMenuNameMust");
 let createMenuNameInput = document.getElementById("createMenuNameInput");
 let createMenuName = document.getElementById("createMenuName");
 // 1-3-2 menu size
 let createMenuSizeBlock = document.getElementById("createMenuSizeBlock");
 let createMenuSizeTitle = document.getElementById("createMenuSizeTitle");
-let createMenuSizeMust = document.getElementById("createMenuSizeMust");
 let createMenuSizeInput = document.getElementById("createMenuSizeInput");
 let createMenuSize = document.getElementById("createMenuSize");
 // 1-3-3 menu price
 let createMenuPriceBlock = document.getElementById("createMenuPriceBlock");
 let createMenuPriceTitle = document.getElementById("createMenuPriceTitle");
-let createMenuPriceMust = document.getElementById("createMenuPriceMust");
 let createMenuPriceInput = document.getElementById("createMenuPriceInput");
 let createMenuPrice = document.getElementById("createMenuPrice");
+// 1-3-X menu type
+let createMenuTypeBlock = document.getElementById("createMenuTypeBlock");
+let createMenuTypeTitle = document.getElementById("createMenuTypeTitle");
+let createMenuTypeInput = document.getElementById("createMenuTypeInput");
+let createMenuType = document.getElementById("createMenuType");
 
 // 1-3-4 Menu note
 let createMenuNoteBlock = document.getElementById("createMenuNoteBlock");
 let createMenuNoteTitle = document.getElementById("createMenuNoteTitle");
-let createMenuNoteMust = document.getElementById("createMenuNoteMust");
 let createMenuNoteInput = document.getElementById("createMenuNoteInput");
 let createMenuNote = document.getElementById("createMenuNote");
 
@@ -106,13 +107,19 @@ createMenuRemoveMenuButton.addEventListener("click",createMenuRemoveMenuButtonCl
 
 // ==== Function ====
 async function createMenuAddSubmitClick(){
-    let createMenuNameValue = createMenuName.value;
-    let createMenuSizeValue = createMenuSize.value;
-    let createMenuPriceValue = createMenuPrice.value;
-    let createMenuNoteValue = createMenuNote.value;
-    
-    if (createMenuNameValue == "" || createMenuNameValue ==null || createMenuSizeValue == "" || createMenuSizeValue ==null || createMenuPriceValue == "" || createMenuPriceValue ==null){
-        createMenuErroeMessageContent.textContent = "請填入完整餐點資訊";
+    let createMenuNameValue = "";
+    let createMenuSizeValue = "";
+    let createMenuPriceValue = "";
+    let createMenuNoteValue = "";
+    let createMenuTypeValue = "";
+    createMenuNameValue = createMenuName.value;
+    createMenuSizeValue = createMenuSize.value;
+    createMenuPriceValue = createMenuPrice.value;
+    createMenuNoteValue = createMenuNote.value;
+    createMenuTypeValue = createMenuType.value;
+
+    if (createMenuNameValue == "" || createMenuPriceValue == "" ){
+        createMenuErroeMessageContent.textContent = "請至少填入餐點及價錢";
     }
     else{
         let data = {
@@ -121,6 +128,7 @@ async function createMenuAddSubmitClick(){
             "menu":{
                 "menuName":createMenuNameValue,
                 "menuSize":createMenuSizeValue,
+                "menuType":createMenuTypeValue,
                 "menuPrice":createMenuPriceValue,
                 "menuStatus":"alive",
                 "menuNote":createMenuNoteValue
@@ -134,9 +142,8 @@ async function createMenuAddSubmitClick(){
             createMenuErroeMessageContent.textContent = resultMessage;
         }
         location.reload();
-    }
-
-}
+    };
+};
 
 async function generateMenu(urlGroupName,urlStoreName){
     let getMenuData = await menuApiGet(urlGroupName,urlStoreName);
@@ -161,10 +168,9 @@ async function generateMenu(urlGroupName,urlStoreName){
             createDivElement(eval(`menuBlock${i}`), `menuSize${i}`, "menuSize", menuSize);
             createDivElement(eval(`menuBlock${i}`), `menuPrice${i}`, "menuPrice", menuPrice);
             createDivElement(eval(`menuBlock${i}`), `menuNote${i}`, "menuNote", menuNote);
-        }
-    }
-    
-}
+        };
+    };
+};
 
 async function createMenuEditMenuButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
@@ -184,7 +190,7 @@ async function createMenuEditMenuButtonClick(){
     createMenuEditFinishMenuButton.style.display = "flex";
     createMenuRemoveMenuButton.style.display = "flex";
     createMenuEditMenuButton.style.display = "none";
-} 
+};
 
 async function createMenuEditFinishMenuButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
@@ -233,7 +239,7 @@ async function createMenuEditFinishMenuButtonClick(){
     createMenuRemoveMenuButton.style.display = "none";
     createMenuEditFinishMenuButton.style.display = "none";
     createMenuEditMenuButton.style.display = "flex";
-}
+};
 
 function createMenuFinishButtonClick(){
     window.location.href = `/group/${urlGroupName}/create_order`;

@@ -56,16 +56,13 @@ async function onloadThisPage(){
     let storeApiDataAll = await storeApiGet(urlGroupName);
     let storeApiDataList = storeApiDataAll.store;
     showStoreList(storeApiDataList);
-    
-}
-
-
+};
 
 // ==== create event listener ====
 createStore.addEventListener("click",createStoreClick);
 orderListSubmit.addEventListener("click",orderListSubmitClick);
 createOrderBackGroupSubmit.addEventListener("click",createOrderBackGroupSubmitClick);
-
+askFoodChosen.addEventListener("click",askFoodChosenClick);
 // ==== Function ====
 async function showStoreList(storeApiDataList){
     createOptionElement(chooseStoreDropdown,`chooseStore`,"chooseStore","請選擇","appendChild","");
@@ -75,10 +72,14 @@ async function showStoreList(storeApiDataList){
 
     };
 };
+function askFoodChosenClick(){
+    window.location.href = `/group/${urlGroupName}/create_order/foodChsoen`;
+};
 
 async function createStoreClick(){
     window.location.href = `/group/${urlGroupName}/create_store`;
 };
+
 async function orderListSubmitClick(){
     let chooseDataInputValue = chooseDataInput.value;
     let chooseTimeInputValue = chooseTimeInput.value;
@@ -99,16 +100,13 @@ async function orderListSubmitClick(){
         orderListPostResult = await orderListApiPost(data);
         if (orderListPostResult.ok == true){
             let urlStopTime = "stopTime:"+stopTime;
-            window.location.href = `/group/${urlGroupName}/${storeNameValue}/${urlStopTime}`;
+            window.location.href = `/group/${urlGroupName}/${storeNameValue}/${urlStopTime}/alive`;
         }
         else{
             resultMessage = orderListPostResult.message;
             createOrderErroeMessageContent.textContent = resultMessage;
-        }
-    
-    };
-
-    
+        };    
+    };    
 };
 
 async function createOrderBackGroupSubmitClick(){

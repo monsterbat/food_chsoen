@@ -1,0 +1,34 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<title>Food chosen</title> 
+{% endblock %} 
+
+{% block content %}
+<main>
+    <div id="askFoodChosenHomePageBlock" class="contentPositionCenter margin">
+        <div id="askFoodChosenHomePageTitle" class="">
+            不知道要吃什麼嗎？
+        </div>
+        <div id="chooseByFateButton" class="buttonFormat foodChosenBGC">
+            <div id="chooseByFateContent" class="buttonContent">
+                交給命運決定
+            </div>
+        </div>
+        <div id="chooseByClassifyButton" class="buttonFormat foodChosenBGC">
+            <div id="chooseByClassifyContent" class="buttonContent">
+                分類選擇
+            </div>
+        </div>
+        <div id="backToCreateOrderButton" class="buttonFormat backBGC">
+            <div id="backToCreateOrderContent" class="buttonContent">
+                返回訂購
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/ask_foodChsoen.js') }}"></script>
+{% endblock %}

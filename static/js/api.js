@@ -117,6 +117,27 @@ async function storeApiPost(data){
         return data;
     })
 };
+// Store Draw lots
+async function storeDrawLotsApiGet(urlGroupName){
+    return fetch(`/api/store/drawLots?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
+
+// Store get type
+async function storeTpyeApiGet(urlGroupName){
+    return fetch(`/api/store/type?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // Menu
 async function menuApiPost(data){

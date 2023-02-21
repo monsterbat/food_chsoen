@@ -71,12 +71,9 @@ async function onloadThisPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
-    console.log("userApiData",userApiData)
     urlGroupName = getGroupNameFromUrl();
-    console.log("urlGroupName",urlGroupName)
     pageTitleContent.textContent = urlGroupName;
     let groupApiData = await groupStatus(urlGroupName,"alive");
-    console.log("groupApiData",groupApiData)
     groupApiData = groupApiData.group;
     groupId = groupApiData.groupId;
     let groupManager = "";
@@ -382,7 +379,8 @@ async function checkAllOrderMenuButtonClick(){
 async function ifNoOrderListShow(){
     let noDataResponse = "尚未建立團購，請點選上方建立團購"
     createDivElement(managerOrderList,`managerOrderListNoData`,"",noDataResponse,"appendChild")
-}
+};
+
 async function showAllGrooupOrderAliveListBlock(orderListData){
     let managerOrderListAliveTitleContent = "正在進行的團購"
     createDivElement(managerOrderList,`managerOrderListAliveTitle`,"titleWord",managerOrderListAliveTitleContent, "appendChild")
@@ -420,9 +418,9 @@ async function showAllGrooupOrderListOrderingBlock(orderListData){
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
         createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}/ordering`);
         createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent", orderListContent);
-    }
-}
+    };
+};
 
 function rmanagerOrderListRecordClick(){
-    window.location.href = `/group/${urlGroupName}/order_history`
-}
+    window.location.href = `/group/${urlGroupName}/order_history`;
+};

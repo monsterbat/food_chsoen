@@ -37,3 +37,27 @@ def store():
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_store.route("/api/store/drawLots", methods=["POST", "GET", "PATCH"])
+def store_drawLots():
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            message = m_store.store_drawLots_get(page,keyword,urlGroupName)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_store.route("/api/store/type", methods=["POST", "GET", "PATCH"])
+def store_type():
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            message = m_store.store_type_get(page,keyword,urlGroupName)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500

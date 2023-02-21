@@ -76,9 +76,8 @@ def group_post():
 
 # Check group info
 def group_get(page, keyword=None):
-    print("page",page)
     # Define page Qty
-    one_page_quanity=12
+    one_page_quanity=18
     data_start=int(page*one_page_quanity)
     # keyword setting
     group_keyword = "%"+keyword+"%"
@@ -140,7 +139,6 @@ def group_get(page, keyword=None):
             "group":None
         }
         return jsonify(group_data) ,200
-    print("group_data",group_data)
     return jsonify(group_data) ,200
 
 # Change group name or password

@@ -1,0 +1,76 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<title>Food chosen</title> 
+{% endblock %} 
+
+{% block content %}
+<main>
+    <!-- 1-3 -->
+    <div id="classifyConditionBlock" class="contentPositionCenter margin">
+        <div id="classifyItemsBlock" class="contentPositionCenter margin">
+            <div id="classifyItemsTitle" class="">
+                餐點類型
+            </div>
+            <div id="classifyItemsSelect" class="">
+
+            </div>
+        </div>
+        <div id="recentlyEatBlock" class="contentPositionCenter margin">
+            <div id="recentlyEatTitle" class="">
+                最近幾天吃過的
+            </div>
+            <div id="recentlyEatSelect" class="">
+
+            </div>
+        </div> 
+        <div id="recentlyNotEatBlock" class="contentPositionCenter margin">
+            <div id="recentlyEatTitle" class="">
+                排除最近幾天吃過的
+            </div>
+            <div id="recentlyNotEatSelect" class="">
+                
+            </div>
+        </div> 
+        <div id="priceRangeBlock" class="contentPositionCenter margin">
+            <div id="priceRangeTitle" class="">
+                價位區間
+            </div>
+            <div id="priceRangeSelect" class="">
+                
+            </div>
+        </div> 
+        <div id="settingDrawLotsConditionDoneButton" class="buttonFormat confirmBGC">
+            <div id="settingDrawLotsConditionDoneContent" class="buttonContent">
+                看看哪些符合
+            </div>
+        </div>
+        <div id="backToDrawLotsButton" class="buttonFormat backBGC">
+            <div id="backToDrawLotsContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+    <!-- 1-4 -->
+    <div id="meetTheConditionBlock" class="contentPositionCenter margin">
+        <div id="showTheMeetStoreBlock" class="contentPositionCenter margin">
+
+        </div>
+        <div id="chooseClassifyStoreButton" class="buttonFormat confirmBGC">
+            <div id="chooseClassifyStoreContent" class="buttonContent">
+                選擇店家
+            </div>
+        </div>
+        <div id="backConditionSettingButton" class="buttonFormat backBGC">
+            <div id="backConditionSettingContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+
+</main>
+{% endblock %} 
+
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/by_classify.js') }}"></script>
+{% endblock %}

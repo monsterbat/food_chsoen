@@ -23,9 +23,7 @@ def group():
 
     if request.method == "GET":
         try:
-            print("request.args",request.args)
             page = int(request.args.get("page",0))
-            print("groupInfoPage",page)
             keyword = request.args.get("keyword",False)
             message = m_group.group_get(page,keyword)
             return message
@@ -58,7 +56,6 @@ def group():
 def group_info():
     if request.method == "GET":
         try:
-            print("cc0")
             page = int(request.args.get("page",0))
             keyword = request.args.get("keyword",False)
             urlGroupName = request.args.get("urlGroupName",False)

@@ -187,47 +187,133 @@ memberPriceEditFinishSubmit.addEventListener("click",memberPriceEditFinishSubmit
 async function createMenuList(urlGroupName,urlStoreName){
     let getMenuData = await menuApiGet(urlGroupName,urlStoreName);
     menuList = getMenuData.menu;
+
+    const sortOutMenuData = menuList.reduce((acc, curr) => {
+        let found = false;
+        for (let i = 0; i < acc.length; i++) {
+        if (acc[i].menuType === curr.menuType) {
+            acc[i].menuItems.push({
+            menuName: curr.menuName,
+            menuSize: curr.menuSize,
+            menuPrice: curr.menuPrice,
+            menuNote: curr.menuNote,
+            });
+            found = true;
+            break;
+        }
+        }
+        if (!found) {
+        acc.push({
+            menuType: curr.menuType,
+            menuItems: [{
+            menuName: curr.menuName,
+            menuSize: curr.menuSize,
+            menuPrice: curr.menuPrice,
+            menuNote: curr.menuNote,
+            }]
+        });
+        }
+        return acc;
+    }, []);    
+    sortOutMenuData.sort((a, b) => {
+        const aType = a.menuType ? a.menuType.toLowerCase() : '';
+        const bType = b.menuType ? b.menuType.toLowerCase() : '';
+        if (aType === '' || aType === null) {
+        return 1;
+        }
+        if (bType === '' || bType === null) {
+        return -1;
+        }
+        if (aType < bType) {
+        return -1;
+        }
+        if (aType > bType) {
+        return 1;
+        }
+        return 0;
+    });    
+    for (let i = 0; i < sortOutMenuData.length; i++) {
+        sortOutMenuData[i].menuItems.sort((a, b) => {
+        const aName = a.menuName ? a.menuName.toLowerCase() : '';
+        const bName = b.menuName ? b.menuName.toLowerCase() : '';
+        if (aName === '' || aName === null) {
+            return 1;
+        }
+        if (bName === '' || bName === null) {
+            return -1;
+        }
+        if (aName < bName) {
+            return -1;
+        }
+        if (aName > bName) {
+            return 1;
+        }
+        return 0;
+        });
+    }
+    
     createElement(menuListBlcok, "form", "menuListBlockFrom", "menuListBlockFrom", null, "appendChild");
-    for(i=0;i<Object.keys(menuList).length;i++){
-        menuName = menuList[i]["menuName"];
-        menuSize = menuList[i]["menuSize"];
-        menuPrice = menuList[i]["menuPrice"];
-        menuNote = menuList[i]["menuNote"];
-        menuInputValue = JSON.stringify({
-            "menuName":menuName,
-            "menuSize":menuSize,
-            "menuPrice":menuPrice,
-            "menuNote":menuNote
-        });
-        createDivElement(menuListBlockFrom,`menuBlock${i}`, "menuItemsBlock", null, "appendChild");
-        createInputElement(eval(`menuBlock${i}`),addId=`menuNumber${i}`,addClass="menuNumber", addText = null, appendForm = "appendChild",inputType = "number", inputValue =0,inputName = "orderQty");
-        eval(`menuNumber${i}`).addEventListener("input", function() {
-            if (this.value < 0) {
-                this.value = 0;
-            };
-            this.value = parseInt(this.value);
-        });
-        createDivElement(eval(`menuBlock${i}`), `menuName${i}`, "menuName", menuName);
-        createDivElement(eval(`menuBlock${i}`), `menuSize${i}`, "menuSize", menuSize);
-        createDivElement(eval(`menuBlock${i}`), `menuPrice${i}`, "menuPrice", menuPrice);
-        createDivElement(eval(`menuBlock${i}`), `menuNote${i}`, "menuNote", menuNote);
+    for(let i=0;i<Object.keys(sortOutMenuData).length;i++){
+        createDivElement(menuListBlockFrom,`menuListTypeBlock${i}`,"",null, "appendChild");
+        
+        let menuTypeShow = sortOutMenuData[i].menuType;
+        if (menuTypeShow == ""){
+            menuTypeShow = "(未分類)";
+        }
+        createDivElement(eval(`menuListTypeBlock${i}`),`menuListTypeContent${i}`,"",menuTypeShow,"appendChild");
+        createDivElement(eval(`menuListTypeBlock${i}`),`menuListTitleBlock${i}`,"",null, "appendChild");
+        createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleOrder${i}`,"","點餐","appendChild");
+        createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleName${i}`,"","餐點","appendChild");
+        createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleSize${i}`,"","大小","appendChild");
+        createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitlePrice${i}`,"","價錢","appendChild");
+        createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleNote${i}`,"","備註","appendChild");
+
+        createDivElement(eval(`menuListTypeBlock${i}`),`menuListIntoBlock${i}`,"",null, "appendChild");
+        let menuItemsShow = sortOutMenuData[i].menuItems;
+        for(let j=0;j<Object.keys(menuItemsShow).length;j++){
+            let menuName = menuItemsShow[j].menuName;
+            let menuSize = menuItemsShow[j].menuSize;
+            let menuPrice = menuItemsShow[j].menuPrice;
+            let menuNote = menuItemsShow[j].menuNote;
+            // ??
+            menuInputValue = JSON.stringify({
+                "menuName":menuName,
+                "menuSize":menuSize,
+                "menuPrice":menuPrice,
+                "menuNote":menuNote
+            });
+            //
+            createDivElement(eval(`menuListIntoBlock${i}`),`menuListIntoEachBlock_${i}_${j}`,"",null, "appendChild");
+            createInputElement(eval(`menuListIntoEachBlock_${i}_${j}`),addId=`menuNumber_${i}_${j}`,addClass="menuNumber", addText = null, appendForm = "appendChild",inputType = "number", inputValue =0,inputName = "orderQty");
+            eval(`menuNumber_${i}_${j}`).addEventListener("input", function() {
+                if (this.value < 0) {
+                    this.value = 0;
+                };
+                this.value = parseInt(this.value);
+            });
+            createDivElement(eval(`menuListIntoEachBlock_${i}_${j}`),`menuName_${i}_${j}`,"",menuName, "appendChild");
+            createDivElement(eval(`menuListIntoEachBlock_${i}_${j}`),`menuSize_${i}_${j}`,"",menuSize, "appendChild");
+            createDivElement(eval(`menuListIntoEachBlock_${i}_${j}`),`menuPrice_${i}_${j}`,"",menuPrice, "appendChild");
+            // 後加上點餐者自己的備註
+            createInputElement(eval(`menuListIntoEachBlock_${i}_${j}`),`orderMenuNote_${i}_${j}`,"", "","appendChild",inputType = "text", "",inputName = "orderMenuNote");
+        };
     };
 };
 // 1-7 Submit
 async function menuSubmitButtonClick(){
-    let orderListGetData = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatus = "alive");
     let menuOrderQuantity = document.querySelectorAll("input[type='number']");
-    menuOrderDataAll = [];
-    let menuOrderDataList = {};
-    for (let i = 0; i < menuOrderQuantity.length; i++){
-        if (menuOrderQuantity[i].value > 0) {
-            let menuOrderQuantityValue = menuOrderQuantity[i].value;
-            let menuNameValue = eval(`menuName${i}`).textContent;
-            let menuSizeValue = eval(`menuSize${i}`).textContent;
-            let menuPriceValue = eval(`menuPrice${i}`).textContent;
-            let menuNoteValue = eval(`menuNote${i}`).textContent;
-            
-            menuOrderDataList = {
+    for (let ch = 0; ch < menuOrderQuantity.length; ch++){
+        if (menuOrderQuantity[ch].value > 0) {
+            let menuOrderQuantityValue = menuOrderQuantity[ch].value;
+            let menuOrderMark = menuOrderQuantity[ch].id.split("_");
+            let menuOrderMarki = menuOrderMark[1];
+            let menuOrderMarkj = menuOrderMark[2];
+
+            let menuNameValue = eval(`menuName_${menuOrderMarki}_${menuOrderMarkj}`).textContent;
+            let menuSizeValue = eval(`menuSize_${menuOrderMarki}_${menuOrderMarkj}`).textContent;
+            let menuPriceValue = eval(`menuPrice_${menuOrderMarki}_${menuOrderMarkj}`).textContent;
+            let menuNoteValue = eval(`orderMenuNote_${menuOrderMarki}_${menuOrderMarkj}`).value;
+            let menuOrderDataList = {
                 "menuOrderQuantity":menuOrderQuantityValue,
                 "menuName":menuNameValue,
                 "menuSize":menuSizeValue,
@@ -236,7 +322,8 @@ async function menuSubmitButtonClick(){
             };
             menuOrderDataAll.push(menuOrderDataList);
           };
-    };
+        };
+
     checkOrderListBlock.style.display = "flex";
     menuItemsBlock.style.display = "none";
     separate1.style.display = "none";
@@ -268,7 +355,6 @@ async function checkAllOrderMenuButtonClick(){
         orderListId = orderListGetDataAlive.orderListId;
         let orderListStatus = "alive";
         checkOrderListStatus(orderListStatus);
-
         let orderGetData = await orderApiGet(orderListId);
         menuOrderDataForAllMember = orderGetData.order;
         showAllMemberOrderListBlock(menuOrderDataForAllMember);
@@ -308,81 +394,89 @@ async function checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime){
 };
 // 1-7 Check member function
 async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
-    let memberTotalPrice = 0;
     createDivElement(memberOrderListBlock,`memberOrderListBlockBlock`, "memberOrderListBlockBlock", null, "appendChild");
-    for(i=0;i<Object.keys(menuOrderDataForAllMember).length;i++){
-        userName = menuOrderDataForAllMember[i]["userName"];
-        menuName = menuOrderDataForAllMember[i]["menuName"];
-        menuSize = menuOrderDataForAllMember[i]["menuSize"];
-        orderQuantity = menuOrderDataForAllMember[i]["orderQuantity"];
-        orderPrice = menuOrderDataForAllMember[i]["orderPrice"];
-        orderNote = menuOrderDataForAllMember[i]["orderNote"];
-        // Show in 1-8
-        createDivElement(memberOrderListBlockBlock,`memberOrderList${i}`, "menuMemberOrderListItemsBlock", null, "appendChild");
-        createDivElement(eval(`memberOrderList${i}`), `memberOrderListUserName${i}`, "memberOrderListUserName", userName);
-        createDivElement(eval(`memberOrderList${i}`), `memberOrderListMenuName${i}`, "memberOrderListMenuName", menuName);
-        createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderQuantity${i}`, "memberOrderListOrderQuantity", orderQuantity);     
-        createDivElement(eval(`memberOrderList${i}`), `memberOrderListMenuSize${i}`, "memberOrderListMenuSize", menuSize);
-        createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderPrice${i}`, "memberOrderListOrderPrice", orderPrice);
-        createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderNote${i}`, "memberOrderListOrderNote", orderNote);
-        memberTotalPrice = memberTotalPrice+orderPrice/orderQuantity*orderQuantity;
-    };
-    memberOrderListtotelPrice.textContent = memberTotalPrice;
+    if (menuOrderDataForAllMember == null){
+        createDivElement(memberOrderListBlockBlock,`memberOrderListNoData`, "memberOrderListBlockBlock", "目前沒有訂購任何餐點", "appendChild");
+        goToOrderSubmit.style.display = "none"
+    }else{    
+        let memberTotalPrice = 0;
+        for(i=0;i<Object.keys(menuOrderDataForAllMember).length;i++){
+            let userName = menuOrderDataForAllMember[i]["userName"];
+            let menuName = menuOrderDataForAllMember[i]["menuName"];
+            let menuSize = menuOrderDataForAllMember[i]["menuSize"];
+            let orderQuantity = menuOrderDataForAllMember[i]["orderQuantity"];
+            let orderPrice = menuOrderDataForAllMember[i]["orderPrice"];
+            let orderNote = menuOrderDataForAllMember[i]["orderNote"];
+            // Show in 1-8
+            createDivElement(memberOrderListBlockBlock,`memberOrderList${i}`, "menuMemberOrderListItemsBlock", null, "appendChild");
+            createDivElement(eval(`memberOrderList${i}`), `memberOrderListUserName${i}`, "memberOrderListUserName", userName);
+            createDivElement(eval(`memberOrderList${i}`), `memberOrderListMenuName${i}`, "memberOrderListMenuName", menuName);
+            createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderQuantity${i}`, "memberOrderListOrderQuantity", orderQuantity);     
+            createDivElement(eval(`memberOrderList${i}`), `memberOrderListMenuSize${i}`, "memberOrderListMenuSize", menuSize);
+            createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderPrice${i}`, "memberOrderListOrderPrice", orderPrice);
+            createDivElement(eval(`memberOrderList${i}`), `memberOrderListOrderNote${i}`, "memberOrderListOrderNote", orderNote);
+            memberTotalPrice = memberTotalPrice+orderPrice/orderQuantity*orderQuantity;
+        };
+        memberOrderListtotelPrice.textContent = memberTotalPrice;
+    }
 };
 
 async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
-    let memberTotalPriceGoOrder = 0;
-    let orderDataALL = [];
-    for(i=0;i<Object.keys(menuOrderDataForAllMember).length;i++){
-        userNameValue = menuOrderDataForAllMember[i]["userName"];
-        menuNameValue = menuOrderDataForAllMember[i]["menuName"];
-        menuSizeValue = menuOrderDataForAllMember[i]["menuSize"];
-        orderQuantityValue = menuOrderDataForAllMember[i]["orderQuantity"];
-        orderPriceValue = menuOrderDataForAllMember[i]["orderPrice"];
-        orderNoteValue = menuOrderDataForAllMember[i]["orderNote"];
-        orderDataList = {
-            "menuName":menuNameValue,
-            "menuSize":menuSizeValue,
-            "orderPrice":parseInt(orderPriceValue),
-            "orderQuantity":parseInt(orderQuantityValue)
-        };
-        orderDataALL.push(orderDataList);
-    };
-    let orderDataSortout = orderDataALL.reduce((acc, curr) => {
-        let existing = acc.find(item => item.menuName === curr.menuName && item.menuSize === curr.menuSize);
-        if (existing) {
-            existing.orderQuantity += curr.orderQuantity;
-            existing.orderPrice += curr.orderPrice;
-        } else {
-            acc.push(curr);
-        }
-        return acc;
-    }, []);
+    if (menuOrderDataForAllMember == null){
 
-    createDivElement(checkUserGoOrderListBlock,`checkUserGoOrderListBlockBlock`, "checkUserGoOrderListBlockBlock", null, "appendChild");
-    console.log("")
-    for(i=0;i<Object.keys(orderDataSortout).length;i++){
-        menuName = orderDataSortout[i]["menuName"];
-        menuSize = orderDataSortout[i]["menuSize"];
-        let orderQuantity = orderDataSortout[i]["orderQuantity"];
-        let orderPrice = orderDataSortout[i]["orderPrice"] ;
-        let onePrice = parseInt(orderPrice)/parseInt(orderQuantity);
-        orderInputValue = JSON.stringify({
-            "menuName":menuName,
-            "menuSize":menuSize,
-            "orderPrice":orderPrice,
-            "orderQuantity":orderQuantity
-        });
-        // Show in 1-8
-        createDivElement(checkUserGoOrderListBlockBlock,`checkUserGoOrderList${i}`, "menuGoOrderListItemsBlock", null, "appendChild");
-        createInputElement(eval(`checkUserGoOrderList${i}`),addId=`checkUserGoOrderListMenuChoose${i}`,addClass="menuCheckbox", addText = null, appendForm = "appendChild",inputType = "radio", inputValue =orderInputValue,inputName = "manuEdit");
-        createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListMenuName${i}`, "checkUserGoOrderListMenuName", menuName);
-        createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListMenuSize${i}`, "checkUserGoOrderListMenuSize", menuSize);
-        createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderQuantity${i}`, "checkUserGoOrderListOrderQuantity", orderQuantity);
-        createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderPrice${i}`, "checkUserGoOrderListOrderPrice", onePrice);
-        memberTotalPriceGoOrder = memberTotalPriceGoOrder+onePrice*orderQuantity;
+    }else{    
+        let memberTotalPriceGoOrder = 0;
+        let orderDataALL = [];
+        for(i=0;i<Object.keys(menuOrderDataForAllMember).length;i++){
+            userNameValue = menuOrderDataForAllMember[i]["userName"];
+            menuNameValue = menuOrderDataForAllMember[i]["menuName"];
+            menuSizeValue = menuOrderDataForAllMember[i]["menuSize"];
+            orderQuantityValue = menuOrderDataForAllMember[i]["orderQuantity"];
+            orderPriceValue = menuOrderDataForAllMember[i]["orderPrice"];
+            orderNoteValue = menuOrderDataForAllMember[i]["orderNote"];
+            orderDataList = {
+                "menuName":menuNameValue,
+                "menuSize":menuSizeValue,
+                "orderPrice":parseInt(orderPriceValue),
+                "orderQuantity":parseInt(orderQuantityValue)
+            };
+            orderDataALL.push(orderDataList);
+        };
+        let orderDataSortout = orderDataALL.reduce((acc, curr) => {
+            let existing = acc.find(item => item.menuName === curr.menuName && item.menuSize === curr.menuSize);
+            if (existing) {
+                existing.orderQuantity += curr.orderQuantity;
+                existing.orderPrice += curr.orderPrice;
+            } else {
+                acc.push(curr);
+            }
+            return acc;
+        }, []);
+
+        createDivElement(checkUserGoOrderListBlock,`checkUserGoOrderListBlockBlock`, "checkUserGoOrderListBlockBlock", null, "appendChild");
+        for(i=0;i<Object.keys(orderDataSortout).length;i++){
+            menuName = orderDataSortout[i]["menuName"];
+            menuSize = orderDataSortout[i]["menuSize"];
+            let orderQuantity = orderDataSortout[i]["orderQuantity"];
+            let orderPrice = orderDataSortout[i]["orderPrice"] ;
+            let onePrice = parseInt(orderPrice)/parseInt(orderQuantity);
+            orderInputValue = JSON.stringify({
+                "menuName":menuName,
+                "menuSize":menuSize,
+                "orderPrice":orderPrice,
+                "orderQuantity":orderQuantity
+            });
+            // Show in 1-8
+            createDivElement(checkUserGoOrderListBlockBlock,`checkUserGoOrderList${i}`, "menuGoOrderListItemsBlock", null, "appendChild");
+            createInputElement(eval(`checkUserGoOrderList${i}`),addId=`checkUserGoOrderListMenuChoose${i}`,addClass="menuCheckbox", addText = null, appendForm = "appendChild",inputType = "radio", inputValue =orderInputValue,inputName = "manuEdit");
+            createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListMenuName${i}`, "checkUserGoOrderListMenuName", menuName);
+            createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListMenuSize${i}`, "checkUserGoOrderListMenuSize", menuSize);
+            createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderQuantity${i}`, "checkUserGoOrderListOrderQuantity", orderQuantity);
+            createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderPrice${i}`, "checkUserGoOrderListOrderPrice", onePrice);
+            memberTotalPriceGoOrder = memberTotalPriceGoOrder+onePrice*orderQuantity;
+        }
+        goOrderTotelPrice.textContent = memberTotalPriceGoOrder;
     }
-    goOrderTotelPrice.textContent = memberTotalPriceGoOrder;
 }
 
 // """"""""""""""""""""""""""
@@ -413,12 +507,12 @@ async function showcheckOrderListBlock(menuOrderDataAll){
     let userTotalPrice = 0;
     createDivElement(checkUserOrderListBlock,`checkUserOrderListBlockBlock`, "checkUserOrderListBlockBlock", null, "appendChild");
     for(i=0;i<Object.keys(menuOrderDataAll).length;i++){
-        menuOrderQuantity = menuOrderDataAll[i]["menuOrderQuantity"];
-        menuName = menuOrderDataAll[i]["menuName"];
-        menuSize = menuOrderDataAll[i]["menuSize"];
-        menuPrice = menuOrderDataAll[i]["menuPrice"];
-        menuNote = menuOrderDataAll[i]["menuNote"];
-        menuInputValue = JSON.stringify({
+        let menuOrderQuantity = menuOrderDataAll[i]["menuOrderQuantity"];
+        let menuName = menuOrderDataAll[i]["menuName"];
+        let menuSize = menuOrderDataAll[i]["menuSize"];
+        let menuPrice = menuOrderDataAll[i]["menuPrice"];
+        let menuNote = menuOrderDataAll[i]["menuNote"];
+        let menuInputValue = JSON.stringify({
             "menuName":menuName,
             "menuSize":menuSize,
             "menuPrice":menuPrice,
@@ -482,10 +576,10 @@ function orderIsDoneSubmitClick(){
 async function backOrderMenuSubmitClick(){
     if (orderListStatusForThisPage == "ordering"){
         window.location.href = `/group/${urlGroupName}`;
-    }
+    };
     if (orderListStatusForThisPage == "alive"){
         location.reload();
-    }
+    };
     
 };
 // 1-11
@@ -537,7 +631,7 @@ async function memberPriceEditSubmitClick(){
     memberPriceEditFinishSubmit.style.display = "flex";
     memberPriceEditSubmit.style.display = "none";
     finishOrderSubmit.style.display = "none";
-}
+};
 
 async function memberPriceEditFinishSubmitClick(){
     let chosenMenu = document.querySelector('input[name=manuEdit]:checked');

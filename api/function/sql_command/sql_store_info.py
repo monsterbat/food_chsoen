@@ -37,3 +37,15 @@ def sql_store_id_find_name_alive_and_stop(store_id):
         return store_name_check
     store_name = store_name_check[0]["store_name"]
     return store_name
+
+# Store info
+def sql_group_id_find_all_store_info(group_id,store_status):
+    sql_command="""
+    SELECT *
+    FROM store 
+    WHERE group_id=%s AND store_status=%s;
+    """
+    value_input = (group_id,store_status)
+    store_info_check = query_data(sql_command,value_input)
+
+    return store_info_check

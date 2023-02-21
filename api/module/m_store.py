@@ -5,6 +5,15 @@ from MySQL_con import *
 from hash_code import *
 from user_token import *
 
+sys.path.append('api/function/sql_command')
+from sql_command.sql_user_info import *
+from sql_command.sql_group_info import *
+from sql_command.sql_order_info import *
+from sql_command.sql_order_list_info import *
+from sql_command.sql_store_info import *
+from sql_command.sql_menu_info import *
+from sql_command.sql_bill_info import *
+
 sys.path.append('api/view')
 import v_store
 
@@ -258,3 +267,146 @@ def store_patch():
     else:
         errorr_message = v_store.store_patch_400_else()
         return errorr_message
+
+def store_drawLots_get(page, keyword=None, urlGroupName=None):
+    # Define page Qty
+    one_page_quanity=12
+    data_start=int(page*one_page_quanity)
+    
+    # keyword generate can be OK to name and type
+    store_name_keyword = "%"+keyword+"%"
+    store_type_keyword = keyword
+    group_id = sql_group_name_find_id(urlGroupName,"alive")
+    store_info_check = sql_group_id_find_all_store_info(group_id,"alive")
+    
+    if store_info_check == []:
+        store_data = {
+            "nextPage":None,
+            "store":None
+        }
+        return jsonify(store_data) ,200
+    
+    # page judge
+    if len(store_info_check)==one_page_quanity+1:
+        next_page=page+1
+        store_info_check.pop()
+    else:
+        next_page=None
+
+    store_data = {
+        "nextPage":next_page,
+        "store":[]
+    }
+    # Create data
+    if store_info_check != []:
+        for store_ls in store_info_check:
+            store_id = store_ls["id"]
+            store_name = store_ls["store_name"]
+            store_address = store_ls["store_address"]
+            store_phone_number = store_ls["store_phone_number"]
+            store_type = store_ls["store_type"]
+            store_price_range = store_ls["store_price_range"]
+            store_open_time = store_ls["store_open_time"]
+            store_delivery_condition = store_ls["store_delivery_condition"]
+            store_order_time = store_ls["store_order_time"]
+            store_order_frequence = store_ls["store_order_frequence"]
+            store_distance = store_ls["store_distance"]
+            store_latest_data = store_ls["store_latest_data"]
+            store_status = store_ls["store_status"]
+            store_note = store_ls["store_note"]
+
+            store_ls_data =  {
+                "storeId":store_id,
+                "storeName":store_name,
+                "storeaddress":store_address,
+                "storePhoneNumber":store_phone_number,
+                "storeType":store_type,
+                "storePriceRange":store_price_range,
+                "storeOpenTime":store_open_time,
+                "storeDeliveryCondition":store_delivery_condition,
+                "storeOrderTime":store_order_time,
+                "storeOrderFrequence":store_order_frequence,
+                "storeDistance":store_distance,
+                "storeLatestData":store_latest_data,
+                "storeStatus":store_status,
+                "storeNote":store_note
+                }
+            store_data["store"].append(store_ls_data)
+
+    return jsonify(store_data) ,200
+
+
+# Check store type
+def store_type_get(page, keyword=None, urlGroupName=None):
+    # Define page Qty
+    one_page_quanity=12
+    data_start=int(page*one_page_quanity)
+    
+    # keyword generate can be OK to name and type
+    store_name_keyword = "%"+keyword+"%"
+    store_type_keyword = keyword
+
+    group_id = sql_group_name_find_id(urlGroupName,"alive")
+    store_info_check = sql_group_id_find_all_store_info(group_id,"alive")
+
+    
+    # No data
+    if store_info_check == []:
+        store_data = {
+            "nextPage":None,
+            "store":None
+        }
+        return jsonify(store_data) ,200
+
+    # page judge
+    if len(store_info_check)==one_page_quanity+1:
+        next_page=page+1
+        store_info_check.pop()
+    else:
+        next_page=None
+
+    store_data = {
+        "nextPage":next_page,
+        "store":[]
+    }
+
+    # Create data
+    if store_info_check != []:
+        for store_ls in store_info_check:
+            store_id = store_ls["id"]
+            store_name = store_ls["store_name"]
+            store_address = store_ls["store_address"]
+            store_phone_number = store_ls["store_phone_number"]
+            store_type = store_ls["store_type"]
+            store_price_range = store_ls["store_price_range"]
+            store_open_time = store_ls["store_open_time"]
+            store_delivery_condition = store_ls["store_delivery_condition"]
+            store_order_time = store_ls["store_order_time"]
+            store_order_frequence = store_ls["store_order_frequence"]
+            store_distance = store_ls["store_distance"]
+            store_latest_data = store_ls["store_latest_data"]
+            store_status = store_ls["store_status"]
+            store_note = store_ls["store_note"]
+
+
+
+
+            store_ls_data =  {
+                "storeId":store_id,
+                "storeName":store_name,
+                "storeaddress":store_address,
+                "storePhoneNumber":store_phone_number,
+                "storeType":store_type,
+                "storePriceRange":store_price_range,
+                "storeOpenTime":store_open_time,
+                "storeDeliveryCondition":store_delivery_condition,
+                "storeOrderTime":store_order_time,
+                "storeOrderFrequence":store_order_frequence,
+                "storeDistance":store_distance,
+                "storeLatestData":store_latest_data,
+                "storeStatus":store_status,
+                "storeNote":store_note
+                }
+            store_data["store"].append(store_ls_data)
+
+    return jsonify(store_data) ,200

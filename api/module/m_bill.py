@@ -71,6 +71,7 @@ def bill_post():
     return data
 
 def bill_get(page, keyword=None, urlGroupName=None):
+    
     user_info = user_token_check()
     user_id = user_info["data"]["id"]
     group_id = sql_group_name_find_id(urlGroupName, "alive")    

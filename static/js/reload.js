@@ -44,7 +44,7 @@ async function onloadReloadPage(){
 async function currentBalanceClick(){
     let billApiGetResult = await billApiGet(urlGroupName);
     let userBalance = billApiGetResult.userBalance;
-    userBalance = Number(userBalance)
+    userBalance = Number(userBalance);
     currentBalance.textContent = Number(userBalance.toFixed(0))
     if (userBalance<0){
         currentBalance.style.color = "red"
@@ -53,13 +53,13 @@ async function currentBalanceClick(){
 
 async function reloadToBillButtonClick(){
     let reloadPriceValue = reloadPrice.value;
-    let currentBalanceValue = currentBalance.textContent
+    let currentBalanceValue = currentBalance.textContent;
     let data = {
         "userName":currentUserName,
         "groupName":urlGroupName,
         "reloadPrice":reloadPriceValue,
         "reloadNote":"x"
-    }
+    };
     let reloadApiPostResult = await reloadApiPost(data);
     if (reloadApiPostResult.ok == true){
         let data2 = {
@@ -67,24 +67,24 @@ async function reloadToBillButtonClick(){
             "groupName":urlGroupName,
             "billPrice":reloadPriceValue
         };
-        let billReloadApiPostResult = await billReloadApiPost(data2)
+        let billReloadApiPostResult = await billReloadApiPost(data2);
         if (billReloadApiPostResult.ok == true){
             reloadResultContent.style.color = "green";
             reloadResultContent.textContent = "儲值成功";
-            let finalBalance = Number(currentBalanceValue)+Number(reloadPriceValue)
-            currentBalance.textContent = Number(finalBalance.toFixed(0))
-        }
+            let finalBalance = Number(currentBalanceValue)+Number(reloadPriceValue);
+            currentBalance.textContent = Number(finalBalance.toFixed(0));
+        };
         if (billReloadApiPostResult.error == true){
             reloadResultContent.style.color = "red";
             reloadResultContent.textContent = "儲值失敗";
-        }
+        };
     }
     if (reloadApiPostResult.error == true){
         reloadResultContent.style.color = "red";
         reloadResultContent.textContent = "儲值失敗";
-    }
-}
+    };
+};
 
 async function backToGroupIntoButtonClick(){
     window.location.href = `/group/${urlGroupName}`;
-}
+};

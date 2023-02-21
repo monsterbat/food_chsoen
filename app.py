@@ -33,9 +33,12 @@ app.register_blueprint(c_bill.c_bill)
 
 
 # Pages
+# Home Page
 @app.route("/")
 def index():
 	return render_template("index.html")
+
+# Group
 @app.route("/group")
 def group():
 	return render_template("group.html")
@@ -44,21 +47,36 @@ def group():
 def in_group(group_name):
 	return render_template("group_into.html")
 
-@app.route("/group/<group_name>/create_order")
-def create_order(group_name):
-	return render_template("create_order.html")
-
-@app.route("/group/<group_name>/create_store")
-def create_store(group_name):
-	return render_template("create_store.html")
+# Member Center
+@app.route("/member_center")
+def member_center():
+	return render_template("member_center.html")
 
 @app.route("/group/<group_name>/reload")
 def reload(group_name):
 	return render_template("reload.html")
 
-@app.route("/group/<group_name>/order_history")
-def order_history(group_name):
-	return render_template("order_history.html")
+# Ask FoodChosen
+# @app.route("/group/<group_name>/create_order/ask_foodChsoen")
+# def ask_foodChsoen(group_name):
+# 	return render_template("ask_foodChsoen.html")
+
+# @app.route("/group/<group_name>/create_order/ask_foodChsoen/by_fate")
+# def chose_by_fate(group_name):
+# 	return render_template("by_fate.html")
+
+# @app.route("/group/<group_name>/create_order/ask_foodChsoen/by_classify")
+# def chose_by_classify(group_name):
+# 	return render_template("by_classify.html")
+
+@app.route("/group/<group_name>/create_order/foodChsoen")
+def foodChsoen(group_name):
+	return render_template("foodChsoen.html")
+
+# Create Stroe and Menu
+@app.route("/group/<group_name>/create_store")
+def create_store(group_name):
+	return render_template("create_store.html")
 
 @app.route("/group/<group_name>/<store_name>")
 def create_menu(group_name,store_name):
@@ -68,18 +86,27 @@ def create_menu(group_name,store_name):
 def create_menu_order_edit(group_name,store_name):
 	return render_template("create_menu.html")
 
+# Order
+@app.route("/group/<group_name>/create_order")
+def create_order(group_name):
+	return render_template("create_order.html")
+
 @app.route("/group/<group_name>/<store_name>/<stop_time>/<order_status>")
 def order_menu(group_name,store_name,stop_time,order_status):
 	return render_template("order_menu.html")
 
+@app.route("/group/<group_name>/order_history")
+def order_history(group_name):
+	return render_template("order_history.html")
+
+
+# Test
 @app.route("/group/dd")
 def test():
 	return render_template("menu.html")
 
 
-@app.route("/member_center")
-def member_center():
-	return render_template("member_center.html")
+
 
 
 app.debug = True
