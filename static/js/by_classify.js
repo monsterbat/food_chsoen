@@ -56,9 +56,7 @@ async function settingDrawLotsConditionDoneButtonClick(){
     meetTheConditionBlock.style.display = "flex";
 }
 
-async function backToDrawLotsButtonClick(){
-    window.location.href = `/group/${urlGroupName}/create_order/ask_foodChsoen`;
-}
+
 // 1-4
 
 async function chooseClassifyStoreButtonClick(){

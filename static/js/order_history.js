@@ -46,7 +46,7 @@ async function orderHistoryListShow(){
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(orderHistoryListBlockBlock,`orderHistoryList${i}`, "buttonFormat groupBGC", null, "appendChild", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}/finish`);
+        createAElement(orderHistoryListBlockBlock,`orderHistoryList${i}`, "buttonFormat groupBGC", null, "appendChild", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/finish`);
         createDivElement(eval(`orderHistoryList${i}`), `orderHistoryListContent${i}`, "buttonContent", orderListContent);
     };
 }

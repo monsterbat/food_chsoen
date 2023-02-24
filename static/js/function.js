@@ -62,7 +62,10 @@ function createDivElement(
             appendBlock.prepend(element);
         };
         // auto create getElementById
-        globalThis.addId = document.getElementById(addId);
+        if (addId != null){
+            globalThis.addId = document.getElementById(addId);
+        }
+        
 }
 // creat IMG element Function
 function createImgElement(
@@ -251,14 +254,14 @@ function getGroupNameFromUrl(){
 function getStoreNameFromUrl(){
     let pathname = window.location.pathname;
     let pathArray = pathname.split('/');
-    let storeName = pathArray[3];
+    let storeName = pathArray[4];
     storeName = decodeURIComponent(decodeURIComponent(storeName));
     return storeName;
 }
 function getOrderListStopTimeFromUrl(){
     let pathname = window.location.pathname;
     let pathArray = pathname.split('/');
-    let orderListStopTime = pathArray[4];
+    let orderListStopTime = pathArray[5];
     orderListStopTime = decodeURIComponent(decodeURIComponent(orderListStopTime));
     return orderListStopTime;
 }
@@ -271,7 +274,13 @@ function getSplit4FromUrl(){
     return split4;
 }
 
-
+function getOrderListStatusFromUrl(){
+    let pathname = window.location.pathname;
+    let pathArray = pathname.split('/');
+    let split6 = pathArray[6];
+    split6 = decodeURIComponent(decodeURIComponent(split6));
+    return split6;
+}
 
 
 // Status check

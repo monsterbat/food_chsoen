@@ -27,13 +27,3 @@ async function onloadAskFoodChosenPage(){
     
 }
 
-
-function chooseByFateButtonClick(){
-    window.location.href = `/group/${urlGroupName}/create_order/ask_foodChsoen/by_fate`;
-};
-function chooseByClassifyButtonClick(){
-    window.location.href = `/group/${urlGroupName}/create_order/ask_foodChsoen/by_classify`;
-};
-function backToCreateOrderButtonClick(){
-    window.location.href = `/group/${urlGroupName}/create_order`;
-};

@@ -138,6 +138,30 @@ async function storeTpyeApiGet(urlGroupName){
         return data;
     })
 };
+// Store use keyword to crawler sotre list
+async function storeFoodChosenCreateApiGet(storeCrawlerKeyword,urlGroupName){
+    return fetch(`/api/store/foodChosen?page=${page}&keyword=${storeCrawlerKeyword}&urlGroupName=${urlGroupName}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
+
+async function storeFoodChosenCreateApiPost(data){
+    return fetch(`/api/store/foodChosen?page=${page}&keyword=${storeCrawlerKeyword}&urlGroupName=${urlGroupName}`,{
+        method:"POST",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            "Content-Type":"application/json"
+        })
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // Menu
 async function menuApiPost(data){

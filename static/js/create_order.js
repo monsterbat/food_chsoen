@@ -73,7 +73,7 @@ async function showStoreList(storeApiDataList){
     };
 };
 function askFoodChosenClick(){
-    window.location.href = `/group/${urlGroupName}/create_order/foodChsoen`;
+    window.location.href = `/group/${urlGroupName}/foodChsoen`;
 };
 
 async function createStoreClick(){
@@ -100,7 +100,7 @@ async function orderListSubmitClick(){
         orderListPostResult = await orderListApiPost(data);
         if (orderListPostResult.ok == true){
             let urlStopTime = "stopTime:"+stopTime;
-            window.location.href = `/group/${urlGroupName}/${storeNameValue}/${urlStopTime}/alive`;
+            window.location.href = `/group/${urlGroupName}/store/${storeNameValue}/${urlStopTime}/alive`;
         }
         else{
             resultMessage = orderListPostResult.message;

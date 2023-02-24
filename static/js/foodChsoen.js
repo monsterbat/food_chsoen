@@ -239,7 +239,7 @@ async function orderListButtonClick(){
         let orderListPostResult = await orderListApiPost(data);
         if (orderListPostResult.ok == true){
             let urlStopTime = "stopTime:"+stopTime;
-            window.location.href = `/group/${urlGroupName}/${storeNameValue}/${urlStopTime}/alive`;
+            window.location.href = `/group/${urlGroupName}/store/${storeNameValue}/${urlStopTime}/alive`;
         }
         else{
             let resultMessage = orderListPostResult.message;

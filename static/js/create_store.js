@@ -43,6 +43,9 @@ let createStoreNoteTitle = document.getElementById("createStoreNoteTitle");
 let createStoreNoteMust = document.getElementById("createStoreNoteMust");
 let createStoreNoteInput = document.getElementById("createStoreNoteInput");
 let createStoreNote = document.getElementById("createStoreNote");
+
+let foodChosenHlpYouCreateStoreButton = document.getElementById("foodChosenHlpYouCreateStoreButton");
+
 // 1-3-7 store submit
 let createStoreSubmit = document.getElementById("createStoreSubmit");
 let createStoreSubmitContent = document.getElementById("createStoreSubmitContent");
@@ -76,6 +79,7 @@ async function onloadCreateStorePage(){
 // ==== create event listener ====
 createStoreSubmit.addEventListener("click",createStoreSubmitClick);
 createStroeBackGroupSubmit.addEventListener("click",createStroeBackGroupSubmitClick);
+foodChosenHlpYouCreateStoreButton.addEventListener("click",foodChosenHlpYouCreateStoreButtonClick);
 // ==== Function ====
 async function createStoreSubmitClick(){
     let createStoreNameValue = createStoreName.value;
@@ -105,7 +109,7 @@ async function createStoreSubmitClick(){
         }
         result = await storeApiPost(data);
         if (result.ok == true){
-            window.location.href = `/group/${urlGroupName}/${createStoreNameValue}`;
+            window.location.href = `/group/${urlGroupName}/store/${createStoreNameValue}`;
         }
         else{
             resultMessage = result.message;
@@ -113,6 +117,10 @@ async function createStoreSubmitClick(){
         };        
     };        
 };
+
+async function foodChosenHlpYouCreateStoreButtonClick(){
+    window.location.href = `/group/${urlGroupName}/foodChosen_create`;
+}
 
 function createStroeBackGroupSubmitClick(){
     window.location.href = `/group/${urlGroupName}/create_order`;

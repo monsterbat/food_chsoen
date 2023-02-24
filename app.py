@@ -57,32 +57,25 @@ def reload(group_name):
 	return render_template("reload.html")
 
 # Ask FoodChosen
-# @app.route("/group/<group_name>/create_order/ask_foodChsoen")
-# def ask_foodChsoen(group_name):
-# 	return render_template("ask_foodChsoen.html")
-
-# @app.route("/group/<group_name>/create_order/ask_foodChsoen/by_fate")
-# def chose_by_fate(group_name):
-# 	return render_template("by_fate.html")
-
-# @app.route("/group/<group_name>/create_order/ask_foodChsoen/by_classify")
-# def chose_by_classify(group_name):
-# 	return render_template("by_classify.html")
-
-@app.route("/group/<group_name>/create_order/foodChsoen")
+@app.route("/group/<group_name>/foodChsoen")
 def foodChsoen(group_name):
 	return render_template("foodChsoen.html")
+
+# create by FoodChosen
+@app.route("/group/<group_name>/foodChosen_create")
+def foodChosen_create(group_name):
+	return render_template("foodChosen_create.html")
 
 # Create Stroe and Menu
 @app.route("/group/<group_name>/create_store")
 def create_store(group_name):
 	return render_template("create_store.html")
 
-@app.route("/group/<group_name>/<store_name>")
+@app.route("/group/<group_name>/store/<store_name>")
 def create_menu(group_name,store_name):
 	return render_template("create_menu.html")
 
-@app.route("/group/<group_name>/<store_name>/order_edit")
+@app.route("/group/<group_name>/order_edit/<store_name>")
 def create_menu_order_edit(group_name,store_name):
 	return render_template("create_menu.html")
 
@@ -91,7 +84,7 @@ def create_menu_order_edit(group_name,store_name):
 def create_order(group_name):
 	return render_template("create_order.html")
 
-@app.route("/group/<group_name>/<store_name>/<stop_time>/<order_status>")
+@app.route("/group/<group_name>/store/<store_name>/<stop_time>/<order_status>")
 def order_menu(group_name,store_name,stop_time,order_status):
 	return render_template("order_menu.html")
 

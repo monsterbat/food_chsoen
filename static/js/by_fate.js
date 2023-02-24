@@ -171,9 +171,7 @@ async function goDrawLotsButtonClick(){
     // foodChosenResultBlock.style.display = "flex";
 }
 
-async function backToAskFoodChosenButtonClick(){
-    window.location.href = `/group/${urlGroupName}/create_order/ask_foodChsoen`;
-}
+
 // 1-4
 // Show type drop down list
 async function showStoreList(storeTypeSortOutData){

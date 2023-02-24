@@ -4,6 +4,7 @@ sys.path.append('api/function')
 from MySQL_con import *
 from hash_code import *
 from user_token import *
+from crawel_find_store import *
 
 sys.path.append('api/function/sql_command')
 from sql_command.sql_user_info import *
@@ -38,27 +39,18 @@ def store_post():
     store_note =  create_store_data["storeNote"]
     join_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     # Check store repeat
-    sql_command="""
-    SELECT store_name
-    FROM store 
-    WHERE store_name=%s AND group_id=%s AND store_status=%s;
-    """
-    value_input = (store_name,group_id,"alive")
-    store_name_check = query_data(sql_command,value_input)
+    store_name_check = sql_check_store_repreat(store_name,group_id,"alive")   
     # If no repeat save it
     if store_name_check == []:
         # Input information 
-        sql_command = """
-        INSERT INTO store (store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, store_status, group_id, store_note, store_order_time, store_order_frequence, store_distance, store_price_range, store_latest_data)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
-        """
-        value_input = (store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, "alive",group_id,store_note, "null", "null", "null", "null", join_time)
-        insert_or_update_data(sql_command,value_input)
+        sql_store_inner_into(store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, "alive",group_id,store_note, "", "", "", "", join_time)
+
         data = v_store.store_post_200()
         return data
     else:
         errorr_message = v_store.store_post_400()
         return errorr_message
+
 
 # Check store info
 def store_get(page, keyword=None, urlGroupName=None):
@@ -335,7 +327,6 @@ def store_drawLots_get(page, keyword=None, urlGroupName=None):
 
     return jsonify(store_data) ,200
 
-
 # Check store type
 def store_type_get(page, keyword=None, urlGroupName=None):
     # Define page Qty
@@ -410,3 +401,17 @@ def store_type_get(page, keyword=None, urlGroupName=None):
             store_data["store"].append(store_ls_data)
 
     return jsonify(store_data) ,200
+
+#  Create store account by foodChosen
+def store_foodChosen_get(page, keyword=None, urlGroupName=None):
+    store_name_data = store_keyword_get_correspond_name(keyword)
+    return store_name_data
+
+
+def store_foodChosen_post(page,keyword=None, urlGroupName=None):
+    group_id = sql_group_name_find_id(urlGroupName, "alive")
+    create_store_data = request.get_json()
+    box_index = create_store_data["storeIndex"]
+    store_name_keyword = create_store_data["intoKeywordValue"]
+    store_name_data = store_name_create_menu(store_name_keyword,box_index,group_id)
+    return store_name_data

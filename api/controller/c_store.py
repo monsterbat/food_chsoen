@@ -61,3 +61,25 @@ def store_type():
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_store.route("/api/store/foodChosen", methods=["POST", "GET", "PATCH"])
+def store_foodChosen():
+    if request.method == "POST":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            message = m_store.store_foodChosen_post(page,keyword,urlGroupName)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500
+        
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            message = m_store.store_foodChosen_get(page,keyword,urlGroupName)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500

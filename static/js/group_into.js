@@ -396,7 +396,7 @@ async function showAllGrooupOrderAliveListBlock(orderListData){
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}/alive`);
+        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/alive`);
         createDivElement(eval(`managerOrderList${i}`), `managerOrderListContent${i}`, "buttonContent", orderListContent);
     };
 };
@@ -416,7 +416,7 @@ async function showAllGrooupOrderListOrderingBlock(orderListData){
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
         let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/${storeName}/${stopTimeUrl}/ordering`);
+        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/ordering`);
         createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent", orderListContent);
     };
 };

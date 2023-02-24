@@ -7,6 +7,7 @@ let groupGetPage =0;
 let groupInfoPage = 0;
 let keyword = "";
 let orderUserKeyword = "";
+let storeCrawlerKeyword = "";
 let urlGroupName = "";
 let urlStoreName = "";
 let urlStopTime = "";
@@ -28,7 +29,7 @@ let menuOriNoteValue = "";
 // order_menu
 let menuOrderDataAll = [] ;
 let menuOrderDataForAllMember = [];
-
+let orderListStatusForThisPage;
 // Trigger
 let createMenuForOrderTrigger;
 
@@ -40,3 +41,5 @@ let storeTypeClassify = null;
 let stroreRecentlyEatClassify = null;
 let stroreRecentlyNotEatClassify = null;
 let storePriceRangeClassify = null;
+
+let urlOrderListStatus;

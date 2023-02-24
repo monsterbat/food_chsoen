@@ -125,7 +125,7 @@ let editGoOrderSubmitContent = document.getElementById("editGoOrderSubmitContent
 
 // ==== Create element ====
 
-
+console.log("FF")
 // ==== onload ====
 checkMemberOrderListBlock.style.display = "none";
 checkOrderListBlock.style.display = "none";
@@ -134,6 +134,9 @@ goOrderBlock.style.display = "none";
 orderIsCloseBlock.style.display = "none";
 onloadOrderMenuPage();
 async function onloadOrderMenuPage(){
+    urlOrderListStatus = getOrderListStatusFromUrl();
+
+
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
@@ -159,9 +162,15 @@ async function onloadOrderMenuPage(){
             storeId = storeApiGetData[i].storeId;
         };
     };
+
     createMenuList(urlGroupName,urlStoreName);
-    let orderListStatusForThisPage
+    
     orderListStatusForThisPage = checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime);
+    if (urlOrderListStatus == "finish"){
+        orderMenuPageNoDisplayDisplayBlcok();
+        goToOrderSubmit.style.display = "none";
+        checkMemberOrderListBlock.style.display = "flex";
+    };
 }
 // ==== create event listener ====
 menuSubmitButton.addEventListener("click",menuSubmitButtonClick);
@@ -181,7 +190,17 @@ orderIsCloseSubmit.addEventListener("click",orderIsCloseSubmitClick);
 backGroupIntoSubmit.addEventListener("click",backGroupIntoSubmitClick);
 memberPriceEditFinishSubmit.addEventListener("click",memberPriceEditFinishSubmitClick);
 // ==== Function ====
-
+// Block no display
+function orderMenuPageNoDisplayDisplayBlcok(){
+    menuItemsBlockBlock.style.display = "none";
+    menuListBlcok.style.display = "none";
+    menuButtonBlock.style.display = "none";
+    checkMemberOrderListBlock.style.display = "none";
+    checkOrderListBlock.style.display = "none";
+    orderIsDoneBlock.style.display = "none";
+    goOrderBlock.style.display = "none";
+    orderIsCloseBlock.style.display = "none";
+}
 // Ori page 
 // 1-5
 async function createMenuList(urlGroupName,urlStoreName){
@@ -333,10 +352,8 @@ async function menuSubmitButtonClick(){
 };
 // 1-7 Edit
 function menuEditCreateButtonClick(){
-    window.location.href = `/group/${urlGroupName}/${urlStoreName}/order_edit`;
+    window.location.href = `/group/${urlGroupName}/order_edit/${urlStoreName}`;
 };
-
-
 // 1-7 Check member
 async function checkAllOrderMenuButtonClick(){
     menuItemsBlock.style.display = "none";
@@ -348,9 +365,11 @@ async function checkAllOrderMenuButtonClick(){
     separate1.style.display = "none";
     let getStatusAlive = "alive";
     let getStatusOrdering = "ordering";
+    let getStatusFinish = "finish";
 
     let orderListGetDataAlive = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusAlive);
     let orderListGetDataOrdering = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusOrdering);
+    let orderListGetDataFinish = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusFinish);
     if (orderListGetDataAlive.orderListStatus == "alive"){
         orderListId = orderListGetDataAlive.orderListId;
         let orderListStatus = "alive";
@@ -369,14 +388,24 @@ async function checkAllOrderMenuButtonClick(){
         showAllMemberOrderListBlock(menuOrderDataForAllMember);
         sortoutAllMemberOrderListBlock(menuOrderDataForAllMember);
     };
+    if (orderListGetDataFinish.orderListStatus == "finish"){
+        orderListId = orderListGetDataFinish.orderListId;
+        let orderListStatus = "finish";
+        checkOrderListStatus(orderListStatus);
+        let orderGetData = await orderApiGet(orderListId);
+        menuOrderDataForAllMember = orderGetData.order;
+        showAllMemberOrderListBlock(menuOrderDataForAllMember);
+        sortoutAllMemberOrderListBlock(menuOrderDataForAllMember);
+    };
 };
-
 async function checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime){
     let getStatusAlive = "alive";
     let getStatusOrdering = "ordering";
+    let getStatusFinish = "finish";
 
     let orderListGetDataAlive = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusAlive);
     let orderListGetDataOrdering = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusOrdering);
+    let orderListGetDataFinish = await orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatusFinish);
     if (orderListGetDataAlive.orderListStatus == "alive"){
         orderListStatusForThisPage = "alive"
     };
@@ -390,6 +419,18 @@ async function checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime){
         orderIsDoneBlock.style.display = "none";
         separate1.style.display = "none";
         orderListStatusForThisPage = "ordering"
+    };
+    if (orderListGetDataFinish.orderListStatus == "finish"){
+        console.log("413")
+        checkAllOrderMenuButtonClick()
+        menuItemsBlock.style.display = "none";
+        menuListBlcok.style.display = "none";
+        menuButtonBlock.style.display = "none";
+        checkMemberOrderListBlock.style.display = "flex";
+        checkOrderListBlock.style.display = "none";
+        orderIsDoneBlock.style.display = "none";
+        separate1.style.display = "none";
+        orderListStatusForThisPage = "finish"
     };
 };
 // 1-7 Check member function
@@ -420,7 +461,6 @@ async function showAllMemberOrderListBlock(menuOrderDataForAllMember){
         memberOrderListtotelPrice.textContent = memberTotalPrice;
     }
 };
-
 async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
     if (menuOrderDataForAllMember == null){
 
@@ -478,7 +518,6 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
         goOrderTotelPrice.textContent = memberTotalPriceGoOrder;
     }
 }
-
 // """"""""""""""""""""""""""
 
 // 1-7 go to order 
@@ -574,17 +613,21 @@ function orderIsDoneSubmitClick(){
 
 // 1-8
 async function backOrderMenuSubmitClick(){
+    if (orderListStatusForThisPage == "finish"){
+        window.location.href = `/group/${urlGroupName}/order_history`;
+    };
     if (orderListStatusForThisPage == "ordering"){
         window.location.href = `/group/${urlGroupName}`;
     };
     if (orderListStatusForThisPage == "alive"){
         location.reload();
     };
+
     
 };
 // 1-11
 function editGoOrderSubmitClick(){
-    window.location.href = `/group/${urlGroupName}/${urlStoreName}`;
+    window.location.href = `/group/${urlGroupName}/store/${urlStoreName}`;
 };
 
 async function stopOrderSubmitClick(){
@@ -693,7 +736,7 @@ async function memberPriceEditFinishSubmitClick(){
     finishOrderSubmit.style.display = "flex";
 
 };
-
+ 
 async function backOrderMenuMemberSubmitClick(){
     menuItemsBlock.style.display = "none";
     menuListBlcok.style.display = "none";

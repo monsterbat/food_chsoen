@@ -1,0 +1,50 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<title>Food chosen</title> 
+{% endblock %} 
+
+{% block content %}
+<main>
+    <div id="foodChosenCreateStore" class="contentPositionCenter margin">
+        <div id="intoKeywordTitle" class="">
+            請輸入店家關鍵字
+        </div>
+        <div id="intoKeywordBlock" class="">
+            <div id="intoKeywordInput" class="">
+                <input type="text" class="userInfoInputValue" id="intoKeyword" placeholder="ex:丹丹漢堡" name="intoKeyword">
+            </div>
+            <div id="searchButton" class="">
+                <div id="searchContent" class="">
+                    搜尋
+                </div>
+            </div>
+            <!-- Error Message -->
+            <div id="searchStoreErrorMessage" class="">
+                <div id="searchStoreErrorMessageContent" class="messageContent errorMessageC">
+                </div>
+            </div>
+        </div>
+        <div id="searchStoreListBlock" class="">
+            <div id="earchStoreListBlockBlock_0" class="">
+
+            </div>
+        </div>
+
+        <div id="confirmStoreButton" class="buttonFormat confirmBGC">
+            <div id="confirmStoreButtonContent" class="buttonContent">
+                確認
+            </div>
+        </div>
+        <!-- 1-8-3 back submit -->
+        <div id="backToCreateStoreButton" class="buttonFormat backBGC">
+            <div id="backToCreateStoreButtonContent" class="buttonContent">
+                返回
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/foodChosen_create.js') }}"></script>
+{% endblock %}
