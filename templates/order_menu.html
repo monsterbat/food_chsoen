@@ -10,24 +10,24 @@
 <main>
     <!-- 1-3 menu title -->
     <div id="menuItemsBlockBlock" class="contentPositionCenter margin">
-        <div id="menuItemsBlock" class="menuItemsBlock">      
-            <div id="menuItemsChoose" class="menuItemsChoose">
-                點餐
+        <div id="menuItemsBlock" class="">      
+            <div id="menuItemsChoose" class="">
+                <!-- 點餐 -->
             </div>
-            <div id="menuItemsMenu" class="menuItemsMenu">
-                餐點
+            <div id="menuItemsMenu" class="">
+                <!-- 餐點 -->
             </div>
-            <div id="menuItemsSize" class="menuItemsSize">
-                大小
+            <div id="menuItemsSize" class="">
+                <!-- 大小 -->
             </div>
-            <div id="menuItemsPrice" class="menuItemsPrice">
-                價錢
+            <div id="menuItemsPrice" class="">
+                <!-- 價錢 -->
             </div>
-            <div id="menuItemsNote" class="menuItemsNote">
-                備註
+            <div id="menuItemsNote" class="">
+                <!-- 備註 -->
             </div>
         </div>
-        <div id="separate1" class="separateBlock"></div>
+        <div id="separate1" class=""></div>
     </div>
     <!-- 1-5 menu list -->
     <div id="menuListBlcok" class="contentPositionCenter margin">
@@ -36,28 +36,30 @@
    
     <!-- 1-7 menu button -->
     <div id="menuButtonBlock" class="contentPositionCenter margin">
-        <div id="menuSubmitButton" class="buttonFormat confirmBGC">
-            <div id="menuSubmitButtonContent" class="buttonContent">
-                確認
-            </div>
-        </div>
+
         <div id="checkAllOrderMenuButton" class="buttonFormat recordBGC">
             <div id="checkAllOrderMenuButtonContent" class="buttonContent">
                 成員點餐一覽
             </div>
         </div>
-        <div id="menuEditCreateButton" class="buttonFormat editBGC">
-            <div id="menuEditCreateButtonContent" class="buttonContent">
+        <div id="menuEditCreateButton" class="">
+            <!-- <div id="menuEditCreateButtonContent" class="buttonContent">
                 菜單修改新增
-            </div>
+            </div> -->
         </div>
-
-        <!-- 1-7 back submit -->
-        <div id="backGroupIntoSubmit" class="buttonFormat backBGC">
-            <div id="backOrderMenuMemberSubmitContent" class="buttonContent">
-                返回
+        <div id="bottomOneButtonBlock" class="bottomButtonBlock twoBlock">
+            <!-- 1-7 back submit -->
+            <div id="menuSubmitButton" class="buttonFormat confirmBGC">
+                <div id="menuSubmitButtonContent" class="buttonContent">
+                    確認
+                </div>
             </div>
-        </div> 
+            <div id="backGroupIntoSubmit" class="buttonFormat backBGC">
+                <div id="backOrderMenuMemberSubmitContent" class="buttonContent">
+                    返回
+                </div>
+            </div> 
+        </div>
     </div>
  
     <!-- 1-8 check member order list -->
@@ -104,7 +106,7 @@
             </div>
             <div></div>
         </div>
-        
+        <div class="bottomButtonBlock twoBlock"></div>
         <!-- 1-8-10 go to order submit -->
         <div id="goToOrderSubmit" class="buttonFormat confirmBGC">
             <div id="goToOrderSubmitContent" class="buttonContent">
@@ -112,16 +114,18 @@
             </div>
         </div>  
         <!-- 1-8-9 back submit -->
-        <div id="backOrderMenuSubmit" class="buttonFormat backBGC">
-            <div id="backOrderMenuSubmitContent" class="buttonContent">
-                返回
-            </div>
-        </div>     
+        
+            <div id="backOrderMenuSubmit" class="buttonFormat backBGC">
+                <div id="backOrderMenuSubmitContent" class="buttonContent">
+                    返回
+                </div>
+            </div>     
+        </div>
     </div>
     <!-- 1-9 check order list -->
     <div id="checkOrderListBlock" class="contentPositionCenter margin">
         <!-- 1-9-1 check order list title -->
-        <div id="checkOrderTitle" class="checkOrderTitle">
+        <div id="checkOrderTitle" class="titleWord">
             確認餐點
         </div>
         <!-- 1-9-2 separate -->
@@ -166,23 +170,26 @@
         </div>
         <!-- 1-9-8 separate -->
         <div id="separateOrderMenu10" class="separateBlock"></div>
-        <!-- 1-9-9 edit order -->
-        <div id="editOrderSubmit" class="buttonFormat editBGC">
-            <div id="editOrderSubmitContent" class="buttonContent">
-                修改
+        <!-- 1-9-10 send out order -->
+        <div id="bottomOneButtonBlock" class="bottomButtonBlock twoBlock"></div>
+            <div id="sendOutOrderSubmit" class="buttonFormat confirmBGC">
+                <div id="sendOutOrderSubmitContent" class="buttonContent">
+                    送出
+                </div>
+            </div> 
+            <!-- 1-9-9 edit order -->
+            <div id="editOrderSubmit" class="buttonFormat backBGC">
+                <div id="editOrderSubmitContent" class="buttonContent">
+                    返回修改
+                </div>
             </div>
         </div>
-        <!-- 1-9-10 send out order -->
-        <div id="sendOutOrderSubmit" class="buttonFormat confirmBGC">
-            <div id="sendOutOrderSubmitContent" class="buttonContent">
-                送出
-            </div>
-        </div>       
+      
     </div>
     <!-- 1-10 order is finish -->
     <div id="orderIsDoneBlock" class="contentPositionCenter margin">
         <div id="orderIsDoneTitle" class="orderIsCloseTitle titleWord">
-            訂單請求已發出
+            訂單已送出
         </div>
         <div id="orderIsDoneSubmit" class="buttonFormat finishBGC">
             <div id="orderIsDoneSubmitContent" class="buttonContent">
@@ -256,17 +263,19 @@
             </div>
         </div>   
         <!-- 1-11-11 send out order -->
-        <div id="finishOrderSubmit" class="buttonFormat confirmBGC">
-            <div id="finishOrderSubmitContent" class="buttonContent">
-                已確認餐點無誤後關閉團購
-            </div>
-        </div>     
-        <!-- 1-11-12 back submit -->
-        <div id="backOrderMenuMemberSubmit" class="buttonFormat backBGC">
-            <div id="backOrderMenuMemberSubmitContent" class="buttonContent">
-                返回
-            </div>
-        </div>  
+        <div id="bottomOneButtonBlock" class="bottomButtonBlock twoBlock">
+            <div id="finishOrderSubmit" class="buttonFormat confirmBGC">
+                <div id="finishOrderSubmitContent" class="buttonContent">
+                    已確認餐點無誤後關閉團購
+                </div>
+            </div>     
+            <!-- 1-11-12 back submit -->
+            <div id="backOrderMenuMemberSubmit" class="buttonFormat backBGC">
+                <div id="backOrderMenuMemberSubmitContent" class="buttonContent">
+                    返回
+                </div>
+            </div>  
+        </div>
     </div>
 
     <!-- 1-12 order is close -->

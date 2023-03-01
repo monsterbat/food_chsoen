@@ -7,109 +7,111 @@
 {% block content %}
 <main>
     <div id="userCenterBlock" class="contentPositionCenter margin">
-        <div id="topNameAndAvatorBlock" class="flex">
+        <div id="topNameAndAvatorBlock" class="userIconAndName">
             <div id="topAvatorBlock" class="">
-                <img id="topAvator" class="smailEditIcon" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}">
+                <!-- <div id="topAvatorTitle" class="">
+                    成員頭像
+                </div> -->
+                <img id="topAvator" class="membercenterTopAvator" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}">
             </div>
-            <div id="topAvatorEditButton" class="">
-                <img id="topAvatorEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
-            </div>
-            <div id="topAvatorFinishButton" class="">
-                <img id="topAvatorFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
-            </div>
-            <div id="topNameBlock" class="">
-                <div id="topName" class="">
+            <div id="topNameBlock" class="contentPositionCenter">
+                <div id="topAvatorTitle" class="topAvatorTitle">
+                    成員姓名
+                </div>
+                <div id="topName" class="topNameBlock">
                     User Name
                 </div>
+                <div id="userNameMessage" class="userNameMessage">
+                     <!-- 123 -->
+                </div>
             </div>
-            <div id="topNameEditButton" class="">
-                <img id="topNameEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
-            </div>
-            <div id="topNameFinishButton" class="">
-                <img id="topNameFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
-            </div>
+
+
         </div>
-        <div id="userNameMessage" class=""></div>
-        <div id="userCenterSelectBlock" class="flex">
-            <div id="userProfileButton" class="">
-                <div id="userProfileButtonContent" class="">
+        <!--  -->
+        <div id="topNameEditButton" class="topNameEditButton">
+            <img id="topNameEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+        </div>
+        <div id="topNameFinishButton" class="topNameFinishButton">
+            <img id="topNameFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+        </div>
+        <div id="topAvatorEditButton" class="smailEditIcon avatorEditPosition">
+            <!-- <img id="topAvatorEdit" class="" src="{{ url_for('static', filename='image/Edit_icon.png') }}"> -->
+        </div>
+        <div id="topAvatorFinishButton" class="smailEditIcon avatorEditPosition">
+            <!-- <img id="topAvatorFinish" class="" src="{{ url_for('static', filename='image/ok_icon.png') }}"> -->
+        </div>
+        <!--  -->
+        
+        <div id="userCenterSelectBlock" class="userCenterSelectBlock">
+            <div id="userProfileButton" class="userProfileButton">
+                <div id="userProfileButtonContent" class="titleWord">
                     個人資料
                 </div>
             </div>
-            <div id="userOrderHistoryButton" class="">
-                <div id="userOrderHistoryButtonContent" class="">
+            <div id="userOrderHistoryButton" class="userOrderHistoryButton">
+                <div id="userOrderHistoryButtonContent" class="titleWord">
                     點餐履歷
                 </div>
             </div>
         </div>
         <!-- 1-3 -->
-        <div id="userProfileBlock" class="contentPositionCenter margin">
-            <!-- <div id="userNameBlock" class="flex">
-                <div id="userNameTitle" class="">
-                    姓名：
-                </div>
-                <div id="userNameShowBlock" class="">
-                    <div id="userNameShow" class=""></div>
-                </div>
-                <div id="userNameEditButton" class="">
-                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
-                </div>
-                <div id="userNameFinishButton" class="">
-                    <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
-                </div>
-            </div>
-            <div id="userNameMessage" class=""></div> -->
+        <div id="userProfileBlock" class="userProfileBlock">
 
-            <div id="userEmailBlock" class="flex">
-                <div id="userEmailTitle" class="">
-                    信箱：
+
+            <div id="userEmailBlock" class="userInfoBlock">
+                <div id="userEmailTitle" class="userInfoTitle">
+                    信箱  
                 </div>
-                <div id="userEmailShowBlock" class="">
+                <div id="userEmailShowBlock" class="userInfoShowBlock">
                     <div id="userEmailShow" class=""></div>
                 </div>
-                <div id="userEmailEditButton" class="">
+                <div id="userEmailEditButton" class="topEmailEditButton">
                     <img class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
                 </div>
-                <div id="userEmailFinishButton" class="">
+                <div id="userEmailFinishButton" class="topEmailFinishButton">
                     <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
                 </div>
             </div>
             <div id="userEmailMessage" class=""></div>
             <!-- 1-3-3 -->
-            <div id="userPasswordBlock" class="flex">
-                <div id="userPasswordTitle" class="">
-                    密碼：
+            <div id="userPasswordBlock" class="userInfoBlock">
+                <div id="userPasswordTitle" class="userInfoTitle">
+                    密碼
                 </div>
-                <div id="userPasswordShowBlock" class="">
-                    <div id="userPasswordShow" class=""></div>
+                <div id="userPasswordShowBlock" class="userInfoShowBlock">
+                    <div id="userPasswordShow" class="">
+
+                    </div>
                 </div>
-                <div id="userPasswordEditButton" class="">
+                <div id="userPasswordEditButton" class="topPasswordEditButton">
                     <img class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
                 </div>
-                <div id="userPasswordFinishButton" class="">
+                <div id="userPasswordFinishButton" class="topPasswordFinishButton">
                     <img class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
                 </div>
             </div>
             <!-- 1-3-3* -->
             <div id="userNewPasswordBlock" class="flex">
-                <div id="userNewPasswordTitle" class="">
-                    新密碼：
+                <div id="userNewPasswordTitle" class="userInfoTitle">
+                    新密碼
                 </div>
-                <div id="userNewPasswordShowBlock" class="">
-                    <input type="password" id="userNewPasswordShow" class="userInfoInputValue" placeholder="輸入新密碼" name="userNewPasswordShow">
+                <div id="userNewPasswordShowBlock" class="userInfoShowBlock passwordNewInput">
+                    <input type="password" id="userNewPasswordShow" class="userInfoInputValuMemberCenter" placeholder="輸入新密碼" name="userNewPasswordShow">
                 </div>
             </div>
             <div id="userPasswordMessage" class=""></div>
+            <div id="forTopMargin" class="forTopMarginLittle"></div>
             <!-- 1-3-4 -->
             <div id="separate" class="separateBlock"></div>
             <!-- 1-3-5 -->
-            <div id="accountInfoTitle" class="">
+            <div id="accountInfoTitle" class="titleWord">
                 帳戶資訊
             </div>
-            <div id="accountInfoItems" class="accountInfoItems">
-                <div id="accountInfoGrouop" class="">群組</div>
-                <div id="accountInfoBalance" class="">餘額</div>
-                <div id="accountInfoReload" class="">儲值</div>
+            <div id="accountInfoItems" class="accountInfoItems forTopMarginLittle">
+                <div id="accountInfoGrouop" class="listContent">群組</div>
+                <div id="accountInfoBalance" class="listContent">餘額</div>
+                <div id="accountInfoReload" class="listContent">儲值</div>
             </div>
             <div id="separate" class="separateBlock"></div>
             <div id="accountInfoListBlock" class="">
@@ -117,7 +119,7 @@
             </div>
         </div>
         <!-- 1-4 -->
-        <div id="userOrderHistoryBlock" class="contentPositionCenter margin">
+        <div id="userOrderHistoryBlock" class="contentPositionCenter userOrderHistoryBlock">
             
         </div>
 

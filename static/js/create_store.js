@@ -75,12 +75,28 @@ async function onloadCreateStorePage(){
             // return groupManager
         };
     };
+    let storeApiDataAll = await storeApiGet(urlGroupName);
+    let storeApiDataList = storeApiDataAll.store;
+    console.log("storeApiDataList",storeApiDataList)
+    // showStoreListAtCreateStore(storeApiDataList);
 };
 // ==== create event listener ====
 createStoreSubmit.addEventListener("click",createStoreSubmitClick);
 createStroeBackGroupSubmit.addEventListener("click",createStroeBackGroupSubmitClick);
 foodChosenHlpYouCreateStoreButton.addEventListener("click",foodChosenHlpYouCreateStoreButtonClick);
 // ==== Function ====
+// async function showStoreListAtCreateStore(storeApiDataList){
+    
+//     createDivElement(showAllStoreListBlock,"showAllStoreListBlockBlock","contentPositionCenter margin",null,"appendChild")
+//     for (let i=0;i<Object.keys(orderListData).length;i++){
+//         let storeNameShow = storeApiDataList[i].storeName;
+
+//         createAElement(showAllStoreListBlockBlock,`showAllStoreList_${i}`,"buttonFormat groupBGC", null, "prepend",hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/ordering`)
+//         createDivElement(eval(`showAllStoreList_${i}`), `showAllStoreListContent_${i}`, "buttonContent", storeNameShow)
+//     }
+// }
+
+
 async function createStoreSubmitClick(){
     let createStoreNameValue = createStoreName.value;
     let reateStoreAddressValue = reateStoreAddress.value;
@@ -123,5 +139,5 @@ async function foodChosenHlpYouCreateStoreButtonClick(){
 }
 
 function createStroeBackGroupSubmitClick(){
-    window.location.href = `/group/${urlGroupName}/create_order`;
+    window.location.href = `/group/${urlGroupName}/store_check`;
 };

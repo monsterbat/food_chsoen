@@ -276,7 +276,8 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
 
     result_data = {
         "ok":True,
-        "menu_fail_items":menu_fail_items
+        "menu_fail_items":menu_fail_items,
+        "store_name":store_name
     }
     print("result_data",result_data)
     return result_data

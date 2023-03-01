@@ -19,10 +19,68 @@
     cursor: pointer;   
 }
 
+.pressToShowInfo{
+    /* position: relative; */
+    object-fit: cover;
+    /* border-radius:1000px; */
+    width: 8px;
+    height: 8px;
+    padding-top: 3px;
+    /* right:20px; */
+    /* margin: 0px 0px 0px 10px;; */
+    /* background-color: white; */
+    /* position: absolute; */
+    /* display: inline-flex;  */
+    /* right: 15px; */
+    /* top:25%; */
+    /* z-index: 300; */
+    /* background: #cacccd; */
+    /* border-radius: 19px; */
+    cursor: pointer;   
+}
+
 .smailEditIcon{
+    display: flex;
+    position: absolute;
     object-fit: cover;
     border-radius:1000px;
     width: 16px;
     height: 16px;
+    cursor: pointer; 
+    top: 0px;
+    z-index: 9990;  
+}
+
+.membercenterTopAvator{
+    object-fit: cover;
+    border-radius:1000px;
+    width: 100px;
+    height: 100px;
     cursor: pointer;   
+}
+
+/* absolute position */
+.avatorEditPosition{
+    top:50px;
+}
+
+.loadingGifImg{
+    /* display: none; */
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
+    cursor: pointer;  
+    position:fixed;
+    /* position: absolute; */
+    top: 250px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    /* position: sticky; */
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+    z-index: 2000;
+    /* margin: 20px 0px 20px 0px;
+    padding: 10px; */
+    /* border-radius: 5px; */
 }

@@ -10,13 +10,13 @@ from flask import *
 
 # SELECT FROM
 # ID find
-def sql_store_name_find_id(store_name,group_id,store_status):
+def sql_store_name_find_id(store_name,group_id):
     sql_command="""
     SELECT id
     FROM store 
-    WHERE store_name=%s AND group_id=%s AND store_status=%s;
+    WHERE store_name=%s AND group_id=%s ;
     """
-    value_input = (store_name,group_id,store_status)
+    value_input = (store_name,group_id)
     store_id_check = query_data(sql_command,value_input)
     if (store_id_check == []):
         return store_id_check
@@ -46,6 +46,18 @@ def sql_group_id_find_all_store_info(group_id,store_status):
     WHERE group_id=%s AND store_status=%s;
     """
     value_input = (group_id,store_status)
+    store_info_check = query_data(sql_command,value_input)
+
+    return store_info_check
+
+# Store info
+def sql_group_id_find_one_store_info(group_id,store_name,store_status):
+    sql_command="""
+    SELECT *
+    FROM store 
+    WHERE group_id=%s AND store_name=%s AND store_status=%s;
+    """
+    value_input = (group_id,store_name,store_status)
     store_info_check = query_data(sql_command,value_input)
 
     return store_info_check

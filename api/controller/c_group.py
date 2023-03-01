@@ -64,3 +64,15 @@ def group_info():
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_group.route("/api/group/user", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
+def group_user():
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            message = m_group.group_get_user(page,keyword,urlGroupName)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500       

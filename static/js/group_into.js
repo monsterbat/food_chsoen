@@ -1,18 +1,25 @@
 // ==== Get element ====
+// top setting
+let mainPagePopup = document.getElementById("mainPagePopup");
+let manageGroupEdit = document.getElementById("manageGroupEdit");
+let managerOrderListRecord = document.getElementById("managerOrderListRecord");
+let createStore = document.getElementById("createStore");
+let reloadButton = document.getElementById("reloadButton");
+let checkStoreButton = document.getElementById("checkStoreButton");
+
 // Manage group
 let manageGroupBlock = document.getElementById("manageGroupBlock");
-let manageGroupEdit = document.getElementById("manageGroupEdit");
 let manageGroupInvite = document.getElementById("manageGroupInvite");
 let manageGroupCreateOrderList = document.getElementById("manageGroupCreateOrderList");
-let reloadButton = document.getElementById("reloadButton");
 // spacer
 let separateGroupInto1 = document.getElementById("separateGroupInto1");
 // Manage order list
 let manageOrderListBlock = document.getElementById("manageOrderListBlock");
-let managerOrderListRecord = document.getElementById("managerOrderListRecord");
 let managerOrderListTitle = document.getElementById("managerOrderListTitle");
 // 1-5-2 order list Title
 let managerOrderList = document.getElementById("managerOrderList");
+let backGroupChooseButton = document.getElementById("backGroupChooseButton");
+
 // Edit group
 let editGroupBlock = document.getElementById("editGroupBlock");
 // Edit group name
@@ -54,19 +61,26 @@ let inviteMemberSubmitContent = document.getElementById("inviteMemberSubmitConte
 let inviteBackGroupSubmit = document.getElementById("inviteBackGroupSubmit");
 let inviteBackGroupSubmitContent = document.getElementById("inviteBackGroupSubmitContent");
 
+let showAllmemberAndMoneyBlock = document.getElementById("showAllmemberAndMoneyBlock");
+let inviteMemberEmailBlockBlock = document.getElementById("inviteMemberEmailBlockBlock");
+let openInviteMemberButton = document.getElementById("openInviteMemberButton");
+
+let finisIinviteBackGroupButton = document.getElementById("finisIinviteBackGroupButton");
+
 // ==== Create element ====
-// Edit group name
-createElement(editGroupNameBlock, "div", "editGroupNameButton", "editGroupNameButton", addText = null, appendForm = "appendChild", hrefContent = null);
-createElement(editGroupNameButton,"img","userNameEditIcon","smailEditIcon", "../static/image/Edit_icon.png");
-createElement(editGroupNameBlock, "div", "finishGroupNameButton", "finishGroupNameButton", addText = null, appendForm = "appendChild", hrefContent = null);
-createElement(finishGroupNameButton,"img","userNameFinishIcon","smailEditIcon", "../static/image/ok_icon.png");
-// Edit group password
-createElement(editGroupPasswordBlock, "div", "editGroupPasswordButton", "editGroupPasswordButton", addText = null, appendForm = "appendChild", hrefContent = null);
-createElement(editGroupPasswordButton,"img","userPasswordEditIcon","smailEditIcon", "../static/image/Edit_icon.png");
-createElement(editGroupPasswordBlock, "div", "finishGroupPasswordButton", "finishGroupPasswordButton", addText = null, appendForm = "appendChild", hrefContent = null);
-createElement(finishGroupPasswordButton,"img","userPasswordFinishIcon","smailEditIcon", "../static/image/ok_icon.png");
+
+// 1-2 page title
+createDivElement(pageTitle, "pressToShowInfoDown", "",null,  "appendChild");
+createImgElement(pressToShowInfoDown,"pressToShowInfoDownImg","pressToShowInfo", "../static/image/arrow_down.png","appendChild");
+createDivElement(pageTitle, "pressToShowInfoUp", "",null, "appendChild");
+createImgElement(pressToShowInfoUp,"pressToShowInfoUpImg","pressToShowInfo", "../static/image/arrow_up.png","appendChild");
+
 // ==== onload ====
-onloadThisPage()
+let groupIntoCount = 0;
+let groupUserCount = 0;
+noneDisplayGroupInto();
+manageGroupBlock.style.display="flex";
+onloadThisPage();
 async function onloadThisPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
@@ -75,6 +89,7 @@ async function onloadThisPage(){
     pageTitleContent.textContent = urlGroupName;
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
+    console.log("groupApiData",groupApiData)
     groupId = groupApiData.groupId;
     let groupManager = "";
     for (i=0;i<Object.keys(groupApiData).length;i++){
@@ -86,6 +101,7 @@ async function onloadThisPage(){
     editGroupDisplayOrNot(userId,groupManager);
     oriGroupNameShow(urlGroupName);
     checkAllOrderMenuButtonClick();
+    showAllmemberAndMoneyInGroup();
 }
 
 editGroupBlock.style.display = "none";
@@ -96,6 +112,9 @@ finishGroupPasswordButton.style.display = "none";
 
 
 // ==== create event listener ====
+// edit group
+pageTitle.addEventListener("click",pageTitleClick);
+backGroupChooseButton.addEventListener("click",backGroupChooseButtonClick);
 // into page
 manageGroupEdit.addEventListener("click",manageGroupEditClick);
 manageGroupInvite.addEventListener("click",manageGroupInviteClick);
@@ -113,6 +132,9 @@ deleteConfirmNoButton.addEventListener("click",deleteConfirmNoButtonClick);
 // // invite member
 inviteMemberSubmit.addEventListener("click",inviteMemberSubmitClick);
 inviteBackGroupSubmit.addEventListener("click",inviteBackGroupSubmitClick);
+
+openInviteMemberButton.addEventListener("click",openInviteMemberButtonClick);
+finisIinviteBackGroupButton.addEventListener("click",finisIinviteBackGroupButtonClick);
 // 
 reloadButton.addEventListener("click",reloadButtonClick);
 
@@ -120,12 +142,37 @@ reloadButton.addEventListener("click",reloadButtonClick);
 // order history
 managerOrderListRecord.addEventListener("click",rmanagerOrderListRecordClick);
 
+checkStoreButton.addEventListener("click",checkStoreButtonClick);
 
 // ==== Function ====
 
-function displayNoneGroupGroupInto(){
-
+function noneDisplayGroupInto(){
+    mainPagePopup.style.display = "none";
+    manageGroupBlock.style.display = "none";
+    editGroupBlock.style.display = "none";
+    deleteConfirmBlock.style.display = "none";
+    inviteMemberBlock.style.display = "none";
+    pressToShowInfoUp.style.display = "none";
 }
+
+function pageTitleClick(){
+    let groupEditShowJudge = groupIntoCount%2
+    noneDisplayGroupInto();
+    if (groupEditShowJudge == 0){
+        mainPagePopup.style.display = "flex";
+        pressToShowInfoDown.style.display = "none";
+        pressToShowInfoUp.style.display = "flex";
+    }
+    if (groupEditShowJudge == 1){
+        location.reload()
+    }
+    groupIntoCount+=1
+    
+}
+
+async function checkStoreButtonClick(){
+    window.location.href = `/group/${urlGroupName}/store_check`;
+};
 
 async function reloadButtonClick(){
     window.location.href = `/group/${urlGroupName}/reload`;
@@ -145,11 +192,10 @@ function oriGroupNameShow(urlGroupName){
     editGroupPasswordInput.textContent = "******";
 };
 function manageGroupEditClick(){
+    noneDisplayGroupInto();
     pageTitleContent.textContent = "編輯群組";
     editGroupBlock.style.display = "flex";
-    manageGroupBlock.style.display = "none";
-    separateGroupInto1.style.display = "none";
-    manageOrderListBlock.style.display = "none";
+    // 
     editGroupNewPasswordTitle.style.display = "none";
     editGroupNewPasswordInput.style.display = "none";
 };
@@ -272,13 +318,39 @@ function deleteConfirmNoButtonClick(){
 function editBackGroupSubmitClick(){
     window.location.href = `/group/${urlGroupName}`;
 }
+
+async function showAllmemberAndMoneyInGroup(){
+    createDivElement(showAllmemberAndMoneyBlock,`showAllmemberAndMoneyBlockBlock_${groupUserCount}`, null, null, "appendChild");
+    createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`showAllmemberAndMoneyListTitle`, "titleWord", "群組成員", "appendChild");
+    createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`separate`, "separateBlock", null, "appendChild");
+    createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`showAllmemberAndMoneyListItemsTiitle`, "showAllmemberAndMoneyBlock", null, "appendChild");
+    createDivElement(showAllmemberAndMoneyListItemsTiitle,`userPositionTitle`, "listContent", "職位", "appendChild");
+    createDivElement(showAllmemberAndMoneyListItemsTiitle,`userNameTitle`, "listContent", "姓名", "appendChild");
+    createDivElement(showAllmemberAndMoneyListItemsTiitle,`userBalanceTitle`, "listContent", "餘額", "appendChild");
+    let groupUserApiGetResult = await groupUserApiGet(urlGroupName);
+    console.log("groupUserApiGetResult",groupUserApiGetResult);
+    console.log("Object.keys(groupUserApiGetResult)",Object.keys(groupUserApiGetResult));
+
+    for (let i=0;i<groupUserApiGetResult.length;i++){
+        userPosition = groupUserApiGetResult[i].userPosition;
+        userName = groupUserApiGetResult[i].userName;
+        userBalance = groupUserApiGetResult[i].userBalance;
+        createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`showAllmemberAndMoneyList_${i}`, "showAllmemberAndMoneyBlock", null, "appendChild");
+        createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userPosition_${i}`, "listContent", userPosition, "appendChild");
+        createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userName_${i}`, "listContent", userName, "appendChild");
+        createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userBalance_${i}`, "listContent", userBalance, "appendChild");
+    }
+
+}
+
 // invite member
 function manageGroupInviteClick(){
-    inviteMemberBlock.style.display = "flex";
-    manageGroupBlock.style.display = "none";
-    separateGroupInto1.style.display = "none";
-    manageOrderListBlock.style.display = "none";
-    pageTitleContent.textContent = "邀請會員"
+    noneDisplayGroupInto();
+    inviteMemberEmailBlockBlock.style.display = "none"
+    inviteMemberBlock.style.display = "flex"
+    inviteMemberSubmit.style.display = "none"
+    finisIinviteBackGroupButton.style.display = "none"
+    pageTitleContent.textContent = "群組成員"
 };
 
 async function inviteMemberSubmitClick(){
@@ -299,11 +371,16 @@ async function inviteMemberSubmitClick(){
                 "groupName":urlGroupName
             };
             let billApiPostResult = await billApiPost(data);
-            inviteMemberMessageContent.textContent = "已加入成員，請繼續輸入或返回群組";
+            inviteMemberMessageContent.textContent = `${inviteMemberEmailValue} 成功加入`;
         }
         else{
             resultMessage = result.message;
-            inviteMemberMessageContent.textContent = "此成員已加入";
+            if (resultMessage == "user doesn't exist"){
+                inviteMemberMessageContent.textContent = `${inviteMemberEmailValue}使用者不存在`;
+            };
+            if (resultMessage == "already member"){
+                inviteMemberMessageContent.textContent = `${inviteMemberEmailValue}已是會員`;
+            };
         };
     }
     else{
@@ -311,12 +388,38 @@ async function inviteMemberSubmitClick(){
     };
 };
 
+function openInviteMemberButtonClick(){
+    showAllmemberAndMoneyBlock.style.display = "none";
+    openInviteMemberButton.style.display = "none";
+    inviteBackGroupSubmit.style.display = "none";
+    // 
+    inviteMemberEmailBlockBlock.style.display = "flex";
+    inviteMemberSubmit.style.display = "flex";
+    finisIinviteBackGroupButton.style.display = "flex";
+
+    pageTitleContent.textContent = "新增成員";
+}
+
+async function finisIinviteBackGroupButtonClick(){
+    eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`).remove();
+    groupUserCount+=1;
+    await showAllmemberAndMoneyInGroup();
+    showAllmemberAndMoneyBlock.style.display = "flex";
+    openInviteMemberButton.style.display = "flex";
+    inviteBackGroupSubmit.style.display = "flex";
+    // 
+    inviteMemberEmailBlockBlock.style.display = "none";
+    inviteMemberSubmit.style.display = "none";
+    finisIinviteBackGroupButton.style.display = "none";
+}
+
 function inviteBackGroupSubmitClick(){
-    inviteMemberBlock.style.display = "none";
-    manageGroupBlock.style.display = "flex";
-    separateGroupInto1.style.display = "flex";
-    manageOrderListBlock.style.display = "flex";
+    noneDisplayGroupInto();
+    mainPagePopup.style.display = "flex";
+    pressToShowInfoDown.style.display = "none";
+    pressToShowInfoUp.style.display = "flex";
     pageTitleContent.textContent = urlGroupName;
+
 };
 
 function manageGroupCreateOrderListClick(){
@@ -385,7 +488,7 @@ async function showAllGrooupOrderAliveListBlock(orderListData){
     let managerOrderListAliveTitleContent = "正在進行的團購"
     createDivElement(managerOrderList,`managerOrderListAliveTitle`,"titleWord",managerOrderListAliveTitleContent, "appendChild")
     createDivElement(managerOrderList,`managerOrderListBlock`, "contentPositionCenter", null, "appendChild");
-    for(i=0;i<Object.keys(orderListData).length;i++){
+    for(let i=0;i<Object.keys(orderListData).length;i++){
         let orderListId = orderListData[i]["orderListId"];
         let storeName = orderListData[i]["storeName"];
         let orderUserName = orderListData[i]["orderUserName"];
@@ -424,3 +527,7 @@ async function showAllGrooupOrderListOrderingBlock(orderListData){
 function rmanagerOrderListRecordClick(){
     window.location.href = `/group/${urlGroupName}/order_history`;
 };
+
+function backGroupChooseButtonClick(){
+    window.location.href = `/group`;
+}

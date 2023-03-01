@@ -59,7 +59,16 @@ async function groupInfoApiGet(urlGroupName,getStatus){
         return data;
     })
 };
-
+// user on group
+async function groupUserApiGet(urlGroupName){
+    return fetch(`/api/group/user?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // User
 async function userApiGet(){
@@ -93,6 +102,7 @@ async function userApiDelete(){
         return data;
     })
 };
+
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // Store
 async function storeApiGet(urlGroupName){
@@ -117,6 +127,21 @@ async function storeApiPost(data){
         return data;
     })
 };
+async function storeApiPatch(data){
+    return fetch(`/api/store`,{
+        method:"PATCH",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            "Content-Type":"application/json"
+        })
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
+
+
 // Store Draw lots
 async function storeDrawLotsApiGet(urlGroupName){
     return fetch(`/api/store/drawLots?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{
@@ -127,7 +152,16 @@ async function storeDrawLotsApiGet(urlGroupName){
         return data;
     })
 };
-
+// Store Get one info
+async function storeOneInfoGet(urlGroupName,urlStoreName){
+    return fetch(`/api/store/info?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}&urlStoreName=${urlStoreName}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
 // Store get type
 async function storeTpyeApiGet(urlGroupName){
     return fetch(`/api/store/type?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{

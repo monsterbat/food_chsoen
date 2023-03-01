@@ -73,10 +73,10 @@ def group_put_400_not_exist_user():
         })
     return errorr_message, 400
 
-def group_put_400_already_join(join_time):
+def group_put_400_already_join():
     errorr_message = jsonify({
             "error": True,
-            "message": join_time
+            "message": "already member"
         })
     return errorr_message, 400
 

@@ -1,16 +1,16 @@
 .userInfoInputBlock{
     font-family: 'Noto Sans TC';
     font-style: normal;
-    color: #757575;
+    color: #000000;
     justify-content: center;
     align-items: center;
 
     width: 250px;
-    height: 47px;
+    height: 30px;
 
-    background: #FFFFFF;
+    background: rgb(195, 195, 195);
 
-    border: 1px solid #CCCCCC;
+    /* border: 1px solid #CCCCCC; */
     border-radius: 5px;
     display: inline-flex;
     margin: 10px;
@@ -23,7 +23,7 @@
     font-family: 'Noto Sans TC';
     font-style: normal;
     width: 250px;
-    height: 47px;
+    height: 40px;
     margin: 10px 0px 10px 0px;
     font-family: 'Noto Sans TC';
     font-style: normal;

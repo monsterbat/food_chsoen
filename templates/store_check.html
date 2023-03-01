@@ -1,0 +1,37 @@
+{% extends 'group.html' %}
+
+{% block title %}
+<title>Food chosen</title> 
+{% endblock %} 
+
+{% block content %}
+<main>
+    <div id="checkStoreBlock" class="contentPositionCenter margin">
+        <div class="topButtonBlock oneBlock">
+            <div id="createStoreButton" class="buttonFixOnTop buttonFormat createBGC">
+                <div id="createStoreButtonContent" class="buttonContent positionAbsolute">
+                    創建店家
+                </div>
+            </div>
+        </div>
+        <!-- <div id="separateGroupInto1" class="separateGroupInto1"> </div> -->
+        <div id="separate" class="separateBlock"></div>
+        <div id="checkStoreTitle" class="titleWord">
+            
+        </div>
+        <div id="checkStoreListBlock" class="">
+
+        </div>
+        <div id="bottomOneButtonBlock" class="bottomButtonBlock twoBlock">
+            <div id="backToGroupEditButton" class="buttonFormat backBGC">
+                <div id="backToGroupEditButtonContent" class="buttonContent">
+                    返回
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/store_check.js') }}"></script>
+{% endblock %}

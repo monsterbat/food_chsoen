@@ -59,15 +59,24 @@ let createMenuEditFinishMenuContent = document.getElementById("createMenuEditFin
 
 let createMenuFinishButton = document.getElementById("createMenuFinishButton");
 let createMenuFinishContent = document.getElementById("createMenuFinishContent");
+let createMenuAddMenuButton = document.getElementById("createMenuAddMenuButton");
+let createMenuBackToLoadButton = document.getElementById("createMenuBackToLoadButton");
+
 
 // 1-3-8 back submit
-let createMenuBackGroupSubmit = document.getElementById("createMenuBackGroupSubmit");
-let createMenuBackGroupSubmitContent = document.getElementById("createMenuBackGroupSubmitContent");
+// let createMenuBackGroupSubmit = document.getElementById("createMenuBackGroupSubmit");
+// let createMenuBackGroupSubmitContent = document.getElementById("createMenuBackGroupSubmitContent");
 
 // ==== Create element ====
 
 // ==== onload ====
-createMenuBackGroupSubmit.style.display = "none";
+// let menuOriTypeValue;
+// let menuOriNameValue;
+// let menuOriSizeValue;
+// let menuOriPriceValue;
+// let menuOriNoteValue;
+createMenuBlock.style.display = "none";
+// createMenuBackGroupSubmit.style.display = "none";
 createMenuEditFinishMenuButton.style.display = "none";
 createMenuRemoveMenuButton.style.display = "none";
 onloadCreateMenuPage();
@@ -102,10 +111,18 @@ createMenuAddSubmit.addEventListener("click",createMenuAddSubmitClick);
 createMenuEditMenuButton.addEventListener("click",createMenuEditMenuButtonClick);
 createMenuEditFinishMenuButton.addEventListener("click",createMenuEditFinishMenuButtonClick);
 createMenuFinishButton.addEventListener("click",createMenuFinishButtonClick);
-createMenuBackGroupSubmit.addEventListener("click",createMenuBackGroupSubmitClick);
+// createMenuBackGroupSubmit.addEventListener("click",createMenuBackGroupSubmitClick);
 createMenuRemoveMenuButton.addEventListener("click",createMenuRemoveMenuButtonClick);
-
+createMenuAddMenuButton.addEventListener("click",createMenuAddMenuButtonClick);
+createMenuBackToLoadButton.addEventListener("click",createMenuBackToLoadButtonClick);
 // ==== Function ====
+function noDisplayAll(){
+    createMenuBlock.style.display = "none";
+    createMenuAlreadyTitleBlock.style.display = "none";
+    alreadyCreatedMenuBlcok.style.display = "none";
+    createMenuButtonBlock.style.display = "none";
+}
+
 async function createMenuAddSubmitClick(){
     let createMenuNameValue = "";
     let createMenuSizeValue = "";
@@ -149,21 +166,24 @@ async function generateMenu(urlGroupName,urlStoreName){
     let getMenuData = await menuApiGet(urlGroupName,urlStoreName);
     menuList = getMenuData.menu;
     createElement(alreadyCreatedMenuBlcok, "form", "menuBlockFrom", "menuBlockFrom", null, "appendChild");
-    
+    console.log("menuList",menuList)
     if (menuList != null){
         for(i=0;i<Object.keys(menuList).length;i++){
             menuName = menuList[i]["menuName"];
             menuSize = menuList[i]["menuSize"];
             menuPrice = menuList[i]["menuPrice"];
             menuNote = menuList[i]["menuNote"];
+            menuType = menuList[i]["menuType"];
             menuInputValue = JSON.stringify({
                 "menuName":menuName,
                 "menuSize":menuSize,
                 "menuPrice":menuPrice,
-                "menuNote":menuNote
+                "menuNote":menuNote,
+                "menuType":menuType
             });
             createDivElement(menuBlockFrom,`menuBlock${i}`, "createMenuAlreadyItemsBlock", null, "appendChild");
             createInputElement(eval(`menuBlock${i}`),addId=`menuCheckbox${i}`,addClass="menuCheckbox", addText = null, appendForm = "appendChild",inputType = "radio", inputValue =menuInputValue,inputName = "manuCreated");
+            createDivElement(eval(`menuBlock${i}`), `menuType${i}`, "menuType", menuType);
             createDivElement(eval(`menuBlock${i}`), `menuName${i}`, "menuName", menuName);
             createDivElement(eval(`menuBlock${i}`), `menuSize${i}`, "menuSize", menuSize);
             createDivElement(eval(`menuBlock${i}`), `menuPrice${i}`, "menuPrice", menuPrice);
@@ -174,28 +194,38 @@ async function generateMenu(urlGroupName,urlStoreName){
 
 async function createMenuEditMenuButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
-    let chosenMenuId = chosenMenu.id;
-    let menuNumber = chosenMenuId.replace(/^menuCheckbox/g, "");
+    console.log("chosenMenu",chosenMenu)
+    createMenuErroeMessageContent2.textContent = ""
+    if (chosenMenu == null){
+        createMenuErroeMessageContent2.textContent = "請選擇項目"
+    }
+    else{
+        let chosenMenuId = chosenMenu.id;
+        let menuNumber = chosenMenuId.replace(/^menuCheckbox/g, "");
 
-    menuOriNameValue = eval(`menuName${menuNumber}`).textContent;
-    menuOriSizeValue = eval(`menuSize${menuNumber}`).textContent;
-    menuOriPriceValue = eval(`menuPrice${menuNumber}`).textContent;
-    menuOriNoteValue = eval(`menuNote${menuNumber}`).textContent;
-
-    replaceElement(eval(`menuName${menuNumber}`), "input",`menuNewName${menuNumber}`,"menuNew",menuOriNameValue,inputType = "text");
-    replaceElement(eval(`menuSize${menuNumber}`), "input",`menuNewSize${menuNumber}`,"menuNew",menuOriSizeValue,inputType = "text");
-    replaceElement(eval(`menuPrice${menuNumber}`), "input",`menuNewPrice${menuNumber}`,"menuNew",menuOriPriceValue,inputType = "text");
-    replaceElement(eval(`menuNote${menuNumber}`), "input",`menuNewNote${menuNumber}`,"menuNew",menuOriNoteValue,inputType = "text");
-    let chosenMenuValue = JSON.parse(chosenMenu.value);
-    createMenuEditFinishMenuButton.style.display = "flex";
-    createMenuRemoveMenuButton.style.display = "flex";
-    createMenuEditMenuButton.style.display = "none";
+        menuOriTypeValue = eval(`menuType${menuNumber}`).textContent;
+        menuOriNameValue = eval(`menuName${menuNumber}`).textContent;
+        menuOriSizeValue = eval(`menuSize${menuNumber}`).textContent;
+        menuOriPriceValue = eval(`menuPrice${menuNumber}`).textContent;
+        menuOriNoteValue = eval(`menuNote${menuNumber}`).textContent;
+        replaceElement(eval(`menuType${menuNumber}`), "input",`menuNewType${menuNumber}`,"menuNew",menuOriTypeValue,inputType = "text");
+        replaceElement(eval(`menuName${menuNumber}`), "input",`menuNewName${menuNumber}`,"menuNew",menuOriNameValue,inputType = "text");
+        replaceElement(eval(`menuSize${menuNumber}`), "input",`menuNewSize${menuNumber}`,"menuNew",menuOriSizeValue,inputType = "text");
+        replaceElement(eval(`menuPrice${menuNumber}`), "input",`menuNewPrice${menuNumber}`,"menuNew",menuOriPriceValue,inputType = "text");
+        replaceElement(eval(`menuNote${menuNumber}`), "input",`menuNewNote${menuNumber}`,"menuNew",menuOriNoteValue,inputType = "text");
+        let chosenMenuValue = JSON.parse(chosenMenu.value);
+        createMenuEditFinishMenuButton.style.display = "flex";
+        createMenuRemoveMenuButton.style.display = "flex";
+        createMenuAddMenuButton.style.display = "none";
+        createMenuEditMenuButton.style.display = "none";
+    }
 };
 
 async function createMenuEditFinishMenuButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
     let chosenMenuId = chosenMenu.id;
     let menuNumber = chosenMenuId.replace(/^menuCheckbox/g, "");
+    let menuNewTypeValue = eval(`menuNewType${menuNumber}`).value;
     let menuNewNameValue = eval(`menuNewName${menuNumber}`).value;
     let menuNewSizeValue = eval(`menuNewSize${menuNumber}`).value;
     let menuNewPriceValue = eval(`menuNewPrice${menuNumber}`).value;
@@ -204,10 +234,12 @@ async function createMenuEditFinishMenuButtonClick(){
         "storeName":urlStoreName,
         "groupId":groupId,
         "menu":{
+            "menuType":menuOriTypeValue,
             "menuName":menuOriNameValue,
             "menuSize":menuOriSizeValue,
             "menuPrice":menuOriPriceValue,
             "menuNote":menuOriNoteValue,
+            "menuNewType":menuNewTypeValue,
             "menuNewName":menuNewNameValue,
             "menuNewSize":menuNewSizeValue,
             "menuNewPrice":menuNewPriceValue,
@@ -215,14 +247,17 @@ async function createMenuEditFinishMenuButtonClick(){
             "menuNewStatus":"alive"
             }
     };
+    console.log("data",data)
     let menuApiPatchData = await menuApiPatch(data);
     if (menuApiPatchData.ok == true){
+        replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
         replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuNewNameValue,inputType = "text");
         replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuNewSizeValue,inputType = "text");
         replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuNewPriceValue,inputType = "text");
         replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuNewNoteValue,inputType = "text");
     };
     if (menuApiPatchData.message == "餐點及大小重複"){
+        replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuOriTypeValue,inputType = "text");
         replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuOriNameValue,inputType = "text");
         replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuOriSizeValue,inputType = "text");
         replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuOriPriceValue,inputType = "text");
@@ -230,6 +265,7 @@ async function createMenuEditFinishMenuButtonClick(){
         createMenuErroeMessageContent2.textContent = "餐點及大小重複"
     };
     if (menuApiPatchData.message == "未變更"){
+        replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
         replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuNewNameValue,inputType = "text");
         replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuNewSizeValue,inputType = "text");
         replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuNewPriceValue,inputType = "text");
@@ -239,16 +275,17 @@ async function createMenuEditFinishMenuButtonClick(){
     createMenuRemoveMenuButton.style.display = "none";
     createMenuEditFinishMenuButton.style.display = "none";
     createMenuEditMenuButton.style.display = "flex";
+    createMenuAddMenuButton.style.display = "flex";
 };
 
 function createMenuFinishButtonClick(){
-    window.location.href = `/group/${urlGroupName}/create_order`;
+    window.location.href = `/group/${urlGroupName}/store_edit/${urlStoreName}`;
 };
 
 function fromCreateOrOrderMenu(url4){
     if (url4 == "order_edit"){
         createMenuFinishButton.style.display = "none";
-        createMenuBackGroupSubmit.style.display = "flex";
+        // createMenuBackGroupSubmit.style.display = "flex";
     }
 };
 
@@ -256,6 +293,7 @@ async function createMenuRemoveMenuButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
     let chosenMenuId = chosenMenu.id;
     let menuNumber = chosenMenuId.replace(/^menuCheckbox/g, "");
+    let menuNewTypeValue = eval(`menuNewType${menuNumber}`).value;
     let menuNewNameValue = eval(`menuNewName${menuNumber}`).value;
     let menuNewSizeValue = eval(`menuNewSize${menuNumber}`).value;
     let menuNewPriceValue = eval(`menuNewPrice${menuNumber}`).value;
@@ -264,10 +302,12 @@ async function createMenuRemoveMenuButtonClick(){
         "storeName":urlStoreName,
         "groupId":groupId,
         "menu":{
+            "menuType":menuOriTypeValue,
             "menuName":menuOriNameValue,
             "menuSize":menuOriSizeValue,
             "menuPrice":menuOriPriceValue,
             "menuNote":menuOriNoteValue,
+            "menuNewType":menuNewTypeValue,
             "menuNewName":menuNewNameValue,
             "menuNewSize":menuNewSizeValue,
             "menuNewPrice":menuNewPriceValue,
@@ -276,6 +316,7 @@ async function createMenuRemoveMenuButtonClick(){
             }
     };
     let menuApiPatchResult = await menuApiPatch(data);
+    console.log("menuApiPatchResult",menuApiPatchResult)
     let dataPatchOrder = {
         "groupId":groupId,
         "userId":null,
@@ -294,6 +335,15 @@ async function createMenuRemoveMenuButtonClick(){
     location.reload();
 };
 
-function createMenuBackGroupSubmitClick(){
-    window.history.back();
-};
+// function createMenuBackGroupSubmitClick(){
+//     window.history.back();
+// };
+
+function createMenuAddMenuButtonClick(){
+    noDisplayAll();
+    createMenuBlock.style.display = "flex"
+}
+
+function createMenuBackToLoadButtonClick(){
+    location.reload();
+}

@@ -67,11 +67,15 @@ def sql_insert_into_menu(group_id, store_id,menu_name, menu_size, menu_type,menu
     insert_or_update_data(sql_command,value_input)
 
 # ==== PATCH UPDATE ====
-def sql_menu_id_update_menu_info(menu_update_item, update_data, menu_id, menu_status):
+def sql_menu_id_update_menu_type(update_data, menu_id, menu_status):
+    print("C3")
     sql_command="""
     UPDATE menu
-    SET %s = %s
+    SET menu_type = %s
     WHERE id = %s AND menu_status=%s;
     """
-    value_input = (menu_update_item, update_data, menu_id, menu_status)
+   
+    
+    value_input = (update_data, menu_id, menu_status)
+    print("value_input",value_input)
     insert_or_update_data(sql_command,value_input)     

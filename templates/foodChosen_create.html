@@ -1,21 +1,26 @@
 {% extends 'group.html' %}
 
 {% block title %}
+<link rel="stylesheet", type="text/css", href="{{ url_for('static', filename='css/foodChosen_create.css') }}" />
 <title>Food chosen</title> 
 {% endblock %} 
 
 {% block content %}
 <main>
     <div id="foodChosenCreateStore" class="contentPositionCenter margin">
-        <div id="intoKeywordTitle" class="">
+
+        <div id="loadingGif" class=""> 
+            <img class="loadingGifImg" src="{{ url_for('static', filename='image/loading.gif') }}">
+        </div>
+        <div id="intoKeywordTitle" class="titleWord">
             請輸入店家關鍵字
         </div>
-        <div id="intoKeywordBlock" class="">
+        <div id="intoKeywordBlock" class="contentPositionCenter infoBackround inputValueBigBlock margin padding">
             <div id="intoKeywordInput" class="">
                 <input type="text" class="userInfoInputValue" id="intoKeyword" placeholder="ex:丹丹漢堡" name="intoKeyword">
             </div>
-            <div id="searchButton" class="">
-                <div id="searchContent" class="">
+            <div id="searchButton" class="buttonFormat midSizeButtonFormat editBGC">
+                <div id="searchContent" class="buttonContent">
                     搜尋
                 </div>
             </div>
@@ -30,16 +35,17 @@
 
             </div>
         </div>
-
-        <div id="confirmStoreButton" class="buttonFormat confirmBGC">
-            <div id="confirmStoreButtonContent" class="buttonContent">
-                確認
+        <div id="bottomOneButtonBlock" class="bottomButtonBlock twoBlock">
+            <div id="confirmStoreButton" class="buttonFormat confirmBGC">
+                <div id="confirmStoreButtonContent" class="buttonContent">
+                    確認
+                </div>
             </div>
-        </div>
-        <!-- 1-8-3 back submit -->
-        <div id="backToCreateStoreButton" class="buttonFormat backBGC">
-            <div id="backToCreateStoreButtonContent" class="buttonContent">
-                返回
+            <!-- 1-8-3 back submit -->
+            <div id="backToCreateStoreButton" class="buttonFormat backBGC">
+                <div id="backToCreateStoreButtonContent" class="buttonContent">
+                    返回
+                </div>
             </div>
         </div>
     </div>

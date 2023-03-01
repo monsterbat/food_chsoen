@@ -138,10 +138,10 @@ def store_get(page, keyword=None, urlGroupName=None):
 
 # Change store info
 def store_patch():
-    # group_id @@@@@@@@@@@Not yet
-    group_id = ""
     # Get data from front-end
+    print("C0")
     change_store_data = request.get_json()
+    group_name = change_store_data["groupName"]
     store_name = change_store_data["storeName"]
     store_new_name = change_store_data["storeNewName"]
     store_new_address = change_store_data["storeNewaddress"]
@@ -151,112 +151,99 @@ def store_patch():
     store_new_delivery_condition = change_store_data["storeNewDeliveryCondition"]
     store_new_status = change_store_data["storeNewStatus"]
     store_note =  change_store_data["storeNote"]
+    print("C1")
+    # Find Group id
+    group_id = sql_group_name_find_id(group_name, "alive")
     # Find store id
-    sql_command="""
-    SELECT id
-    FROM store
-    WHERE store_name = %s AND group_id = %s AND store_status=%s;
-    """
-    value_input=(store_name, group_id,"alive")
-    store_id_check = query_data(sql_command,value_input)
-    store_id = store_id_check[0]["id"]
+    store_id = sql_store_name_find_id(store_name, group_id)
 
-    # Change name
-    if store_new_name != None:
-        sql_command="""
-        UPDATE store
-        SET store_name = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_new_name,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
+    try:
+        # Change name
+        if store_new_name != None:
+            print("intostore_new_name",store_new_name)
+            sql_command="""
+            UPDATE store
+            SET store_name = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_new_name,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+
+        # Change address
+        if store_new_address != None:
+            print("store_new_address",store_new_address)
+            sql_command="""
+            UPDATE store
+            SET store_address = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_new_address,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+
+        # Change phone number
+        if store_new_phone_number != None:
+            sql_command="""
+            UPDATE store
+            SET store_phone_number = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_new_phone_number,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+
+        # Change type
+        if store_new_type != None:
+            sql_command="""
+            UPDATE store
+            SET store_type = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_new_type,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+
+        # Change open time
+        if store_new_open_time != None:
+            sql_command="""
+            UPDATE store
+            SET store_open_time = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_new_open_time,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+
+        # Change delivery condition
+        if store_new_delivery_condition != None:
+            sql_command="""
+            UPDATE store
+            SET store_delivery_condition = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_new_delivery_condition,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+
+        # Change status
+        if store_new_status == "stop":
+            print("store_new_status",store_new_status)
+            sql_command="""
+            UPDATE store
+            SET store_status = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = ("stop",store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
+        
+        # Change note
+        if store_note != "" and store_note != None:
+            print("store_note",store_note)
+            sql_command="""
+            UPDATE store
+            SET store_note = %s
+            WHERE id = %s AND store_status=%s;
+            """
+            value_input = (store_note,store_id,"alive")
+            insert_or_update_data(sql_command,value_input)
         data = v_store.store_patch_200()
         return data
-
-    # Change address
-    if store_new_address != None:
-        sql_command="""
-        UPDATE store
-        SET store_address = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_new_address,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data
-
-    # Change phone number
-    if store_new_phone_number != None:
-        sql_command="""
-        UPDATE store
-        SET store_phone_number = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_new_phone_number,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data
-
-    # Change type
-    if store_new_type != None:
-        sql_command="""
-        UPDATE store
-        SET store_type = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_new_type,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data
-
-    # Change open time
-    if store_new_open_time != None:
-        sql_command="""
-        UPDATE store
-        SET store_open_time = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_new_open_time,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data
-
-    # Change delivery condition
-    if store_new_delivery_condition != None:
-        sql_command="""
-        UPDATE store
-        SET store_delivery_condition = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_new_delivery_condition,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data
-
-    # Change status
-    if store_new_status == "stop":
-        sql_command="""
-        UPDATE store
-        SET store_status = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = ("stop",store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data        
-    
-    # Change note
-    if store_note != None:
-        sql_command="""
-        UPDATE store
-        SET store_note = %s
-        WHERE id = %s AND store_status=%s;
-        """
-        value_input = (store_note,store_id,"alive")
-        insert_or_update_data(sql_command,value_input)
-        data = v_store.store_patch_200()
-        return data
-    else:
+    except:
         errorr_message = v_store.store_patch_400_else()
         return errorr_message
 
@@ -415,3 +402,38 @@ def store_foodChosen_post(page,keyword=None, urlGroupName=None):
     store_name_keyword = create_store_data["intoKeywordValue"]
     store_name_data = store_name_create_menu(store_name_keyword,box_index,group_id)
     return store_name_data
+
+def store_info_get(page,keyword=None,urlGroupName=None,urlStoreName=None):
+    group_id = sql_group_name_find_id(urlGroupName, "alive")
+    store_info_check = sql_group_id_find_one_store_info(group_id,urlStoreName,"alive")[0]
+    store_id = store_info_check["id"]
+    store_name = store_info_check["store_name"]
+    store_address = store_info_check["store_address"]
+    store_phone_number = store_info_check["store_phone_number"]
+    store_type = store_info_check["store_type"]
+    store_price_range = store_info_check["store_price_range"]
+    store_open_time = store_info_check["store_open_time"]
+    store_delivery_condition = store_info_check["store_delivery_condition"]
+    store_order_time = store_info_check["store_order_time"]
+    store_order_frequence = store_info_check["store_order_frequence"]
+    store_distance = store_info_check["store_distance"]
+    store_latest_data = store_info_check["store_latest_data"]
+    store_status = store_info_check["store_status"]
+    store_note = store_info_check["store_note"]
+    store_info_data =  {
+        "storeId":store_id,
+        "storeName":store_name,
+        "storeaddress":store_address,
+        "storePhoneNumber":store_phone_number,
+        "storeType":store_type,
+        "storePriceRange":store_price_range,
+        "storeOpenTime":store_open_time,
+        "storeDeliveryCondition":store_delivery_condition,
+        "storeOrderTime":store_order_time,
+        "storeOrderFrequence":store_order_frequence,
+        "storeDistance":store_distance,
+        "storeLatestData":store_latest_data,
+        "storeStatus":store_status,
+        "storeNote":store_note
+    }
+    return jsonify(store_info_data) ,200

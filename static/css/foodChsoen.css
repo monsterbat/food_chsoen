@@ -1,0 +1,17 @@
+.classifyTypeBlock{
+    width:600px;
+    background-color: rgb(15, 118, 118);
+}
+.foodChosenResultBlock{
+    display: flex;
+    margin: 10px;
+}
+.foodChosenResultTitle{
+    display: flex;
+    width: 80px;
+    font-weight:bold;
+}
+.foodChosenResultContent{
+    display: flex;
+    width: 200px;
+}

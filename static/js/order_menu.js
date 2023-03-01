@@ -1,6 +1,6 @@
 // ==== Get element ====
 // 1-3 menu title 
-let menuItemsBlock = document.getElementById("menuItemsBlock");
+// let menuItemsBlock = document.getElementById("menuItemsBlock");
 // 1-3-1 menu name
 let menuItemsChoose = document.getElementById("menuItemsChoose");
 let menuItemsMenu = document.getElementById("menuItemsMenu");
@@ -127,6 +127,7 @@ let editGoOrderSubmitContent = document.getElementById("editGoOrderSubmitContent
 
 console.log("FF")
 // ==== onload ====
+let orderLisrStatusCheck
 checkMemberOrderListBlock.style.display = "none";
 checkOrderListBlock.style.display = "none";
 orderIsDoneBlock.style.display = "none";
@@ -170,6 +171,7 @@ async function onloadOrderMenuPage(){
         orderMenuPageNoDisplayDisplayBlcok();
         goToOrderSubmit.style.display = "none";
         checkMemberOrderListBlock.style.display = "flex";
+        
     };
 }
 // ==== create event listener ====
@@ -192,7 +194,7 @@ memberPriceEditFinishSubmit.addEventListener("click",memberPriceEditFinishSubmit
 // ==== Function ====
 // Block no display
 function orderMenuPageNoDisplayDisplayBlcok(){
-    menuItemsBlockBlock.style.display = "none";
+    // menuItemsBlockBlock.style.display = "none";
     menuListBlcok.style.display = "none";
     menuButtonBlock.style.display = "none";
     checkMemberOrderListBlock.style.display = "none";
@@ -279,21 +281,33 @@ async function createMenuList(urlGroupName,urlStoreName){
         if (menuTypeShow == ""){
             menuTypeShow = "(未分類)";
         }
-        createDivElement(eval(`menuListTypeBlock${i}`),`menuListTypeContent${i}`,"",menuTypeShow,"appendChild");
-        createDivElement(eval(`menuListTypeBlock${i}`),`menuListTitleBlock${i}`,"",null, "appendChild");
+        createDivElement(eval(`menuListTypeBlock${i}`),`menuListTypeContent${i}`,"menuType",menuTypeShow,"appendChild");
+        createDivElement(eval(`menuListTypeBlock${i}`),`menuListTitleBlock${i}`,"menuItemsBlock menuListTitle",null, "appendChild");
         createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleOrder${i}`,"","點餐","appendChild");
         createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleName${i}`,"","餐點","appendChild");
         createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleSize${i}`,"","大小","appendChild");
         createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitlePrice${i}`,"","價錢","appendChild");
         createDivElement(eval(`menuListTitleBlock${i}`),`menuListTitleNote${i}`,"","備註","appendChild");
 
-        createDivElement(eval(`menuListTypeBlock${i}`),`menuListIntoBlock${i}`,"",null, "appendChild");
+        createDivElement(eval(`menuListTypeBlock${i}`),`menuListIntoBlock${i}`,"contentPositionCenter",null, "appendChild");
         let menuItemsShow = sortOutMenuData[i].menuItems;
         for(let j=0;j<Object.keys(menuItemsShow).length;j++){
             let menuName = menuItemsShow[j].menuName;
             let menuSize = menuItemsShow[j].menuSize;
             let menuPrice = menuItemsShow[j].menuPrice;
             let menuNote = menuItemsShow[j].menuNote;
+            if (menuName == null){
+                menuName = ""
+            }
+            if (menuSize == null){
+                menuSize = ""
+            }
+            if (menuPrice == null){
+                menuPrice = ""
+            }
+            if (menuNote == null){
+                menuNote = ""
+            }
             // ??
             menuInputValue = JSON.stringify({
                 "menuName":menuName,
@@ -302,7 +316,7 @@ async function createMenuList(urlGroupName,urlStoreName){
                 "menuNote":menuNote
             });
             //
-            createDivElement(eval(`menuListIntoBlock${i}`),`menuListIntoEachBlock_${i}_${j}`,"",null, "appendChild");
+            createDivElement(eval(`menuListIntoBlock${i}`),`menuListIntoEachBlock_${i}_${j}`,"menuItemsBlock menuListIntoEachBlock_",null, "appendChild");
             createInputElement(eval(`menuListIntoEachBlock_${i}_${j}`),addId=`menuNumber_${i}_${j}`,addClass="menuNumber", addText = null, appendForm = "appendChild",inputType = "number", inputValue =0,inputName = "orderQty");
             eval(`menuNumber_${i}_${j}`).addEventListener("input", function() {
                 if (this.value < 0) {
@@ -314,7 +328,7 @@ async function createMenuList(urlGroupName,urlStoreName){
             createDivElement(eval(`menuListIntoEachBlock_${i}_${j}`),`menuSize_${i}_${j}`,"",menuSize, "appendChild");
             createDivElement(eval(`menuListIntoEachBlock_${i}_${j}`),`menuPrice_${i}_${j}`,"",menuPrice, "appendChild");
             // 後加上點餐者自己的備註
-            createInputElement(eval(`menuListIntoEachBlock_${i}_${j}`),`orderMenuNote_${i}_${j}`,"", "","appendChild",inputType = "text", "",inputName = "orderMenuNote");
+            createInputElement(eval(`menuListIntoEachBlock_${i}_${j}`),`orderMenuNote_${i}_${j}`,"menuListNote", "","appendChild",inputType = "text", "",inputName = "orderMenuNote");
         };
     };
 };
@@ -344,8 +358,8 @@ async function menuSubmitButtonClick(){
         };
 
     checkOrderListBlock.style.display = "flex";
-    menuItemsBlock.style.display = "none";
-    separate1.style.display = "none";
+    // menuItemsBlock.style.display = "none";
+    // separate1.style.display = "none";
     menuListBlcok.style.display = "none";
     menuButtonBlock.style.display = "none";
     showcheckOrderListBlock(menuOrderDataAll);
@@ -356,13 +370,13 @@ function menuEditCreateButtonClick(){
 };
 // 1-7 Check member
 async function checkAllOrderMenuButtonClick(){
-    menuItemsBlock.style.display = "none";
+    // menuItemsBlock.style.display = "none";
     menuListBlcok.style.display = "none";
     menuButtonBlock.style.display = "none";
     checkMemberOrderListBlock.style.display = "flex";
     checkOrderListBlock.style.display = "none";
     orderIsDoneBlock.style.display = "none";
-    separate1.style.display = "none";
+    // separate1.style.display = "none";
     let getStatusAlive = "alive";
     let getStatusOrdering = "ordering";
     let getStatusFinish = "finish";
@@ -522,7 +536,7 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
 
 // 1-7 go to order 
 async function goToOrderSubmitClick(){
-    menuItemsBlock.style.display = "none";
+    // menuItemsBlock.style.display = "none";
     menuListBlcok.style.display = "none";
     menuButtonBlock.style.display = "none";
     checkMemberOrderListBlock.style.display = "none";
@@ -570,10 +584,12 @@ async function showcheckOrderListBlock(menuOrderDataAll){
 }
 // 1-9 Back Submit
 function editOrderSubmitClick(){
+    
     checkUserOrderListBlockBlock.remove();
+    location.reload()
     checkOrderListBlock.style.display = "none";
-    menuItemsBlock.style.display = "grid";
-    separate1.style.display = "flex";
+    // menuItemsBlock.style.display = "grid";
+    // separate1.style.display = "flex";
     menuListBlcok.style.display = "flex";
     menuButtonBlock.style.display = "flex";
 };
@@ -599,8 +615,8 @@ async function sendOutOrderSubmitClick(){
     };
     orderIsDoneBlock.style.display = "flex";
     checkOrderListBlock.style.display = "none";
-    menuItemsBlock.style.display = "none";
-    separate1.style.display = "none";
+    // menuItemsBlock.style.display = "none";
+    // separate1.style.display = "none";
     menuListBlcok.style.display = "none";
     menuButtonBlock.style.display = "none";
 };
@@ -673,7 +689,7 @@ async function memberPriceEditSubmitClick(){
     let chosenMenuValue = JSON.parse(chosenMenu.value);
     memberPriceEditFinishSubmit.style.display = "flex";
     memberPriceEditSubmit.style.display = "none";
-    finishOrderSubmit.style.display = "none";
+    // finishOrderSubmit.style.display = "none";
 };
 
 async function memberPriceEditFinishSubmitClick(){
@@ -692,6 +708,8 @@ async function memberPriceEditFinishSubmitClick(){
         "menu":{
             "menuName":menuName,
             "menuSize":menuSize,
+            "menuType":null,
+            "menuNewType":null,
             "menuPrice":"",
             "menuNote":"null",
             "menuNewName":menuName,
@@ -733,8 +751,16 @@ async function memberPriceEditFinishSubmitClick(){
         editedTotalPrice = editedTotalPrice + itemtotalPrice;
     }
     goOrderTotelPrice.textContent = editedTotalPrice;
-    finishOrderSubmit.style.display = "flex";
-
+    // if (orderListStatusForThisPage == "alive"){
+    //     finishOrderSubmit.style.display = "none";
+    // }
+    // if (orderListStatusForThisPage == "ordering"){
+    //     finishOrderSubmit.style.display = "none";
+    // }
+    // if (orderListStatusForThisPage == "finish"){
+    //     finishOrderSubmit.style.display = "none";
+    // }
+    
 };
  
 async function backOrderMenuMemberSubmitClick(){

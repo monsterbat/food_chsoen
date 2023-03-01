@@ -32,5 +32,14 @@
     margin: 0;
     text-align: center;
 }
-
+.smallContent{
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    font-size: 10px;
+    line-height: 16px;
+    font-weight: 400;
+    padding: 0px 0px 10px 0px;
+    margin: 0;
+    text-align: center;
+}
 

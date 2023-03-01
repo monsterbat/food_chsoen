@@ -28,8 +28,6 @@ let createOrderErroeMessageContent = document.getElementById("createOrderErroeMe
 let createOrderListSubmitBlock = document.getElementById("createOrderListSubmitBlock");
 let askFoodChosen = document.getElementById("askFoodChosen");
 let askFoodChosenContent = document.getElementById("askFoodChosenContent");
-let createStore = document.getElementById("createStore");
-let createStoreContent = document.getElementById("createStoreContent");
 let orderListSubmit = document.getElementById("orderListSubmit");
 let orderListSubmitContent = document.getElementById("orderListSubmitContent");
 let createOrderBackGroupSubmit = document.getElementById("createOrderBackGroupSubmit");
@@ -55,11 +53,11 @@ async function onloadThisPage(){
     };
     let storeApiDataAll = await storeApiGet(urlGroupName);
     let storeApiDataList = storeApiDataAll.store;
+    console.log("storeApiDataList",storeApiDataList)
     showStoreList(storeApiDataList);
 };
 
 // ==== create event listener ====
-createStore.addEventListener("click",createStoreClick);
 orderListSubmit.addEventListener("click",orderListSubmitClick);
 createOrderBackGroupSubmit.addEventListener("click",createOrderBackGroupSubmitClick);
 askFoodChosen.addEventListener("click",askFoodChosenClick);
@@ -76,9 +74,6 @@ function askFoodChosenClick(){
     window.location.href = `/group/${urlGroupName}/foodChsoen`;
 };
 
-async function createStoreClick(){
-    window.location.href = `/group/${urlGroupName}/create_store`;
-};
 
 async function orderListSubmitClick(){
     let chooseDataInputValue = chooseDataInput.value;

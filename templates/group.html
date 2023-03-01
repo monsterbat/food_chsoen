@@ -18,7 +18,7 @@
     </head>
     <body>        
         <!-- 1-1 header -->
-        <header id="topFreezeBackgroung" class="topFreezeBackgroung">
+        <header id="topFreezeBackgroung" class="">
             <!-- 1-1-1 -->
             <nav id="topNav" class="">
                 <div id="topLeftTitle" class="topLeftTitle">
@@ -29,7 +29,7 @@
             <!-- 1-1-2 -->
                 <a id="memberCenterBlock" class="memberCenterBlock" href="/member_center">
                     <div id="memberCenterAvator" class="memberCenterAvator">
-                        <img class="smailIconOnTop" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}">
+                        <!-- <img class="smailIconOnTop" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}"> -->
                     </div>
                     <div id="memberCenterName" class="memberCenterName">
                         
@@ -38,8 +38,8 @@
             </nav>
         </header>
             <!-- 1-2 page title -->
-            <div id="pageTitle" class="pageTitle button">
-                <div id="pageTitleContent" class="pageTitleContent">
+            <div id="pageTitle" class="pageTitleButton">
+                <div id="pageTitleContent" class="">
                 </div>
             </div>
             <div id="blockScreenFilter" class="blockScreenFilter" ></div>
@@ -47,9 +47,11 @@
         <main>
             <!-- 1-3 choose group -->
             <div id="allGroupBlock" class="contentPositionCenter margin">
-                <div id="addGroupBlock" class="fixCreatGroup buttonFormat createBGC">
-                    <div id="addGroupContent" class="buttonContent">
-                        新增群組
+                <div class="topButtonBlock oneBlock">
+                    <div id="addGroupBlock" class="blinking-bg buttonFixOnTop buttonFormat createBGC">
+                        <div id="addGroupContent" class="buttonContent positionAbsolute">
+                            新增群組
+                        </div>
                     </div>
                 </div>
                 <!-- js inner -->
@@ -95,7 +97,7 @@
 {% endblock %}   
         <footer>
             <p>
-                COPYRIGHT © 2023 蝙蝠王怪獸
+                COPYRIGHT © 2023 MonsterBat
             </p>
         </footer>
         <!-- Javascript -->

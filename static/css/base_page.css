@@ -27,9 +27,11 @@ main{
 }
 header nav{
     display: flex;
+        color: aliceblue;
+    text-decoration: none;
     height: 54px;
-    width: 90%;
-    justify-content:center;
+    width: 300px;
+    justify-content:space-between;
     align-items: center;
 }
 
@@ -52,18 +54,48 @@ header nav .topLeftTitleText{
 header nav .memberCenterBlock{
     display: flex;
     align-items: center;
+    color: rgb(198, 228, 255);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    text-decoration: none;
 
 }
 .memberCenterAvator{
     margin: 5px 5px 0px 25px;
 }
-.pageTitle{
+
+.pageTitleButton {
     display: flex;
+    flex-direction: column;
     position: sticky; /* freeze */
     font-family: 'Noto Sans TC';
     font-style: normal;
     top:54px;
+    line-height: 16px;
+    font-weight: 400;
+    margin:0px;
+    width: 100%;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    /* padding: 3px 3px; */
+    border: none;
+    background-color: #ff9900;
+    color: #fff;
     font-size: 20px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease-in-out;
+  }
+
+
+.pageTitle{
+    display: flex;
+    flex-direction: column;
+    position: sticky; /* freeze */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    top:54px;
+    font-size: 30px;
     line-height: 16px;
     font-weight: 400;
     margin:0px;
@@ -77,9 +109,11 @@ header nav .memberCenterBlock{
 }
 .pageTitle .pageTitleContent{
     display: flex;
-    height: 54px;
+    height: 60px;
+    /* size: 400px; */
     width: 90%;
     justify-content:center;
+    background-color: black;
     align-items: center;
 }
 
@@ -92,7 +126,7 @@ header nav .memberCenterBlock{
     position: fixed;
     display: none;
     background-color: #000000;
-    z-index: 150;
+    z-index: 1900;
     width: 100%;
     height: 100%;
     opacity: 0.2;
@@ -102,11 +136,106 @@ header nav .memberCenterBlock{
     width: 300px;
     height: 0px;
     margin: 5px;
-    border: 1px solid #E8E8E8;
+    border: 1px solid #c6c6c6;
 }
 
 .menuNew{
     box-sizing: border-box;
     width: 100%;
     text-align: center;
+}
+
+.fixOnBottomButton {
+    display: flex;
+    flex-direction: column;
+    position: sticky; /* freeze */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    bottom:54px;
+    line-height: 16px;
+    font-weight: 400;
+    margin:0px;
+    width: 100%;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.bottomButtonBlock{
+    display: flex;
+    flex-direction: column;
+    position: sticky; /* freeze */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    bottom:0px;
+    line-height: 16px;
+    font-weight: 400px;
+    padding:6px 0px 10px 0px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255,1);
+    background: linear-gradient(to top, rgba(255,255,255,1) 80%, rgba(255,255,255,0) 100%);
+    z-index: 100;
+}
+.topButtonBlock{
+    display: flex;
+    flex-direction: column;
+    position: sticky; /* freeze */
+    font-family: 'Noto Sans TC';
+    font-style: normal;
+    line-height: 16px;
+    font-weight: 400px;
+    padding:0px 0px 5px 0px;
+    margin: 0px 0px 0px 0px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255,1);
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 70%, rgba(255,255,255,0.3) 100%);
+    z-index: 50;
+
+    display: flex;
+    position: sticky; /* freeze */
+    /* height: 54px; */
+    top:94px;
+    left: 0px;
+    /* background-color: rgb(0, 108, 224); */
+    /* background-color: rgb(0, 56, 117); */
+    justify-content: center;
+    align-items: center;
+}
+.oneBlock{
+    height: 50px;
+}
+.twoBlock{
+    height: 100px;
+}
+
+.threeBlock{
+    height: 150px;
+}
+
+.deleteConfirmBlock{
+    position:fixed;
+    /* position: absolute; */
+    top: 250px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    /* position: sticky; */
+    display: none;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+    z-index: 2000;
+    width: 340px;
+    height: auto;
+    margin: 20px 0px 20px 0px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.deleteConfirmButton{
+    display:flex;
 }

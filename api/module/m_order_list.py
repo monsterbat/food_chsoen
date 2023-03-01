@@ -101,9 +101,9 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         sql_command="""
         SELECT id
         FROM store 
-        WHERE store_name=%s AND group_id=%s AND store_status=%s;
+        WHERE store_name=%s AND group_id=%s;
         """
-        value_input = (urlStoreName,group_id,"alive")
+        value_input = (urlStoreName,group_id)
         store_id_check = query_data(sql_command,value_input)
         store_id = store_id_check[0]["id"]
         # Find order list info
@@ -164,6 +164,7 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         "orderList":[]
     }
     # Create data
+    print("order_list_info_check",order_list_info_check)
     if order_list_info_check != []:
         for order_list_ls in order_list_info_check:
             order_list_id = order_list_ls["id"]
@@ -176,9 +177,9 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
             sql_command="""
             SELECT store_name
             FROM store 
-            WHERE id=%s AND store_status=%s;
+            WHERE id=%s;
             """
-            value_input = (store_id,"alive")
+            value_input = (store_id,)
             store_name_check = query_data(sql_command,value_input)
             store_name = store_name_check[0]["store_name"]
             # Find order name

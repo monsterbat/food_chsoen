@@ -83,3 +83,6 @@ main .enterWebBlock .helloUserWelcome{
     border-radius: 5px;
 }
 
+.margin10px{
+    margin: 10px 0px 0px 0px;
+}

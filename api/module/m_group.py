@@ -8,6 +8,8 @@ from user_token import *
 sys.path.append('api/function/sql_command')
 from sql_command.sql_user_info import *
 from sql_command.sql_group_info import *
+from sql_command.sql_user_in_group_info import *
+from sql_command.sql_bill_info import *
 
 sys.path.append('api/view')
 import v_group
@@ -77,7 +79,7 @@ def group_post():
 # Check group info
 def group_get(page, keyword=None):
     # Define page Qty
-    one_page_quanity=18
+    one_page_quanity=100
     data_start=int(page*one_page_quanity)
     # keyword setting
     group_keyword = "%"+keyword+"%"
@@ -295,7 +297,7 @@ def group_put():
                 return data
             else:
                 join_time = group_join_check[0]["join_time"]
-                errorr_message = v_group.group_put_400_already_join(join_time)
+                errorr_message = v_group.group_put_400_already_join()
                 return errorr_message
         else:
             errorr_message = v_group.group_put_400_not_exist_user()
@@ -354,3 +356,32 @@ def group_get_info(page, keyword=None,urlGroupName=None,getStatus=None):
         }]
     }
     return jsonify(group_data) ,200
+
+def group_get_user(page, keyword=None,urlGroupName=None):
+    user_info = user_token_check()
+    if user_info["data"] == None:
+        errorr_message = v_group.group_get_403()
+        return errorr_message
+    group_info_check = sql_group_name_find_info(urlGroupName, "alive")
+    group_id = group_info_check[0]["id"]
+    group_manager_id = group_info_check[0]["group_manager"]
+    user_in_group_user_id_check = sql_group_id_find_user_id(group_id, "alive")
+    group_user_info = []
+    for user_in_group_user_id_ls in user_in_group_user_id_check:
+        user_in_group_user_id = user_in_group_user_id_ls["user_id"]
+        if user_in_group_user_id == group_manager_id:
+            user_position = "管理者"
+        else:
+            user_position = "成員"
+        user_name = sql_user_id_find_name(user_in_group_user_id)
+        user_balance = sql_bill_latest_balance(user_in_group_user_id,group_id,"alive")
+        
+        user_info_into = {
+            "userPosition":user_position,
+            "userName":user_name,
+            "userBalance":user_balance
+        }
+
+        group_user_info = group_user_info +[user_info_into]
+
+    return jsonify(group_user_info) ,200

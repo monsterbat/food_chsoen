@@ -291,7 +291,7 @@ async function userStatus(){
     }
     else{        
         let userNameInGroup = userApiGetResult.data.userName;
-        memberCenterName.textContent = userNameInGroup;
+        memberCenterName.textContent = "會員中心";
         return userApiGetResult;
     }
 };

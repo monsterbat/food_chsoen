@@ -75,6 +75,18 @@ def create_store(group_name):
 def create_menu(group_name,store_name):
 	return render_template("create_menu.html")
 
+@app.route("/group/<group_name>/menu_add/<store_name>")
+def menu_add(group_name,store_name):
+	return render_template("menu_add.html")
+
+@app.route("/group/<group_name>/store_edit/<store_name>")
+def store_edit(group_name,store_name):
+	return render_template("store_edit.html")
+
+@app.route("/group/<group_name>/store_check")
+def store_check(group_name):
+	return render_template("store_check.html")
+
 @app.route("/group/<group_name>/order_edit/<store_name>")
 def create_menu_order_edit(group_name,store_name):
 	return render_template("create_menu.html")

@@ -4,7 +4,7 @@ let topNameAndAvatorBlock = document.getElementById("topNameAndAvatorBlock");
 let topAvatorBlock = document.getElementById("topAvatorBlock");
 let topAvator = document.getElementById("topAvator");
 
-
+let memberCenterName = document.getElementById("memberCenterName");
 
 let topAvatorEditButton = document.getElementById("topAvatorEditButton");
 let topAvatorEdit = document.getElementById("topAvatorEdit");
@@ -99,8 +99,8 @@ userProfileButton.addEventListener("click",userProfileButtonClick);
 userOrderHistoryButton.addEventListener("click",userOrderHistoryButtonClick);
 // ==== Function ====
 function userProfileButtonClick(){
-    // userProfileButton.style.backgroundColor = ""
-    // userOrderHistoryButton.style.backgroundColor = ""
+    userProfileButton.style.backgroundColor = "#eaeaea"
+    userOrderHistoryButton.style.backgroundColor = "#f2f2f2"
     userProfileBlock.style.display = "flex";
     userOrderHistoryBlock.style.display = "none";
     historyTarget.style.display = "none";
@@ -108,8 +108,8 @@ function userProfileButtonClick(){
 }
 
 function userOrderHistoryButtonClick(){
-    // userProfileButton.style.backgroundColor = ""
-    // userOrderHistoryButton.style.backgroundColor = ""
+    userProfileButton.style.backgroundColor = "#f2f2f2"
+    userOrderHistoryButton.style.backgroundColor = "#eaeaea"
     userProfileBlock.style.display = "none";
     userOrderHistoryBlock.style.display = "flex";
     historyTarget.style.display = "flex";
@@ -118,6 +118,13 @@ function userOrderHistoryButtonClick(){
 
 async function onloadMemberCenterPage(){
     userProfileButtonClick()
+    // 
+    topNameFinishButton.style.display = "none";
+    topAvatorFinishButton.style.display = "none";
+    userEmailFinishButton.style.display = "none";
+    userPasswordFinishButton.style.display = "none";
+    
+    // 
     historyTarget.style.display = "none";
     groupTarget.style.display = "flex";
     userNewPasswordBlock.style.display = "none";
@@ -126,19 +133,21 @@ async function onloadMemberCenterPage(){
     let userName = userApiData.data.userName;
     let userEmail = userApiData.data.userEmail;
     pageTitleContent.textContent = "會員中心"
+    
     memberCenterBlockChange();
     topNameAndAvatorBlockShow(userName);
     // userNameShow.textContent = userName;
     userEmailShow.textContent = userEmail;
     userPasswordShow.textContent = "******";
-    // accountInfoListBlockShow();
+    accountInfoListBlockShow();
     // userOrderHistoryShow();
 }
 
 async function memberCenterBlockChange(){
     memberCenterBlock.remove();
     createDivElement(topNav,"userSignOutButton","memberCenterBlock",null,"appendChild");
-    createDivElement(userSignOutButton,"userSignOutContent","cRed","會員登出","appendChild");
+    createDivElement(userSignOutButton,"userSignOutContent","memberCenterBlock","會員登出","appendChild");
+    userSignOutContent.style.color = "red"
     userSignOutContent.addEventListener("click",userSignOutContentClick);
 }
 
@@ -177,23 +186,22 @@ async function accountInfoListBlockShow(){
     groupGetPage = groupApiGetResult.nextPage
 }
 
-// IntersectionObserverasy
-let dd=0
-let callbackGroup = (entries,observer) => {
-    entries.forEach(async function(entry){
-        if (groupGetPage != null) {
-            await accountInfoListBlockShow(); 
-            dd+=1
-        } 
-        else {
-            observer.unobserve(groupTarget);
-        }  ;      
-    });
-};
+// // IntersectionObserverasy
+// // let groupGetPage=0
+// let callbackGroup = (entries,observer) => {
+//     entries.forEach(async function(entry){
+//         if (groupGetPage != null) {
+//             await accountInfoListBlockShow(); 
+//         } 
+//         else {
+//             observer.unobserve(groupTarget);
+//         }  ;      
+//     });
+// };
 
-let observerGroup = new IntersectionObserver(callbackGroup, options);
+// let observerGroup = new IntersectionObserver(callbackGroup, options);
 
-observerGroup.observe(groupTarget);
+// observerGroup.observe(groupTarget);
 
 
 
@@ -236,7 +244,7 @@ async function userOrderHistoryShow(){
     
     for(let i=0;i<Object.keys(orderDataSortout).length;i++){
         // 
-        createDivElement(eval(`userOrderHistoryBlockBlock${orderUserApiGetPage}`),`userOrderHistoryList${orderUserApiGetPage}${i}`,"", null, "appendChild")
+        createDivElement(eval(`userOrderHistoryBlockBlock${orderUserApiGetPage}`),`userOrderHistoryList${orderUserApiGetPage}${i}`,"userOrderHistoryList", null, "appendChild")
 
         let orderListId = orderDataSortout[i].orderListId;
         let stopTime = orderDataSortout[i].stopTime;
@@ -251,9 +259,9 @@ async function userOrderHistoryShow(){
 
         // 
         createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleMenu${orderUserApiGetPage}${i}`,"", "餐點", "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderQuantity${orderUserApiGetPage}${i}`,"", "份數", "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderPrice${orderUserApiGetPage}${i}`,"", "價錢", "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleMenu${orderUserApiGetPage}${i}`,"userOrderHistoryListOrderListTitleColor", "餐點", "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderQuantity${orderUserApiGetPage}${i}`,"userOrderHistoryListOrderListTitleColor", "份數", "appendChild");
+        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderPrice${orderUserApiGetPage}${i}`,"userOrderHistoryListOrderListTitleColor", "價錢", "appendChild");
 
         orderDataSortoutItems = orderDataSortout[i].items;
         let thisOrderTotalPrice = 0;
@@ -270,7 +278,7 @@ async function userOrderHistoryShow(){
             thisOrderTotalPrice = Number(thisOrderTotalPrice)+Number(orderPrice);
         };
 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListSeparateBar${orderUserApiGetPage}${i}`,"", null, "appendChild");
+        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListSeparateBar${orderUserApiGetPage}${i}`,"userOrderHistoryListSeparateBar", null, "appendChild");
         // 
         createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListTotal${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
         createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalTitle${orderUserApiGetPage}${i}`,"", "總價", "appendChild");
@@ -310,7 +318,7 @@ async function topAvatorFinishButtonClick(){
 async function topNameEditButtonClick(){
     let topName = document.getElementById("topName");
     let topNameValue = topName.textContent;
-    replaceToInputElement(topName, `topNameNew`,"",topNameValue,inputType = "text");
+    replaceToInputElement(topName, `topNameNew`,"topNameBlock textCenter",topNameValue,inputType = "text");
     topNameEditButton.style.display = "none";
     topNameFinishButton.style.display = "flex";
 }
@@ -326,7 +334,7 @@ async function topNameFinishButtonClick(){
     };
     let userApiPatchResult = await userApiPatch(data);
     if (userApiPatchResult.ok == true){
-        replaceToDivElement(topNameNew,`topName`,"",topNameValue);
+        replaceToDivElement(topNameNew,`topName`,"topNameBlock",topNameValue);
         topNameEditButton.style.display = "flex";
         topNameFinishButton.style.display = "none";
         userNameMessage.textContent = "名稱更新完成";
@@ -343,9 +351,9 @@ async function topNameFinishButtonClick(){
 async function userEmailEditButtonClick(){
     let userEmailShow = document.getElementById("userEmailShow");
     let userEmailShowValue = userEmailShow.textContent;
-    replaceToInputElement(userEmailShow, `userEmailShowNew`,"",userEmailShowValue,inputType = "text");
-    userNameEditButton.style.display = "none";
-    userNameFinishButton.style.display = "flex";
+    replaceToInputElement(userEmailShow, `userEmailShowNew`,"userInfoInputValuMemberCenter",userEmailShowValue,inputType = "text");
+    userEmailEditButton.style.display = "none";
+    userEmailFinishButton.style.display = "flex";
 }
 async function userEmailFinishButtonClick(){
     let userEmailShowNew = document.getElementById("userEmailShowNew");
@@ -362,14 +370,14 @@ async function userEmailFinishButtonClick(){
         replaceToDivElement(userEmailShowNew,`userEmailShow`,"",userEmailShowNewValue);
         userNameEditButton.style.display = "flex";
         userNameFinishButton.style.display = "none";
-        userEmailMessage.style.display = "flex";
-        userEmailMessage.style.color = "green";
-        userEmailMessage.textContent = "信箱更新完成";
+        userPasswordMessage.style.display = "flex";
+        userPasswordMessage.style.color = "green";
+        userPasswordMessage.textContent = "信箱更新完成";
     };
     if (userApiPatchResult.error == true){
-        userEmailMessage.style.display = "flex";
-        userEmailMessage.style.color = "red";
-        userEmailMessage.textContent = userApiPatchResult.message;
+        userPasswordMessage.style.display = "flex";
+        userPasswordMessage.style.color = "red";
+        userPasswordMessage.textContent = userApiPatchResult.message;
     };
 
 }
@@ -377,7 +385,7 @@ async function userPasswordEditButtonClick(){
     userNewPasswordBlock.style.display = "flex";
     let userPasswordShow = document.getElementById("userPasswordShow");
     let userNewPasswordShow = document.getElementById("userNewPasswordShow");
-    replaceToInputElement(userPasswordShow, `userPasswordShowNew`,"","",inputType = "password");
+    replaceToInputElement(userPasswordShow, `userPasswordShowNew`,"userInfoInputValuMemberCenter","",inputType = "password");
     userPasswordEditButton.style.display = "none";
     userPasswordFinishButton.style.display = "flex";
 };

@@ -60,7 +60,7 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
     # group id
     group_id = sql_group_name_find_id(urlGroupName,"alive")
     # store id
-    store_id = sql_store_name_find_id(urlStoreName,group_id,"alive")
+    store_id = sql_store_name_find_id(urlStoreName,group_id)
 
     # Use group_id to check menu info
     menu_info_check = sql_group_id_and_store_id_and_menu_name_FIND_menu_info(group_id,store_id, menu_name_keyword,"alive" )
@@ -102,6 +102,7 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
 # Change menu info
 def menu_patch():
     # Get data from front-end
+    print("C0")
     change_menu_data = request.get_json()
     group_id = change_menu_data["groupId"]
     store_name = change_menu_data["storeName"]
@@ -116,7 +117,7 @@ def menu_patch():
     menu_new_price = change_menu_data["menu"]["menuNewPrice"]
     menu_new_status = change_menu_data["menu"]["menuNewStatus"]
     menu_new_note = change_menu_data["menu"]["menuNewNote"]
-
+    print("C1")
     # Use store_name find store id
     store_id = sql_store_name_find_id(store_name,group_id,"alive")
 
@@ -151,7 +152,8 @@ def menu_patch():
             errorr_message = v_menu.menu_patch_400_same_name()
             return errorr_message
     if menu_new_type != menu_type:
-        sql_menu_id_update_menu_info("menu_type",menu_new_type,menu_id,"alive")
+        print("C2")
+        sql_menu_id_update_menu_type(menu_new_type,menu_id,"alive")
 
     # Change price
     if menu_new_price != menu_price:

@@ -49,13 +49,14 @@ drawLostAgainButton.addEventListener("click",drawLostAgainButtonClick);
 confirmStoreToOrderButton.addEventListener("click",confirmStoreToOrderButtonClick);
 backToDrawLotsButton2.addEventListener("click",backToDrawLotsButton2Click);
 
+
 // 1-6
 orderListButton.addEventListener("click",orderListButtonClick);
-
+backToDrawLotsButton.addEventListener("click",backToDrawLotsButtonClick);
 // ==== Function ====
  
 async function onloadByFatePage(){
-    ByFateNoneDisplay();
+    foodChosenNoneDisplay();
     drawLotsBlock.style.display = "flex";
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
@@ -68,7 +69,7 @@ async function onloadByFatePage(){
     showStoreList(storeTypeSortOutData);
 }
 
-function ByFateNoneDisplay(){
+function foodChosenNoneDisplay(){
     // 1-3
     drawLotsBlock.style.display = "none";
     // 1-5
@@ -182,13 +183,13 @@ async function doDrawLots(){
 }
 // 1-3
 async function settingDrawLotsConditionButtonClick(){
-    ByFateNoneDisplay();
+    foodChosenNoneDisplay();
     settingDrawLotsConditionBlock.style.display = "flex";
 }
 
 async function goDrawLotsButtonClick(){
     doDrawLots();
-    ByFateNoneDisplay();
+    foodChosenNoneDisplay();
     foodChosenResultBlock.style.display = "flex";
 }
 
@@ -216,6 +217,7 @@ async function drawLostAgainButtonClick(){
 };
 
 async function confirmStoreToOrderButtonClick(){
+    foodChosenNoneDisplay();
     inputDateAndTimeToOrderBlock.style.display = "flex";
 };
 
@@ -251,6 +253,11 @@ async function orderListButtonClick(){
 };
 
 async function backToDrawLotsButton2Click(){
-    ByFateNoneDisplay();
+    foodChosenNoneDisplay();
     drawLotsBlock.style.display = "flex";
 };
+
+function backToDrawLotsButtonClick(){
+    foodChosenNoneDisplay();
+    foodChosenResultBlock.style.display = "flex";
+}

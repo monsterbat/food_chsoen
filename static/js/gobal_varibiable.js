@@ -21,6 +21,7 @@ let getStatus = "alive";
 let deleteGroupNewPasswordValue = "";
 let orderListData
 // create_menu.js
+let menuOriTypeValue = "";
 let menuOriNameValue = "";
 let menuOriSizeValue = "";
 let menuOriPriceValue = "";
