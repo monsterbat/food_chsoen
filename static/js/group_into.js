@@ -80,7 +80,7 @@ let leaveGroupErrorContent = document.getElementById("leaveGroupErrorContent");
 
 // 1-2 page title
 createDivElement(pageTitle, "pressToShowInfoDown", "",null,  "appendChild");
-createImgElement(pressToShowInfoDown,"pressToShowInfoDownImg","pressToShowInfo", "../static/image/arrow_down.png","appendChild");
+createImgElement(pressToShowInfoDown,"pressToShowInfoDownImg","pressToShowInfo flicker-shadow", "../static/image/arrow_down.png","appendChild");
 createDivElement(pageTitle, "pressToShowInfoUp", "",null, "appendChild");
 createImgElement(pressToShowInfoUp,"pressToShowInfoUpImg","pressToShowInfo", "../static/image/arrow_up.png","appendChild");
 

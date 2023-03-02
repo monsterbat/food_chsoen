@@ -76,13 +76,19 @@ function backSubmit(){
 async function generateGroup(){
     let getGroupData = await groupApiGet();
     groupList = getGroupData.group;
-    for(i=0;i<Object.keys(groupList).length;i++){
-        groupName = groupList[i]["groupName"];
-        createAElement(allGroupBlock, `groupBlock${groupGetPage}${i}`, "buttonFormat groupBGC", null, "appendChild", `/group/${groupName}`);
-        createDivElement(eval(`groupBlock${groupGetPage}${i}`), `groupContent${groupGetPage}${i}`, "buttonContent", groupName);
+    if (groupList == null){
+        createDivElement(allGroupBlock, `userNoGroupBlock`, "", null, "appendChild");
+        createDivElement(userNoGroupBlock, `userNoGroupContent`, "listContent", "請創建群組或受人邀請進入群組", "appendChild");
+            
+    }
+    else{
+        for(i=0;i<Object.keys(groupList).length;i++){
+            groupName = groupList[i]["groupName"];
+            createAElement(allGroupBlock, `groupBlock${groupGetPage}${i}`, "buttonFormat groupBGC", null, "appendChild", `/group/${groupName}`);
+            createDivElement(eval(`groupBlock${groupGetPage}${i}`), `groupContent${groupGetPage}${i}`, "buttonContent", groupName);
+        };
+        groupGetPage = getGroupData.nextPage;
     };
-    groupGetPage = getGroupData.nextPage;
-    // return page
 };
 
 async function createGroup(){

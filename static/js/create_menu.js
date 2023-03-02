@@ -61,6 +61,10 @@ let createMenuFinishButton = document.getElementById("createMenuFinishButton");
 let createMenuFinishContent = document.getElementById("createMenuFinishContent");
 let createMenuAddMenuButton = document.getElementById("createMenuAddMenuButton");
 let createMenuBackToLoadButton = document.getElementById("createMenuBackToLoadButton");
+// menu delete
+let deleteMenuConfirmBlock = document.getElementById("deleteMenuConfirmBlock");
+let deleteMenuConfirmNoButton = document.getElementById("deleteMenuConfirmNoButton");
+let deleteMenuConfirmYesButton = document.getElementById("deleteMenuConfirmYesButton");
 
 
 // 1-3-8 back submit
@@ -116,6 +120,8 @@ createMenuFinishButton.addEventListener("click",createMenuFinishButtonClick);
 createMenuRemoveMenuButton.addEventListener("click",createMenuRemoveMenuButtonClick);
 createMenuAddMenuButton.addEventListener("click",createMenuAddMenuButtonClick);
 createMenuBackToLoadButton.addEventListener("click",createMenuBackToLoadButtonClick);
+deleteMenuConfirmNoButton.addEventListener("click",deleteMenuConfirmNoButtonClick);
+deleteMenuConfirmYesButton.addEventListener("click",deleteMenuConfirmYesButtonClick);
 // ==== Function ====
 function noDisplayAll(){
     createMenuBlock.style.display = "none";
@@ -135,9 +141,15 @@ async function createMenuAddSubmitClick(){
     createMenuPriceValue = createMenuPrice.value;
     createMenuNoteValue = createMenuNote.value;
     createMenuTypeValue = createMenuType.value;
+    console.log("isNaN(createMenuPriceValue)",isNaN(createMenuPriceValue))
 
-    if (createMenuNameValue == "" || createMenuPriceValue == "" ){
-        createMenuErroeMessageContent.textContent = "請至少填入餐點及價錢";
+    if (createMenuNameValue == "" || createMenuPriceValue == "" || isNaN(createMenuPriceValue) == true){
+        if (createMenuNameValue == "" || createMenuPriceValue == ""){
+            createMenuErroeMessageContent.textContent = "請至少填入餐點及價錢";
+        };
+        if(isNaN(createMenuPriceValue) == true){
+            createMenuErroeMessageContent.textContent = "價錢請勿填入非數字";
+        }
     }
     else{
         let data = {
@@ -153,6 +165,7 @@ async function createMenuAddSubmitClick(){
                 }
         };
         result = await menuApiPost(data);
+        console.log("result",result)
         if (result.ok == true){
         }
         else{
@@ -231,52 +244,59 @@ async function createMenuEditFinishMenuButtonClick(){
     let menuNewSizeValue = eval(`menuNewSize${menuNumber}`).value;
     let menuNewPriceValue = eval(`menuNewPrice${menuNumber}`).value;
     let menuNewNoteValue = eval(`menuNewNote${menuNumber}`).value;
-    let data = {
-        "storeName":urlStoreName,
-        "groupId":groupId,
-        "menu":{
-            "menuType":menuOriTypeValue,
-            "menuName":menuOriNameValue,
-            "menuSize":menuOriSizeValue,
-            "menuPrice":menuOriPriceValue,
-            "menuNote":menuOriNoteValue,
-            "menuNewType":menuNewTypeValue,
-            "menuNewName":menuNewNameValue,
-            "menuNewSize":menuNewSizeValue,
-            "menuNewPrice":menuNewPriceValue,
-            "menuNewNote":menuNewNoteValue,
-            "menuNewStatus":"alive"
-            }
-    };
-    console.log("data",data)
-    let menuApiPatchData = await menuApiPatch(data);
-    if (menuApiPatchData.ok == true){
-        replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
-        replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuNewNameValue,inputType = "text");
-        replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuNewSizeValue,inputType = "text");
-        replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuNewPriceValue,inputType = "text");
-        replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuNewNoteValue,inputType = "text");
-    };
-    if (menuApiPatchData.message == "餐點及大小重複"){
-        replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuOriTypeValue,inputType = "text");
-        replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuOriNameValue,inputType = "text");
-        replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuOriSizeValue,inputType = "text");
-        replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuOriPriceValue,inputType = "text");
-        replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuOriNoteValue,inputType = "text");
-        createMenuErroeMessageContent2.textContent = "餐點及大小重複"
-    };
-    if (menuApiPatchData.message == "未變更"){
-        replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
-        replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuNewNameValue,inputType = "text");
-        replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuNewSizeValue,inputType = "text");
-        replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuNewPriceValue,inputType = "text");
-        replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuNewNoteValue,inputType = "text");
-        createMenuErroeMessageContent2.textContent = "未變更";
-    };
-    createMenuRemoveMenuButton.style.display = "none";
-    createMenuEditFinishMenuButton.style.display = "none";
-    createMenuEditMenuButton.style.display = "flex";
-    createMenuAddMenuButton.style.display = "flex";
+    if (isNaN(menuNewPriceValue) == true){
+        createMenuErroeMessageContent2.textContent = "價錢請勿填入非數字"
+    }
+    else{
+        let data = {
+            "storeName":urlStoreName,
+            "groupId":groupId,
+            "menu":{
+                "menuType":menuOriTypeValue,
+                "menuName":menuOriNameValue,
+                "menuSize":menuOriSizeValue,
+                "menuPrice":menuOriPriceValue,
+                "menuNote":menuOriNoteValue,
+                "menuNewType":menuNewTypeValue,
+                "menuNewName":menuNewNameValue,
+                "menuNewSize":menuNewSizeValue,
+                "menuNewPrice":menuNewPriceValue,
+                "menuNewNote":menuNewNoteValue,
+                "menuNewStatus":"alive"
+                }
+        };
+        console.log("data",data)
+        let menuApiPatchData = await menuApiPatch(data);
+        if (menuApiPatchData.ok == true){
+            replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
+            replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuNewNameValue,inputType = "text");
+            replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuNewSizeValue,inputType = "text");
+            replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuNewPriceValue,inputType = "text");
+            replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuNewNoteValue,inputType = "text");
+        };
+        if (menuApiPatchData.message == "餐點及大小重複"){
+            replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuOriTypeValue,inputType = "text");
+            replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuOriNameValue,inputType = "text");
+            replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuOriSizeValue,inputType = "text");
+            replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuOriPriceValue,inputType = "text");
+            replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuOriNoteValue,inputType = "text");
+            createMenuErroeMessageContent2.textContent = "餐點及大小重複"
+        };
+        if (menuApiPatchData.message == "未變更"){
+            replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
+            replaceElement(eval(`menuNewName${menuNumber}`), "div",`menuName${menuNumber}`,"menuName",menuNewNameValue,inputType = "text");
+            replaceElement(eval(`menuNewSize${menuNumber}`), "div",`menuSize${menuNumber}`,"menuSize",menuNewSizeValue,inputType = "text");
+            replaceElement(eval(`menuNewPrice${menuNumber}`), "div",`menuPrice${menuNumber}`,"menuPrice",menuNewPriceValue,inputType = "text");
+            replaceElement(eval(`menuNewNote${menuNumber}`), "div",`menuNote${menuNumber}`,"menuNote",menuNewNoteValue,inputType = "text");
+            createMenuErroeMessageContent2.textContent = "未變更";
+        };
+        createMenuRemoveMenuButton.style.display = "none";
+        createMenuEditFinishMenuButton.style.display = "none";
+        createMenuEditMenuButton.style.display = "flex";
+        createMenuAddMenuButton.style.display = "flex";
+        createMenuErroeMessageContent2.style.display = "none";
+    }
+    
 };
 
 function createMenuFinishButtonClick(){
@@ -290,7 +310,17 @@ function fromCreateOrOrderMenu(url4){
     }
 };
 
-async function createMenuRemoveMenuButtonClick(){
+function createMenuRemoveMenuButtonClick(){
+    deleteMenuConfirmBlock.style.display = "flex";
+    blockScreenFilter.style.display = "flex";
+};
+
+function deleteMenuConfirmNoButtonClick(){
+    deleteMenuConfirmBlock.style.display = "none";
+    blockScreenFilter.style.display = "none";
+};
+
+async function deleteMenuConfirmYesButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
     let chosenMenuId = chosenMenu.id;
     let menuNumber = chosenMenuId.replace(/^menuCheckbox/g, "");
@@ -342,6 +372,10 @@ async function createMenuRemoveMenuButtonClick(){
 
 function createMenuAddMenuButtonClick(){
     noDisplayAll();
+    createMenuAddMenuButton.style.display = "none"
+    createMenuEditMenuButton.style.display = "none"
+    createMenuFinishButton.style.display = "none"
+    createMenuErroeMessage2.style.display = "none"
     createMenuBlock.style.display = "flex"
 }
 

@@ -45,6 +45,7 @@ let userNewPasswordTitle = document.getElementById("userNewPasswordTitle");
 let userPasswordMessage = document.getElementById("userPasswordMessage");
 // let userNewPasswordShow = document.getElementById("userNewPasswordShow");
 let separate = document.getElementById("separate");
+let separate1 = document.getElementById("separate1");
 let accountInfoTitle = document.getElementById("accountInfoTitle");
 let accountInfoItems = document.getElementById("accountInfoItems");
 let accountInfoListBlock = document.getElementById("accountInfoListBlock");
@@ -143,23 +144,34 @@ async function userSignOutContentClick(){
 async function accountInfoListBlockShow(){
     let groupApiGetResult = await groupApiGet();
     let groupList = groupApiGetResult.group
-    for(i=0;i<Object.keys(groupList).length;i++){
-        let groupId = groupList[i]["groupId"];
-        let groupName = groupList[i]["groupName"];
-        let billApiGetResult = await billApiGet(groupName);
-        let userBalance = billApiGetResult.userBalance
-        userBalance = Number(userBalance)
-        let reloadClass = ""
-        if (userBalance<0){
-            reloadClass = "cRed"
-        }
-        createDivElement(accountInfoListBlock,`accountInfoList${groupGetPage}_${i}`,"accountInfoItems", null, "appendChild")
-        createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupNameInfo${groupGetPage}_${i}`, "", groupName, "appendChild");
-        createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupBalanceInfo${groupGetPage}_${i}`, reloadClass, userBalance, "appendChild");
-        createAElement(eval(`accountInfoList${groupGetPage}_${i}`),`goToReloadInfo${groupGetPage}_${i}`, "goToReloadDiv confirmBGC", null, "appendChild",`/group/${groupName}/reload`);
-        createDivElement(eval(`goToReloadInfo${groupGetPage}_${i}`),`goToReloadContent${groupGetPage}_${i}`, "goToReloadContent ", "儲值去", "appendChild");
-    };
-    groupGetPage = groupApiGetResult.nextPage
+    console.log("groupList",groupList)
+    if (groupList == null){
+        accountInfoItems.remove();
+        separate1.remove();
+        // accountInfoListBlock.classList = "contentPositionCenter margin"
+        createDivElement(accountInfoListBlock,`noGroupBlock`,"", null, "appendChild")
+        createDivElement(noGroupBlock,`noGroupBlockContent`, "margin", "尚未加入任何群組", "appendChild");
+    }
+    else{
+        
+        for(i=0;i<Object.keys(groupList).length;i++){
+            let groupId = groupList[i]["groupId"];
+            let groupName = groupList[i]["groupName"];
+            let billApiGetResult = await billApiGet(groupName);
+            let userBalance = billApiGetResult.userBalance
+            userBalance = Number(userBalance)
+            let reloadClass = ""
+            if (userBalance<0){
+                reloadClass = "cRed"
+            }
+            createDivElement(accountInfoListBlock,`accountInfoList${groupGetPage}_${i}`,"accountInfoItems", null, "appendChild")
+            createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupNameInfo${groupGetPage}_${i}`, "", groupName, "appendChild");
+            createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupBalanceInfo${groupGetPage}_${i}`, reloadClass, userBalance, "appendChild");
+            createAElement(eval(`accountInfoList${groupGetPage}_${i}`),`goToReloadInfo${groupGetPage}_${i}`, "goToReloadDiv confirmBGC", null, "appendChild",`/group/${groupName}/reload`);
+            createDivElement(eval(`goToReloadInfo${groupGetPage}_${i}`),`goToReloadContent${groupGetPage}_${i}`, "goToReloadContent ", "儲值去", "appendChild");
+        };
+        groupGetPage = groupApiGetResult.nextPage;
+    }
 }
 
 // // IntersectionObserverasy
@@ -186,83 +198,90 @@ async function userOrderHistoryShow(){
     let getStatus = "alive";
     let orderUserApiGetResult = await orderUserApiGet(getStatus);
     let orders = orderUserApiGetResult.order;
-
-    const groupedOrders = orders.reduce((acc, order) => {
-        const key = `${order.orderListId}_${order.stopTime}_${order.storeName}`;
-        if (!acc[key]) {
-            acc[key] = {
-                orderListId: order.orderListId,
-                stopTime: order.stopTime,
-                storeName: order.storeName,
-                items: []
-            };
-        }
-        // 檢查是否有相同的 menuName 和 menuSize 的物件
-        const index = acc[key].items.findIndex(item => item.menuName === order.menuName && item.menuSize === order.menuSize);
-        if (index >= 0) {
-            // 如果已經有相同的物件，則將 orderQuantity 和 orderPrice 相加
-            acc[key].items[index].orderQuantity = String(Number(acc[key].items[index].orderQuantity) + Number(order.orderQuantity));
-            acc[key].items[index].orderPrice = String(Number(acc[key].items[index].orderPrice) + Number(order.orderPrice));
-        } else {
-            // 如果沒有相同的物件，則直接將物件加入陣列
-            acc[key].items.push({
-                menuName: order.menuName,
-                menuSize: order.menuSize,
-                orderQuantity: order.orderQuantity,
-                orderPrice: order.orderPrice
-            });
-        }
-        return acc;
-    }, {});
-
-    const orderDataSortout = Object.values(groupedOrders);
-    createDivElement(userOrderHistoryBlock,`userOrderHistoryBlockBlock${orderUserApiGetPage}`, "", null, "appendChild");
-    
-    for(let i=0;i<Object.keys(orderDataSortout).length;i++){
-        // 
-        createDivElement(eval(`userOrderHistoryBlockBlock${orderUserApiGetPage}`),`userOrderHistoryList${orderUserApiGetPage}${i}`,"userOrderHistoryList", null, "appendChild")
-
-        let orderListId = orderDataSortout[i].orderListId;
-        let stopTime = orderDataSortout[i].stopTime;
-        let stopTimeDate = stopTime.split('-')[0]+"-"+stopTime.split('-')[1]+"-"+stopTime.split('-')[2];
-        let stopTimeTime = stopTime.split('-')[3];
-        let storeName = orderDataSortout[i].storeName;
-        // 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStopTimeDate${orderUserApiGetPage}${i}`,"", stopTimeDate, "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStopTimeTime${orderUserApiGetPage}${i}`,"", stopTimeTime, "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderList${orderUserApiGetPage}${i}`),`userOrderHistoryListStoreName${orderUserApiGetPage}${i}`,"", storeName, "appendChild");
-
-        // 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleMenu${orderUserApiGetPage}${i}`,"userOrderHistoryListOrderListTitleColor", "餐點", "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderQuantity${orderUserApiGetPage}${i}`,"userOrderHistoryListOrderListTitleColor", "份數", "appendChild");
-        createDivElement(eval(`userOrderHistoryListOrderListTitle${orderUserApiGetPage}${i}`),`userOrderHistoryListOrderListTitleOrderPrice${orderUserApiGetPage}${i}`,"userOrderHistoryListOrderListTitleColor", "價錢", "appendChild");
-
-        orderDataSortoutItems = orderDataSortout[i].items;
-        let thisOrderTotalPrice = 0;
-        for(let j=0;j<Object.keys(orderDataSortoutItems).length;j++){
-            let menuName = orderDataSortoutItems[j].menuName;
-            let menuSize = orderDataSortoutItems[j].menuSize;
-            let menuTogether = menuName+" "+menuSize;
-            let orderPrice = orderDataSortoutItems[j].orderPrice;
-            let orderQuantity = orderDataSortoutItems[j].orderQuantity;
-            createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`,"orderHistory", null, "appendChild");
-            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListMenu${orderUserApiGetPage}${i}${j}`,"", menuTogether, "appendChild");
-            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListOrderQuantity${orderUserApiGetPage}${i}${j}`,"", orderQuantity, "appendChild");
-            createDivElement(eval(`userOrderHistoryListEachOrder${orderUserApiGetPage}${i}${j}`),`userOrderHistoryListOrderPrice${orderUserApiGetPage}${i}${j}`,"", orderPrice, "appendChild");
-            thisOrderTotalPrice = Number(thisOrderTotalPrice)+Number(orderPrice);
-        };
-
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListSeparateBar${orderUserApiGetPage}${i}`,"userOrderHistoryListSeparateBar", null, "appendChild");
-        // 
-        createDivElement(eval(`userOrderHistoryList${orderUserApiGetPage}${i}`),`userOrderHistoryListTotal${orderUserApiGetPage}${i}`,"orderHistory", null, "appendChild");
-        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalTitle${orderUserApiGetPage}${i}`,"", "總價", "appendChild");
-        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalDiv${orderUserApiGetPage}${i}`,"", null, "appendChild");
-        createDivElement(eval(`userOrderHistoryListTotal${orderUserApiGetPage}${i}`),`userOrderHistoryListTotalPrice${orderUserApiGetPage}${i}`,"", thisOrderTotalPrice, "appendChild");
+    console.log("orders",orders)
+    if (orders == null){
+        createDivElement(userOrderHistoryBlock,`noOrderHistory`, "noOrderHistory", null, "appendChild");
+        createDivElement(noOrderHistory,`noOrderHistoryContent`, "", "尚未進行任何訂購", "appendChild");
+        
     }
-    orderUserApiGetPage = orderUserApiGetResult.nextPage;
-    // return page
+    else{
+        const groupedOrders = orders.reduce((acc, order) => {
+            const key = `${order.orderListId}_${order.stopTime}_${order.storeName}`;
+            if (!acc[key]) {
+                acc[key] = {
+                    orderListId: order.orderListId,
+                    stopTime: order.stopTime,
+                    storeName: order.storeName,
+                    items: []
+                };
+            }
+            // 檢查是否有相同的 menuName 和 menuSize 的物件
+            const index = acc[key].items.findIndex(item => item.menuName === order.menuName && item.menuSize === order.menuSize);
+            if (index >= 0) {
+                // 如果已經有相同的物件，則將 orderQuantity 和 orderPrice 相加
+                acc[key].items[index].orderQuantity = String(Number(acc[key].items[index].orderQuantity) + Number(order.orderQuantity));
+                acc[key].items[index].orderPrice = String(Number(acc[key].items[index].orderPrice) + Number(order.orderPrice));
+            } else {
+                // 如果沒有相同的物件，則直接將物件加入陣列
+                acc[key].items.push({
+                    menuName: order.menuName,
+                    menuSize: order.menuSize,
+                    orderQuantity: order.orderQuantity,
+                    orderPrice: order.orderPrice
+                });
+            }
+            return acc;
+        }, {});
+
+        const orderDataSortout = Object.values(groupedOrders);
+        createDivElement(userOrderHistoryBlock,`userOrderHistoryBlockBlock_${orderUserApiGetPage}`, "", null, "appendChild");
+        
+        for(let i=0;i<Object.keys(orderDataSortout).length;i++){
+            // 
+            createDivElement(eval(`userOrderHistoryBlockBlock_${orderUserApiGetPage}`),`userOrderHistoryList_${orderUserApiGetPage}_${i}`,"userOrderHistoryList", null, "appendChild")
+
+            let orderListId = orderDataSortout[i].orderListId;
+            let stopTime = orderDataSortout[i].stopTime;
+            let stopTimeDate = stopTime.split('-')[0]+"-"+stopTime.split('-')[1]+"-"+stopTime.split('-')[2];
+            let stopTimeTime = stopTime.split('-')[3];
+            let storeName = orderDataSortout[i].storeName;
+            // 
+            createDivElement(eval(`userOrderHistoryList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListOrderList_${orderUserApiGetPage}_${i}`,"orderHistory topDateTimeStore", null, "appendChild");
+            createDivElement(eval(`userOrderHistoryListOrderList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListStopTimeDate_${orderUserApiGetPage}_${i}`,"", stopTimeDate, "appendChild");
+            createDivElement(eval(`userOrderHistoryListOrderList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListStopTimeTime_${orderUserApiGetPage}_${i}`,"", stopTimeTime, "appendChild");
+            createDivElement(eval(`userOrderHistoryListOrderList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListStoreName_${orderUserApiGetPage}_${i}`,"", storeName, "appendChild");
+
+            // 
+            createDivElement(eval(`userOrderHistoryList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListOrderListTitle_${orderUserApiGetPage}_${i}`,"orderHistory", null, "appendChild");
+            createDivElement(eval(`userOrderHistoryListOrderListTitle_${orderUserApiGetPage}_${i}`),`userOrderHistoryListOrderListTitleMenu_${orderUserApiGetPage}_${i}`,"userOrderHistoryListOrderListTitleColor", "餐點", "appendChild");
+            createDivElement(eval(`userOrderHistoryListOrderListTitle_${orderUserApiGetPage}_${i}`),`userOrderHistoryListOrderListTitleOrderQuantity_${orderUserApiGetPage}_${i}`,"userOrderHistoryListOrderListTitleColor", "份數", "appendChild");
+            createDivElement(eval(`userOrderHistoryListOrderListTitle_${orderUserApiGetPage}_${i}`),`userOrderHistoryListOrderListTitleOrderPrice_${orderUserApiGetPage}_${i}`,"userOrderHistoryListOrderListTitleColor", "價錢", "appendChild");
+
+            orderDataSortoutItems = orderDataSortout[i].items;
+            let thisOrderTotalPrice = 0;
+            for(let j=0;j<Object.keys(orderDataSortoutItems).length;j++){
+                let menuName = orderDataSortoutItems[j].menuName;
+                let menuSize = orderDataSortoutItems[j].menuSize;
+                let menuTogether = menuName+" "+menuSize;
+                let orderPrice = orderDataSortoutItems[j].orderPrice;
+                let orderQuantity = orderDataSortoutItems[j].orderQuantity;
+                createDivElement(eval(`userOrderHistoryList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListEachOrder_${orderUserApiGetPage}_${i}_${j}`,"orderHistory menuQuantityPriceTitle", null, "appendChild");
+                createDivElement(eval(`userOrderHistoryListEachOrder_${orderUserApiGetPage}_${i}_${j}`),`userOrderHistoryListMenu_${orderUserApiGetPage}_${i}_${j}`,"", menuTogether, "appendChild");
+                createDivElement(eval(`userOrderHistoryListEachOrder_${orderUserApiGetPage}_${i}_${j}`),`userOrderHistoryListOrderQuantity_${orderUserApiGetPage}_${i}_${j}`,"", orderQuantity, "appendChild");
+                createDivElement(eval(`userOrderHistoryListEachOrder_${orderUserApiGetPage}_${i}_${j}`),`userOrderHistoryListOrderPrice_${orderUserApiGetPage}_${i}_${j}`,"", orderPrice, "appendChild");
+                thisOrderTotalPrice = Number(thisOrderTotalPrice)+Number(orderPrice);
+            };
+
+            createDivElement(eval(`userOrderHistoryList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListSeparateBar_${orderUserApiGetPage}_${i}`,"userOrderHistoryListSeparateBar", null, "appendChild");
+            // 
+            createDivElement(eval(`userOrderHistoryList_${orderUserApiGetPage}_${i}`),`userOrderHistoryListTotal_${orderUserApiGetPage}_${i}`,"orderHistory", null, "appendChild");
+            createDivElement(eval(`userOrderHistoryListTotal_${orderUserApiGetPage}_${i}`),`userOrderHistoryListTotalTitle_${orderUserApiGetPage}_${i}`,"", "總價", "appendChild");
+            createDivElement(eval(`userOrderHistoryListTotal_${orderUserApiGetPage}_${i}`),`userOrderHistoryListTotalDiv_${orderUserApiGetPage}_${i}`,"", null, "appendChild");
+            createDivElement(eval(`userOrderHistoryListTotal_${orderUserApiGetPage}_${i}`),`userOrderHistoryListTotalPrice_${orderUserApiGetPage}_${i}`,"", thisOrderTotalPrice, "appendChild");
+        }
+        orderUserApiGetPage = orderUserApiGetResult.nextPage;
+        // return page
+    }
 }
 
 // IntersectionObserverasy
@@ -353,6 +372,7 @@ async function userPasswordEditButtonClick(){
     let userPasswordShow = document.getElementById("userPasswordShow");
     let userNewPasswordShow = document.getElementById("userNewPasswordShow");
     replaceToInputElement(userPasswordShow, `userPasswordShowNew`,"userInfoInputValuMemberCenter","",inputType = "password");
+    userPasswordShowNew.placeholder="輸入原始密碼"
     userPasswordEditButton.style.display = "none";
     userPasswordFinishButton.style.display = "flex";
 };

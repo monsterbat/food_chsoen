@@ -16,6 +16,8 @@
     width: 100%; */
     text-align: center;
     margin: 2px;
+    border: 1px solid white;
+    background-color:rgb(222, 222, 222);
 }
 
 .userIconAndName{
@@ -64,7 +66,7 @@
     width: 16px;
     height: 16px;
     cursor: pointer; 
-    top: 172px;
+    top: 182px;
     right:30%;
     z-index: 50;  
     left: 50%;
@@ -80,7 +82,7 @@
     width: 16px;
     height: 16px;
     cursor: pointer; 
-    top: 227px;
+    top: 237px;
     right:30%;
     z-index: 50;  
     left: 50%;
@@ -95,7 +97,7 @@
     width: 16px;
     height: 16px;
     cursor: pointer; 
-    top: 283px;
+    top: 293px;
     right:30%;
     z-index: 50;  
     left: 50%;
@@ -124,12 +126,15 @@
     background-color: #eaeaea;
     /* align-items: center; */
     padding: 5px 0px 0px 0px;
+    cursor: pointer;
 }
 .userOrderHistoryButton{
     width: 160px;
     height: 40px;
     background-color: #f2f2f2;
     padding: 5px 0px 0px 0px;
+    cursor: pointer;
+
 }
 
 .userNameMessage{
@@ -210,11 +215,12 @@
     margin: 0px;
 }
 .userOrderHistoryList{
-    border-top: 2px solid #CCCCCC;
+    border-top: 2px solid #000000;
+    
     margin: 10px 0px 4px 0px;
 }
 .userOrderHistoryListSeparateBar{
-    border-top: 1px solid #d7d7d7;
+    border-top: 2px solid #b0b0b0;
     /* border-style:dashed; */
 }
 /* .userOrderHistoryListOrderListTitleColor{
@@ -224,4 +230,28 @@
     color: red;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
     cursor: pointer;
+}
+
+.topDateTimeStore{
+    /* color: rgb(13, 0, 255); */
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+.menuQuantityPriceTitle{
+    background-color:rgb(242, 242, 242);
+    /* color: #666666; */
+}
+
+.noOrderHistory{
+    display: grid;
+    width: 300px;
+    grid-template-columns: 1fr;
+    /* box-sizing: border-box;
+    width: 100%; */
+    text-align: center;
+    font-size: 20px;
+    margin: 2px;
+    border: 1px solid white;
+    background-color:rgb(222, 222, 222);
 }

@@ -35,7 +35,7 @@ def menu_post():
     menu_status = create_menu_data["menu"]["menuStatus"]
     menu_note = create_menu_data["menu"]["menuNote"]
     # Use store_name find store id
-    store_id = sql_store_name_find_id(store_name,group_id,menu_status)
+    store_id = sql_store_name_find_id_alive(store_name,group_id,menu_status)
     # Check menu repeat
     menu_name_check = sql_menu_name_and_size_check_repeat(group_id,store_id,menu_name,menu_size,menu_status)
     # If no repeat save it
@@ -119,7 +119,7 @@ def menu_patch():
     menu_new_note = change_menu_data["menu"]["menuNewNote"]
     print("C1")
     # Use store_name find store id
-    store_id = sql_store_name_find_id(store_name,group_id,"alive")
+    store_id = sql_store_name_find_id_alive(store_name,group_id,"alive")
 
     # Find menu id 
     menu_id = sql_menu_info_find_menu_id(group_id, store_id,menu_name, menu_size,"alive")
