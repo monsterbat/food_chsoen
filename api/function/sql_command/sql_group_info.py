@@ -32,3 +32,14 @@ def sql_group_name_find_info(group_name, group_status):
     value_input = (group_name,group_status)
     group_info_check = query_data(sql_command,value_input)
     return group_info_check
+
+# update
+# update manager
+def sql_update_group_manager(group_manager,id):
+    sql_command="""
+    UPDATE user_group
+    SET group_manager = %s
+    WHERE id = %s;
+    """
+    value_input = (group_manager,id)
+    insert_or_update_data(sql_command,value_input)

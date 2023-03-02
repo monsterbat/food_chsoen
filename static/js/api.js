@@ -50,6 +50,19 @@ async function groupApiPut(data){
         return data;
     })
 };
+async function groupApiDelete(data){
+    return fetch(`/api/group`,{
+        method:"DELETE",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            "Content-Type":"application/json"
+        })
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data
+    })
+};
 async function groupInfoApiGet(urlGroupName,getStatus){
     return fetch(`/api/group/info?page=${groupInfoPage}&keyword=${keyword}&urlGroupName=${urlGroupName}&getStatus=${getStatus}`,{
         method:"GET",
@@ -59,7 +72,21 @@ async function groupInfoApiGet(urlGroupName,getStatus){
         return data;
     })
 };
-// user on group
+
+async function groupManagerApiPatch(data){
+    return fetch(`/api/group/manager`,{
+        method:"PATCH",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            "Content-Type":"application/json"
+        })
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data
+    })
+};
+// user in group
 async function groupUserApiGet(urlGroupName){
     return fetch(`/api/group/user?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{
         method:"GET",
@@ -69,6 +96,32 @@ async function groupUserApiGet(urlGroupName){
         return data;
     })
 };
+
+async function groupUserApiGet(urlGroupName){
+    return fetch(`/api/group/user?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
+
+async function groupCheckUserApiPost(data){
+    return fetch(`/api/group/check`,{
+        method:"POST",
+        body:JSON.stringify(data),
+        headers:new Headers({
+            "Content-Type":"application/json"
+        })
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data
+    })
+};
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+// 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // User
 async function userApiGet(){

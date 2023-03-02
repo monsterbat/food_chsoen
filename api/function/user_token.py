@@ -59,7 +59,7 @@ def user_token_create(result,user_email):
         "user_email":user_email
     }
     token = jwt.encode(sign_in_data_email_only, jwt_key, algorithm="HS256")    
-    cookie_sustain_days = 1
+    cookie_sustain_days = 30
     result.set_cookie(key="token", value=token, expires=time.time()+cookie_sustain_days*60*60*24)
     return result
 

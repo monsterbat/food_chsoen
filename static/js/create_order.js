@@ -41,6 +41,8 @@ async function onloadThisPage(){
     userId = userApiData.data.userId;
     userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
+
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = "建立團購";
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;

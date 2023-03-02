@@ -68,6 +68,7 @@ async function onloadEditStorePage(){
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = "編輯查看店家";
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
@@ -185,7 +186,7 @@ async function deleteConfirmYesButtonClick(){
     console.log("storeApiPatchResult",storeApiPatchResult)
     
 
-    window.location.href = `/group/${urlGroupName}/store_check`;
+    // window.location.href = `/group/${urlGroupName}/store_check`;
 }
 
 async function finishEditStoreButtonClick(){
@@ -211,7 +212,7 @@ async function finishEditStoreButtonClick(){
     }
     let storeApiPatchResult = await storeApiPatch(storePatchData);
     console.log("storeApiPatchResult",storeApiPatchResult)
-    location.reload()
+    window.location.href = `/group/${urlGroupName}/store_edit/${createStoreNameValue}`;
 }
 
 function checkMenuButtonClick(){

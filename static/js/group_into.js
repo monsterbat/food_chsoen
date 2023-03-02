@@ -66,6 +66,15 @@ let inviteMemberEmailBlockBlock = document.getElementById("inviteMemberEmailBloc
 let openInviteMemberButton = document.getElementById("openInviteMemberButton");
 
 let finisIinviteBackGroupButton = document.getElementById("finisIinviteBackGroupButton");
+// leave the group
+let leaveTheGroupButton = document.getElementById("leaveTheGroupButton");
+let leaveGroupConfirmTitle = document.getElementById("leaveGroupConfirmTitle");
+let leaveGroupConfirmTitle2 = document.getElementById("leaveGroupConfirmTitle2");
+// leaveGroupConfirmTitle2
+let leaveGroupContent = document.getElementById("leaveGroupContent");
+let leaveGroupConfirmNoButton = document.getElementById("leaveGroupConfirmNoButton");
+let leaveGroupConfirmYesButton = document.getElementById("leaveGroupConfirmYesButton");
+let leaveGroupErrorContent = document.getElementById("leaveGroupErrorContent");
 
 // ==== Create element ====
 
@@ -78,20 +87,24 @@ createImgElement(pressToShowInfoUp,"pressToShowInfoUpImg","pressToShowInfo", "..
 // ==== onload ====
 let groupIntoCount = 0;
 let groupUserCount = 0;
+let groupManager = "";
 noneDisplayGroupInto();
 manageGroupBlock.style.display="flex";
 onloadThisPage();
 async function onloadThisPage(){
     let userApiData = await userStatus();
-    let userId = userApiData.data.userId;
-    let userName = userApiData.data.userName;
+    userId = userApiData.data.userId;
+    userName = userApiData.data.userName;
+
     urlGroupName = getGroupNameFromUrl();
+    // 
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = urlGroupName;
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     console.log("groupApiData",groupApiData)
     groupId = groupApiData.groupId;
-    let groupManager = "";
+    
     for (i=0;i<Object.keys(groupApiData).length;i++){
         if (groupApiData[i].groupName == urlGroupName){            
             groupManager = groupApiData[i].groupManager;
@@ -137,8 +150,10 @@ openInviteMemberButton.addEventListener("click",openInviteMemberButtonClick);
 finisIinviteBackGroupButton.addEventListener("click",finisIinviteBackGroupButtonClick);
 // 
 reloadButton.addEventListener("click",reloadButtonClick);
-
-
+// 
+leaveTheGroupButton.addEventListener("click",leaveTheGroupButtonClick);
+leaveGroupConfirmNoButton.addEventListener("click",leaveGroupConfirmNoButtonClick);
+leaveGroupConfirmYesButton.addEventListener("click",leaveGroupConfirmYesButtonClick);
 // order history
 managerOrderListRecord.addEventListener("click",rmanagerOrderListRecordClick);
 
@@ -181,6 +196,13 @@ async function reloadButtonClick(){
 async function editGroupDisplayOrNot(userId,groupManager){
     if (userId == groupManager){
         manageGroupEdit.style.display = "flex";
+        leaveGroupConfirmYesButtonContent.textContent = "確認"
+        leaveGroupConfirmNoButtonContent.textContent = "返回"
+        leaveGroupConfirmTitle.textContent = "您是群組擁有者"
+        leaveGroupConfirmTitle2.textContent = "離開前請指定一位新管理者"
+        createDivElement(leaveGroupContent,"leaveGroupContentInput","userInfoInputBlock",null,"appendChild")
+        createInputElement(leaveGroupContentInput,"leaveGroupValue","userInfoInputValue",null,"appendChild","text","","leaveGroupValue")
+        leaveGroupValue.placeholder = "請輸入欲轉換人員信箱"
     }
     else{
         manageGroupEdit.style.display = "none";
@@ -332,15 +354,35 @@ async function showAllmemberAndMoneyInGroup(){
     console.log("Object.keys(groupUserApiGetResult)",Object.keys(groupUserApiGetResult));
 
     for (let i=0;i<groupUserApiGetResult.length;i++){
+        userInGroupStatus = groupUserApiGetResult[i].userInGroupStatus;
         userPosition = groupUserApiGetResult[i].userPosition;
         userName = groupUserApiGetResult[i].userName;
         userBalance = groupUserApiGetResult[i].userBalance;
-        createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`showAllmemberAndMoneyList_${i}`, "showAllmemberAndMoneyBlock", null, "appendChild");
-        createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userPosition_${i}`, "listContent", userPosition, "appendChild");
-        createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userName_${i}`, "listContent", userName, "appendChild");
-        createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userBalance_${i}`, "listContent", userBalance, "appendChild");
+        if (userInGroupStatus == "alive"){
+            createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`showAllmemberAndMoneyList_${i}`, "showAllmemberAndMoneyBlock", null, "appendChild");
+            createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userPosition_${i}`, "listContent", userPosition, "appendChild");
+            createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userName_${i}`, "listContent", userName, "appendChild");
+            createDivElement(eval(`showAllmemberAndMoneyList_${i}`),`userBalance_${i}`, "listContent", userBalance, "appendChild");
+            if (eval(`userBalance_${i}`).textContent < 0){
+                eval(`userBalance_${i}`).style.color = "red"
+            }
+        }
     }
-
+    for (let j=0;j<groupUserApiGetResult.length;j++){
+        userInGroupStatus = groupUserApiGetResult[j].userInGroupStatus;
+        userPosition = groupUserApiGetResult[j].userPosition;
+        userName = groupUserApiGetResult[j].userName;
+        userBalance = groupUserApiGetResult[j].userBalance;
+        if (userInGroupStatus == "stop"){
+            createDivElement(eval(`showAllmemberAndMoneyBlockBlock_${groupUserCount}`),`showAllmemberAndMoneyList_${j}`, "showAllmemberAndMoneyBlock", null, "appendChild");
+            createDivElement(eval(`showAllmemberAndMoneyList_${j}`),`userPosition_${j}`, "listContent", "已退出", "appendChild");
+            createDivElement(eval(`showAllmemberAndMoneyList_${j}`),`userName_${j}`, "listContent", userName, "appendChild");
+            createDivElement(eval(`showAllmemberAndMoneyList_${j}`),`userBalance_${j}`, "listContent", userBalance, "appendChild");
+            if (eval(`userBalance_${j}`).textContent < 0){
+                eval(`userBalance_${j}`).style.color = "red"
+            }
+        }
+    }
 }
 
 // invite member
@@ -376,10 +418,10 @@ async function inviteMemberSubmitClick(){
         else{
             resultMessage = result.message;
             if (resultMessage == "user doesn't exist"){
-                inviteMemberMessageContent.textContent = `${inviteMemberEmailValue}使用者不存在`;
+                inviteMemberMessageContent.textContent = `${inviteMemberEmailValue} 使用者不存在`;
             };
             if (resultMessage == "already member"){
-                inviteMemberMessageContent.textContent = `${inviteMemberEmailValue}已是會員`;
+                inviteMemberMessageContent.textContent = `${inviteMemberEmailValue} 已是會員`;
             };
         };
     }
@@ -530,4 +572,47 @@ function rmanagerOrderListRecordClick(){
 
 function backGroupChooseButtonClick(){
     window.location.href = `/group`;
+}
+
+// 
+async function leaveTheGroupButtonClick(){
+    leaveGroupConfirmBlock.style.display = "flex";
+    blockScreenFilter.style.display = "flex";    
+}
+function leaveGroupConfirmNoButtonClick(){
+    leaveGroupConfirmBlock.style.display = "none";
+    blockScreenFilter.style.display = "none";  
+}
+async function leaveGroupConfirmYesButtonClick(){
+    if (userId == groupManager){
+        let leaveGroupValueValue = leaveGroupValue.value;
+        console.log("leaveGroupValueValue",leaveGroupValueValue)
+        let changeManagerData = {
+            "groupName":urlGroupName,
+            "userEmail":leaveGroupValueValue
+        }
+        let groupManagerApiPatchResult = await groupManagerApiPatch(changeManagerData)
+        console.log("groupManagerApiPatchResult",groupManagerApiPatchResult)
+        if (groupManagerApiPatchResult.message == ("user not exist" || "user not in group")){
+            leaveGroupErrorContent.textContent = "群組無此成員"
+        }
+        if (groupManagerApiPatchResult.message == ("same manager")){
+            leaveGroupErrorContent.textContent = "請勿指定自己"
+        }
+        if (groupManagerApiPatchResult.ok == true){
+            let groupApiDeleteData = {
+                "groupName":urlGroupName
+            }
+            let groupApiDeleteResult = await groupApiDelete(groupApiDeleteData);
+            location.reload()
+        }
+    }
+    else{
+        let groupApiDeleteData = {
+            "groupName":urlGroupName
+        }
+        let groupApiDeleteResult = await groupApiDelete(groupApiDeleteData);
+        console.log("groupApiDeleteResult",groupApiDeleteResult)
+        location.reload()
+    }
 }

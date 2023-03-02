@@ -22,6 +22,7 @@ async function onloadAskFoodChosenPage(){
     userId = userApiData.data.userId;
     userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = "詢問強森";
     let groupApiData = await groupStatus(urlGroupName,"alive");
     

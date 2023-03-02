@@ -1,22 +1,13 @@
 // ==== Get element ====
 let userCenterBlock = document.getElementById("userCenterBlock");
-let topNameAndAvatorBlock = document.getElementById("topNameAndAvatorBlock");
 let topAvatorBlock = document.getElementById("topAvatorBlock");
 let topAvator = document.getElementById("topAvator");
 
 let memberCenterName = document.getElementById("memberCenterName");
 
-let topAvatorEditButton = document.getElementById("topAvatorEditButton");
 let topAvatorEdit = document.getElementById("topAvatorEdit");
-let topAvatorFinishButton = document.getElementById("topAvatorFinishButton");
 let topAvatorFinish = document.getElementById("topAvatorFinish");
 
-let topNameBlock = document.getElementById("topNameBlock");
-// let topName = document.getElementById("topName");
-let topNameEditButton = document.getElementById("topNameEditButton");
-let topNameEdit = document.getElementById("topNameEdit");
-let topNameFinishButton = document.getElementById("topNameFinishButton");
-let topNameFinish = document.getElementById("topNameFinish");
 
 let memberCenterBlock = document.getElementById("memberCenterBlock");
 let topNav = document.getElementById("topNav");
@@ -29,11 +20,10 @@ let userProfileBlock = document.getElementById("userProfileBlock");
 
 let userNameBlock = document.getElementById("userNameBlock");
 let userNameTitle = document.getElementById("userNameTitle");
-// let userNameShowBlock = document.getElementById("userNameShowBlock");
-// let userNameShow = document.getElementById("userNameShow");
+let userNameShowBlock = document.getElementById("userNameShowBlock");
+let userNameShow = document.getElementById("userNameShow");
 let userNameEditButton = document.getElementById("userNameEditButton");
 let userNameFinishButton = document.getElementById("userNameFinishButton");
-let userNameMessage = document.getElementById("userNameMessage");
 
 let userEmailBlock = document.getElementById("userEmailBlock");
 let userEmailTitle = document.getElementById("userEmailTitle");
@@ -87,8 +77,6 @@ onloadMemberCenterPage();
 
 // ==== create event listener ====
 memberCenterBlock.addEventListener("click",memberCenterBlockChange);
-topAvatorEditButton.addEventListener("click",topAvatorEditButtonClick);
-topAvatorFinishButton.addEventListener("click",topAvatorFinishButtonClick);
 topNameEditButton.addEventListener("click",topNameEditButtonClick);
 topNameFinishButton.addEventListener("click",topNameFinishButtonClick);
 userEmailEditButton.addEventListener("click",userEmailEditButtonClick);
@@ -120,10 +108,8 @@ async function onloadMemberCenterPage(){
     userProfileButtonClick()
     // 
     topNameFinishButton.style.display = "none";
-    topAvatorFinishButton.style.display = "none";
     userEmailFinishButton.style.display = "none";
-    userPasswordFinishButton.style.display = "none";
-    
+    userPasswordFinishButton.style.display = "none";    
     // 
     historyTarget.style.display = "none";
     groupTarget.style.display = "flex";
@@ -135,12 +121,10 @@ async function onloadMemberCenterPage(){
     pageTitleContent.textContent = "會員中心"
     
     memberCenterBlockChange();
-    topNameAndAvatorBlockShow(userName);
-    // userNameShow.textContent = userName;
+    userNameShow.textContent = userName;
     userEmailShow.textContent = userEmail;
     userPasswordShow.textContent = "******";
     accountInfoListBlockShow();
-    // userOrderHistoryShow();
 }
 
 async function memberCenterBlockChange(){
@@ -154,14 +138,6 @@ async function memberCenterBlockChange(){
 async function userSignOutContentClick(){
     let userApiDeleteResult = await userApiDelete();
     window.location = `/`
-}
-
-async function topNameAndAvatorBlockShow(userName){
-    // avator S3
-    // topAvator.src = ""
-
-    // 
-    topName.textContent = userName;
 };
 
 async function accountInfoListBlockShow(){
@@ -175,13 +151,13 @@ async function accountInfoListBlockShow(){
         userBalance = Number(userBalance)
         let reloadClass = ""
         if (userBalance<0){
-            reloadClass = ""
+            reloadClass = "cRed"
         }
-        createDivElement(accountInfoListBlock,`accountInfoList${groupGetPage}${i}`,"accountInfoItems", null, "appendChild")
-        createDivElement(eval(`accountInfoList${groupGetPage}${i}`),`groupNameInfo${groupGetPage}${i}`, "", groupName, "appendChild");
-        createDivElement(eval(`accountInfoList${groupGetPage}${i}`),`groupBalanceInfo${groupGetPage}${i}`, "", userBalance, "appendChild");
-        createAElement(eval(`accountInfoList${groupGetPage}${i}`),`goToReloadInfo${groupGetPage}${i}`, reloadClass, null, "appendChild",`/group/${groupName}/reload`);
-        createDivElement(eval(`goToReloadInfo${groupGetPage}${i}`),`goToReloadContent${groupGetPage}${i}`, "", "儲值去", "appendChild");
+        createDivElement(accountInfoListBlock,`accountInfoList${groupGetPage}_${i}`,"accountInfoItems", null, "appendChild")
+        createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupNameInfo${groupGetPage}_${i}`, "", groupName, "appendChild");
+        createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupBalanceInfo${groupGetPage}_${i}`, reloadClass, userBalance, "appendChild");
+        createAElement(eval(`accountInfoList${groupGetPage}_${i}`),`goToReloadInfo${groupGetPage}_${i}`, "goToReloadDiv confirmBGC", null, "appendChild",`/group/${groupName}/reload`);
+        createDivElement(eval(`goToReloadInfo${groupGetPage}_${i}`),`goToReloadContent${groupGetPage}_${i}`, "goToReloadContent ", "儲值去", "appendChild");
     };
     groupGetPage = groupApiGetResult.nextPage
 }
@@ -302,49 +278,40 @@ let callbackHistory = (entries,observer) => {
     });
 };
 
-
-
 let observerHistory = new IntersectionObserver(callbackHistory, options);
-
 observerHistory.observe(historyTarget);
 
-// Edit 
-async function topAvatorEditButtonClick(){
-    
-}
-async function topAvatorFinishButtonClick(){
-    
-}
 async function topNameEditButtonClick(){
-    let topName = document.getElementById("topName");
-    let topNameValue = topName.textContent;
-    replaceToInputElement(topName, `topNameNew`,"topNameBlock textCenter",topNameValue,inputType = "text");
+    let userNameShow = document.getElementById("userNameShow");
+    let userNameShowValue = userNameShow.textContent;
+    replaceToInputElement(userNameShow, `userNameShowNew`,"userInfoInputValuMemberCenter",userNameShowValue,inputType = "text");
     topNameEditButton.style.display = "none";
     topNameFinishButton.style.display = "flex";
 }
 async function topNameFinishButtonClick(){
-    let topNameNew = document.getElementById("topNameNew");
-    let topNameValue = topNameNew.value;
+    let userNameShowNew = document.getElementById("userNameShowNew");
+    let userNameShowValue = userNameShowNew.value;
     let data = {
-        "userNewName":topNameValue,	
+        "userNewName":userNameShowValue,	
         "userNewEmail":null,
         "userPassword":null,
         "userNewPassword":null,
         "userStatus":"alive"
     };
     let userApiPatchResult = await userApiPatch(data);
+    console.log("userApiPatchResult",userApiPatchResult)
     if (userApiPatchResult.ok == true){
-        replaceToDivElement(topNameNew,`topName`,"topNameBlock",topNameValue);
+        replaceToDivElement(userNameShowNew,`userNameShow`,"",userNameShowValue);
         topNameEditButton.style.display = "flex";
         topNameFinishButton.style.display = "none";
-        userNameMessage.textContent = "名稱更新完成";
-        userNameMessage.style.display = "flex";
-        userNameMessage.style.color = "green";
+        userPasswordMessage.textContent = "姓名更新完成";
+        userPasswordMessage.style.display = "flex";
+        userPasswordMessage.style.color = "green";
     };
     if (userApiPatchResult.error == true){
-        userNameMessage.style.display = "flex";
-        userNameMessage.style.color = "red";
-        userNameMessage.textContent = userApiPatchResult.message;
+        userPasswordMessage.style.display = "flex";
+        userPasswordMessage.style.color = "red";
+        userPasswordMessage.textContent = userApiPatchResult.message;
     };
 };
 

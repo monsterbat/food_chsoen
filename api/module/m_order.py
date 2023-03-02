@@ -38,7 +38,7 @@ def order_post():
     menu_name = create_order_data["menuName"]
     menu_size = create_order_data["menuSize"]
     menu_price = create_order_data["menuPrice"]
-    order_price = int(menu_price)*int(order_quantity)
+    order_price = float(menu_price)*float(order_quantity)
     order_note = create_order_data["menuNote"]
     # Find order list number id
     sql_command="""

@@ -64,7 +64,7 @@
     width: 16px;
     height: 16px;
     cursor: pointer; 
-    top: 180px;
+    top: 172px;
     right:30%;
     z-index: 50;  
     left: 50%;
@@ -80,7 +80,7 @@
     width: 16px;
     height: 16px;
     cursor: pointer; 
-    top: 320px;
+    top: 227px;
     right:30%;
     z-index: 50;  
     left: 50%;
@@ -95,9 +95,9 @@
     width: 16px;
     height: 16px;
     cursor: pointer; 
-    top: 375px;
+    top: 283px;
     right:30%;
-    z-index: 1150;  
+    z-index: 50;  
     left: 50%;
     transform: translateX(-50%) translateX(120px);
 }

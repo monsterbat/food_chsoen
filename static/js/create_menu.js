@@ -87,6 +87,7 @@ async function onloadCreateMenuPage(){
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
     
+    userCheckInGroup(urlGroupName);
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
     for (i=0;i<Object.keys(groupApiData).length;i++){

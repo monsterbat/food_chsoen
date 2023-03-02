@@ -7,41 +7,7 @@
 {% block content %}
 <main>
     <div id="userCenterBlock" class="contentPositionCenter margin">
-        <div id="topNameAndAvatorBlock" class="userIconAndName">
-            <div id="topAvatorBlock" class="">
-                <!-- <div id="topAvatorTitle" class="">
-                    成員頭像
-                </div> -->
-                <img id="topAvator" class="membercenterTopAvator" src="{{ url_for('static', filename='image/profile_pic_icon.png') }}">
-            </div>
-            <div id="topNameBlock" class="contentPositionCenter">
-                <div id="topAvatorTitle" class="topAvatorTitle">
-                    成員姓名
-                </div>
-                <div id="topName" class="topNameBlock">
-                    User Name
-                </div>
-                <div id="userNameMessage" class="userNameMessage">
-                     <!-- 123 -->
-                </div>
-            </div>
 
-
-        </div>
-        <!--  -->
-        <div id="topNameEditButton" class="topNameEditButton">
-            <img id="topNameEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
-        </div>
-        <div id="topNameFinishButton" class="topNameFinishButton">
-            <img id="topNameFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
-        </div>
-        <div id="topAvatorEditButton" class="smailEditIcon avatorEditPosition">
-            <!-- <img id="topAvatorEdit" class="" src="{{ url_for('static', filename='image/Edit_icon.png') }}"> -->
-        </div>
-        <div id="topAvatorFinishButton" class="smailEditIcon avatorEditPosition">
-            <!-- <img id="topAvatorFinish" class="" src="{{ url_for('static', filename='image/ok_icon.png') }}"> -->
-        </div>
-        <!--  -->
         
         <div id="userCenterSelectBlock" class="userCenterSelectBlock">
             <div id="userProfileButton" class="userProfileButton">
@@ -58,6 +24,20 @@
         <!-- 1-3 -->
         <div id="userProfileBlock" class="userProfileBlock">
 
+            <div id="userEmailBlock" class="userInfoBlock">
+                <div id="userEmailTitle" class="userInfoTitle">
+                    姓名
+                </div>
+                <div id="userNameShowBlock" class="userInfoShowBlock">
+                    <div id="userNameShow" class=""></div>
+                </div>
+                <div id="topNameEditButton" class="topNameEditButton">
+                    <img id="topNameEdit" class="smailEditIcon" src="{{ url_for('static', filename='image/Edit_icon.png') }}">
+                </div>
+                <div id="topNameFinishButton" class="topNameFinishButton">
+                    <img id="topNameFinish" class="smailEditIcon" src="{{ url_for('static', filename='image/ok_icon.png') }}">
+                </div>
+            </div>
 
             <div id="userEmailBlock" class="userInfoBlock">
                 <div id="userEmailTitle" class="userInfoTitle">

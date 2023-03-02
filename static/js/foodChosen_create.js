@@ -27,6 +27,8 @@ async function onloadFoodChosenCreatePage(){
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
+
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = "建立店家";
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;

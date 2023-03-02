@@ -27,6 +27,7 @@ async function onloadReloadPage(){
     currentUserName = userName;
     currentUserEmail = userApiData.data.userEmail;
     urlGroupName = getGroupNameFromUrl();
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = urlGroupName;
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;

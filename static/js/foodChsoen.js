@@ -63,6 +63,8 @@ async function onloadByFatePage(){
     let userName = userApiData.data.userName;
     currentUserEmail = userApiData.data.userEmail;
     urlGroupName = getGroupNameFromUrl();
+
+    userCheckInGroup(urlGroupName);
     storeDrawLotsApiGetResult = await storeDrawLotsApiGet(urlGroupName);
     storeDrawLotsStoreList = storeDrawLotsApiGetResult.store;
     storeTypeSortOutData = await findStoreType(storeDrawLotsStoreList);

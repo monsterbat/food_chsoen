@@ -99,3 +99,40 @@ def group_delete_400_wrong_password():
         })
     return errorr_message, 400
 
+# group_manager patch
+def group_manager_patch_200():
+    data=jsonify({"ok":True})
+    return data, 200
+
+def group_manager_patch_400_same_manager():
+    errorr_message = jsonify({
+            "error": True,
+            "message": "same manager"
+        })
+    return errorr_message, 400
+
+def group_manager_patch_400_no_exist_user():
+    errorr_message = jsonify({
+            "error": True,
+            "message": "user not exist"
+        })
+    return errorr_message, 400
+
+def group_manager_patch_400_not_in_group():
+    errorr_message = jsonify({
+            "error": True,
+            "message": "user not in group"
+        })
+    return errorr_message, 400
+# group check
+
+def group_check_post_200():
+    data=jsonify({"ok":True})
+    return data, 200
+
+def group_check_post_400():
+    errorr_message = jsonify({
+            "error": True,
+            "message": "not in group"
+        })
+    return errorr_message, 400

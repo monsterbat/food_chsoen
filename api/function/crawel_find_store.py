@@ -69,6 +69,8 @@ def store_keyword_get_correspond_name(store_name_keyword):
         name_index+=1
     driver.quit()
     return name_text_all
+# 
+
 
 def store_name_create_menu(store_name_keyword,box_index,group_id):
     # =========================================================================================================
@@ -108,11 +110,11 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
     # # 5 Click href to get url
     time.sleep(0.5)
     click_to_url = wait.until(EC.visibility_of_element_located((By.XPATH,'//div[contains(@class, "actions")]/div')))
-    print("click_to_url",click_to_url)
+   
     click_to_url.click()
     time.sleep(0.5)
     target_store_url = driver.current_url
-    
+    print("target_store_url",target_store_url)
     #=========================================================================================================
 
     # With URL use Request
@@ -124,11 +126,10 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
     with req.urlopen(request) as response:
         data=response.read().decode("utf-8")
     
-    print("Check2")
     # 2. analysis data
     root=bs4.BeautifulSoup(data, "html.parser")
     store_info_all = root.find("table", {"id": "property"})
-    print("Check3")
+    print("C1__store_info_all")
     # store info
     store_name = store_info_all.find_all("tr")[1].find("td", {"class": "content"}).span.text
     store_address = store_info_all.find_all("tr")[4].find("td", {"class": "content"}).div.span.text
@@ -139,17 +140,7 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
     store_note = ""
     join_time = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
-    store_info_into_sql = {
-        "group_id":group_id,
-        "store_name":store_name,
-        "store_address":store_address,
-        "store_phone_number":store_phone_number,
-        "store_delivery_condition":store_delivery_condition,
-        "store_type":store_type,
-        "store_open_time":"",
-        "store_note":""
-    }
-    print("Check4")
+    
     # #=========================================================================================================
 
     # Check store repeat
@@ -163,85 +154,64 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
 
     # INNER information 
 
-   
+    print("C1-1",store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, "alive",group_id,store_note, "", "", "", "", join_time)
     sql_store_inner_into(store_name, store_address, store_phone_number, store_type, store_open_time, store_delivery_condition, "alive",group_id,store_note, "", "", "", "", join_time)
 
+    print("C2_ store_name_check",store_name_check)
     # #=========================================================================================================
-    print("Check5")
     menu_fail_items = []
     menu_table_all = root.find_all("table", {"style": "margin-bottom: 0.5em;"})
+    print("C3_ menu_table_all")
     for menu_table in menu_table_all:
         menu_list = menu_table.find_all("tr")
-        print(len(menu_list))
+        
+        print("C4_ menu_list")
         if menu_table.find_all("tr")[0] == menu_table.find("tr", {"class": "even"}) or menu_table.find_all("tr")[0] == menu_table.find("tr", {"class": "odd"}):
-            print("withOut type")
+            print("C4-1")
             menu_type = ""
             count_menu_value=0
         else:
-            print("with type")
+            print("C4-2")
             menu_type = menu_list[0].find("td", {"class": "categoryHeader"}).span.text
             count_menu_value=1
-
-        tttt=0
-        tttt=+1
-        print("CheckTTTT",tttt)
+        print("C5_ count_menu_value")
+        print("C5-0",len(menu_list))
         while count_menu_value<len(menu_list):
-            tttt=+1
-            print("CheckTTTT",tttt)
-            print("check6")
             name_cell = menu_list[count_menu_value].find("td", {"style": "width: 10em;"})
             menu_name = name_cell.div.text.strip()
             price_cell = menu_list[count_menu_value].find("td", {"style": "width: 20em;"})
             price_cell_lenth = len(price_cell.find_all("span", {"style": "white-space: nowrap;"}))
+            print("C5-1price_cell_lenth",price_cell_lenth)
             menu_size = ""
             menu_note = ""
             if price_cell_lenth == 1:
-                tttt=+1
-                print("CheckTTTT",tttt)
                 try:
-                    tttt=+1
-                    print("CheckTTTT",tttt)
-                    print("check7",)
+                    print("C6_1_ price_cell",price_cell)
                     price_cell = price_cell.span.text
                     
                     menu_note = ""
-                    tttt=+1
-                    print("CheckTTTT",tttt)
-                    print("len",len(price_cell.split(" ")))
+                    print("C6_2_ len(price_cell.split(" "))",len(price_cell.split(" ")))
                     if len(price_cell.split(" ")) > 1:
-                        print("check7.1")
                         menu_size = price_cell.rsplit(" ",1)[0]
                         menu_price = float(price_cell.split(" ")[-1])
                     else:
-                        tttt=+1
-                        print("CheckTTTT",tttt)
-                        print("check7.2",price_cell)
                         menu_price = float(price_cell)
                     print("menu_price",menu_price)
-
                     if menu_price == 0:
-                        tttt=+1
-                        print("CheckTTTT",tttt)
                         count_menu_value+=1
-                        print("menu_name price=0",menu_name)
-                        break
-                    tttt=+1
-                    print("CheckTTTT",tttt)
-                    print("menu_name,menu_size,menu_type",menu_name,menu_size,menu_type)
+                        continue
                     # 
+                    print("store_name,group_id,menu_name,menu_size,menu_type,menu_price,menu_note",store_name,group_id,menu_name,menu_size,menu_type,menu_price,menu_note)
                     sql_result = menu_info_crawler_to_sql(store_name,group_id,menu_name,menu_size,menu_type,menu_price,menu_note)
-                    print("sql_result",sql_result)
-                    tttt=+1
-                    print("CheckTTTT",tttt)
+                    print("C7_ sql_result",sql_result)
                     try:
-                        tttt=+1
-                        print("CheckTTTT",tttt)
                         if sql_result["error"] == True:
                                 menu_fail_item = sql_result["message"]
                                 menu_fail_items = menu_fail_items + [menu_fail_item]
                     except:
-                        break
+                        continue
                 except:
+                    print("C6_2_ menu_fail_item",menu_fail_item)
                     menu_fail_item = {
                         menu_type+" "+menu_name+" "+menu_size+" "+"建立失敗"
                     }
@@ -258,7 +228,6 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
                             count_menu_value+=1
                             break
                         menu_note = ""
-                        print("menu_name,menu_size,menu_type",menu_name,menu_size,menu_type)
                         # 
                         sql_result = menu_info_crawler_to_sql(store_name,group_id,menu_name,menu_size,menu_type,menu_price,menu_note)
                         try:
@@ -266,7 +235,7 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
                                 menu_fail_item = sql_result["message"]
                                 menu_fail_items = menu_fail_items + [menu_fail_item]
                         except:
-                            break
+                            continue
                 except:
                     menu_fail_item = {
                         menu_type+" "+menu_name+" "+menu_size+" "+"建立失敗"
@@ -279,13 +248,13 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
         "menu_fail_items":menu_fail_items,
         "store_name":store_name
     }
-    print("result_data",result_data)
     return result_data
 
 def menu_info_crawler_to_sql(store_name,group_id,menu_name,menu_size,menu_type,menu_price,menu_note):
+    print("Cinto",store_name,group_id,menu_name,menu_size,menu_type,menu_price,menu_note)
     menu_status = "alive"
     # Use store_name find store id
-    store_id = sql_store_name_find_id(store_name,group_id,menu_status)
+    store_id = sql_store_name_find_id_alive(store_name,group_id,menu_status)
     # Check menu repeat
     menu_name_check = sql_menu_name_and_size_check_repeat(group_id,store_id,menu_name,menu_size,menu_status)
     # If no repeat save it

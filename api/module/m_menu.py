@@ -60,7 +60,7 @@ def menu_get(page, keyword=None, urlGroupName=None, urlStoreName=None):
     # group id
     group_id = sql_group_name_find_id(urlGroupName,"alive")
     # store id
-    store_id = sql_store_name_find_id(urlStoreName,group_id)
+    store_id = sql_store_name_find_id_alive(urlStoreName,group_id,"alive")
 
     # Use group_id to check menu info
     menu_info_check = sql_group_id_and_store_id_and_menu_name_FIND_menu_info(group_id,store_id, menu_name_keyword,"alive" )

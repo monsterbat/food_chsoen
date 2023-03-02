@@ -18,6 +18,8 @@ async function onloadStoreCheckPage(){
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
     urlGroupName = getGroupNameFromUrl();
+
+    userCheckInGroup(urlGroupName);
     pageTitleContent.textContent = "查看店家";
     let groupApiData = await groupStatus(urlGroupName,"alive");
     groupApiData = groupApiData.group;
@@ -53,8 +55,8 @@ async function showStoreListAtCheckStore(storeApiDataList){
 
 function createStoreButtonClick(){
     window.location.href = `/group/${urlGroupName}/create_store`;
-}
+};
 
 function backToGroupEditButtonClick(){
     window.location.href = `/group/${urlGroupName}`;
-}
+};

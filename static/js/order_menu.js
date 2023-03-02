@@ -143,6 +143,8 @@ async function onloadOrderMenuPage(){
     let userName = userApiData.data.userName;
     currentUserEmail = userApiData.data.userEmail;
     urlGroupName = getGroupNameFromUrl();
+
+    userCheckInGroup(urlGroupName);
     urlStopTime = getOrderListStopTimeFromUrl();
     urlStopTime1 = urlStopTime.split(":")[1];
     urlStopTime2 = urlStopTime.split(":")[2];
@@ -612,6 +614,7 @@ async function sendOutOrderSubmitClick(){
             "menuNote":menuNote,            
         };
         let orderPostResult = await orderApiPost(data);
+        console.log("orderPostResult",orderPostResult)
     };
     orderIsDoneBlock.style.display = "flex";
     checkOrderListBlock.style.display = "none";

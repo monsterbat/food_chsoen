@@ -75,4 +75,22 @@ def group_user():
             message = m_group.group_get_user(page,keyword,urlGroupName)
             return message
         except Exception as ex:
-            return jsonify(error="true", message=f"{ex}"), 500       
+            return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_group.route("/api/group/manager", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
+def group_manager():
+    if request.method == "PATCH":
+        try:
+            message = m_group.group_manager_patch()
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500   
+        
+@c_group.route("/api/group/check", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
+def group_check():
+    if request.method == "POST":
+        try:
+            message = m_group.group_check_post()
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500

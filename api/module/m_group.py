@@ -277,11 +277,11 @@ def group_put():
             # Check id the joinner had join the group or not
             join_user_id = join_user_id[0]["id"]
             sql_command="""
-            SELECT join_time
+            SELECT id, join_time, user_in_group_status
             FROM user_in_group 
-            WHERE user_id=%s AND group_id=%s AND user_in_group_status=%s;
+            WHERE user_id=%s AND group_id=%s;
             """
-            value_input = (join_user_id,group_id,"alive")
+            value_input = (join_user_id,group_id)
             group_join_check = query_data(sql_command,value_input)
             # If no repeat save it
             if group_join_check == []:
@@ -296,9 +296,25 @@ def group_put():
                 data = v_group.group_put_200()
                 return data
             else:
-                join_time = group_join_check[0]["join_time"]
-                errorr_message = v_group.group_put_400_already_join()
-                return errorr_message
+                print("1234",group_join_check)
+                if group_join_check[0]["user_in_group_status"] == "alive":
+                    join_time = group_join_check[0]["join_time"]
+                    errorr_message = v_group.group_put_400_already_join()
+                    return errorr_message
+                else:
+                    print(group_join_check)
+                    user_in_group_id = group_join_check[0]["id"]
+                    print("user_in_group_id",user_in_group_id)
+                    # update user_in_group_status
+                    sql_command="""
+                    UPDATE user_in_group
+                    SET user_in_group_status = %s
+                    WHERE id = %s AND user_in_group_status=%s;
+                    """
+                    value_input = ("alive",user_in_group_id,"stop")
+                    insert_or_update_data(sql_command,value_input)
+                    data = v_group.group_put_200()
+                    return data
         else:
             errorr_message = v_group.group_put_400_not_exist_user()
             return errorr_message
@@ -319,15 +335,7 @@ def group_delete():
     delete_group_data = request.get_json()
     group_name = delete_group_data["groupName"]
     # Find group id
-    sql_command="""
-    SELECT group_id
-    FROM user_group 
-    WHERE group_name=%s AND group_status=%s;
-    """
-    value_input = (group_name,"alive")
-    group_id_check = query_data(sql_command,value_input)
-    group_id = group_id_check[0]["id"]
-
+    group_id = sql_group_name_find_id(group_name, "alive")
     # Delete from group table
     sql_command="""
     UPDATE user_in_group
@@ -365,23 +373,78 @@ def group_get_user(page, keyword=None,urlGroupName=None):
     group_info_check = sql_group_name_find_info(urlGroupName, "alive")
     group_id = group_info_check[0]["id"]
     group_manager_id = group_info_check[0]["group_manager"]
-    user_in_group_user_id_check = sql_group_id_find_user_id(group_id, "alive")
+    user_in_group_user_id_check = sql_group_id_find_user_id(group_id)
     group_user_info = []
     for user_in_group_user_id_ls in user_in_group_user_id_check:
         user_in_group_user_id = user_in_group_user_id_ls["user_id"]
+        user_in_group_status = user_in_group_user_id_ls["user_in_group_status"]
         if user_in_group_user_id == group_manager_id:
             user_position = "管理者"
         else:
             user_position = "成員"
+        
         user_name = sql_user_id_find_name(user_in_group_user_id)
         user_balance = sql_bill_latest_balance(user_in_group_user_id,group_id,"alive")
         
         user_info_into = {
             "userPosition":user_position,
             "userName":user_name,
-            "userBalance":user_balance
+            "userBalance":user_balance,
+            "userInGroupStatus":user_in_group_status
         }
 
         group_user_info = group_user_info +[user_info_into]
 
     return jsonify(group_user_info) ,200
+
+
+def group_manager_patch():
+    # Use cookie to know which user
+    user_info = user_token_check()
+    if user_info["data"] == None:
+        errorr_message = v_group.group_get_403()
+        return errorr_message
+    user_id = user_info["data"]["id"]
+
+    change_group_data = request.get_json()
+    group_name = change_group_data["groupName"]
+    new_manager_email = change_group_data["userEmail"]
+
+    group_id = sql_group_name_find_id(group_name, "alive")
+    new_manager_id = sql_user_email_find_id(new_manager_email, "alive")
+    if new_manager_id == []:
+        errorr_message = v_group.group_manager_patch_400_no_exist_user()
+        return errorr_message
+    
+    user_in_group_check = sql_user_in_group_or_not(group_id,new_manager_id,"alive")
+    if user_in_group_check == []:
+        errorr_message = v_group.group_manager_patch_400_not_in_group()
+        return errorr_message
+    
+    if new_manager_id == user_id:
+        errorr_message = v_group.group_manager_patch_400_same_manager()
+        return errorr_message
+
+    
+    sql_update_group_manager(new_manager_id,group_id)
+
+    result = v_group.group_manager_patch_200()
+    return result 
+
+def group_check_post():
+    # Use cookie to know which user
+    user_info = user_token_check()
+    if user_info["data"] == None:
+        errorr_message = v_group.group_get_403()
+        return errorr_message
+    user_id = user_info["data"]["id"]
+
+    change_group_data = request.get_json()
+    group_name = change_group_data["groupName"]
+    group_id = sql_group_name_find_id(group_name, "alive")
+    user_in_group_check = sql_user_in_group_or_not(group_id,user_id,"alive")
+    if user_in_group_check == []:
+        errorr_message = v_group.group_check_post_400()
+        return errorr_message
+    result = v_group.group_check_post_200()
+    return result

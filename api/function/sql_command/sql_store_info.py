@@ -22,7 +22,18 @@ def sql_store_name_find_id(store_name,group_id):
         return store_id_check
     store_id = store_id_check[0]["id"]
     return store_id
-
+def sql_store_name_find_id_alive(store_name,group_id,store_status):
+    sql_command="""
+    SELECT id
+    FROM store 
+    WHERE store_name=%s AND group_id=%s AND store_status=%s;
+    """
+    value_input = (store_name,group_id,store_status)
+    store_id_check = query_data(sql_command,value_input)
+    if (store_id_check == []):
+        return store_id_check
+    store_id = store_id_check[0]["id"]
+    return store_id
 # Store Name
 def sql_store_id_find_name_alive_and_stop(store_id):
     sql_command="""

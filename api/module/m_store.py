@@ -139,7 +139,6 @@ def store_get(page, keyword=None, urlGroupName=None):
 # Change store info
 def store_patch():
     # Get data from front-end
-    print("C0")
     change_store_data = request.get_json()
     group_name = change_store_data["groupName"]
     store_name = change_store_data["storeName"]
@@ -151,16 +150,15 @@ def store_patch():
     store_new_delivery_condition = change_store_data["storeNewDeliveryCondition"]
     store_new_status = change_store_data["storeNewStatus"]
     store_note =  change_store_data["storeNote"]
-    print("C1")
     # Find Group id
     group_id = sql_group_name_find_id(group_name, "alive")
     # Find store id
-    store_id = sql_store_name_find_id(store_name, group_id)
+    store_id = sql_store_name_find_id_alive(store_name, group_id, "alive")
 
     try:
         # Change name
         if store_new_name != None:
-            print("intostore_new_name",store_new_name)
+            print("store_new_name",store_new_name)
             sql_command="""
             UPDATE store
             SET store_name = %s
@@ -171,7 +169,6 @@ def store_patch():
 
         # Change address
         if store_new_address != None:
-            print("store_new_address",store_new_address)
             sql_command="""
             UPDATE store
             SET store_address = %s
@@ -222,7 +219,7 @@ def store_patch():
 
         # Change status
         if store_new_status == "stop":
-            print("store_new_status",store_new_status)
+            print("FF",store_id)
             sql_command="""
             UPDATE store
             SET store_status = %s
@@ -233,7 +230,6 @@ def store_patch():
         
         # Change note
         if store_note != "" and store_note != None:
-            print("store_note",store_note)
             sql_command="""
             UPDATE store
             SET store_note = %s
