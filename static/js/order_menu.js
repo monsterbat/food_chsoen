@@ -125,7 +125,6 @@ let editGoOrderSubmitContent = document.getElementById("editGoOrderSubmitContent
 
 // ==== Create element ====
 
-console.log("FF")
 // ==== onload ====
 let orderLisrStatusCheck
 checkMemberOrderListBlock.style.display = "none";
@@ -175,7 +174,7 @@ async function onloadOrderMenuPage(){
         checkMemberOrderListBlock.style.display = "flex";
         
     };
-}
+};
 // ==== create event listener ====
 menuSubmitButton.addEventListener("click",menuSubmitButtonClick);
 editOrderSubmit.addEventListener("click",editOrderSubmitClick);
@@ -437,8 +436,7 @@ async function checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime){
         orderListStatusForThisPage = "ordering"
     };
     if (orderListGetDataFinish.orderListStatus == "finish"){
-        console.log("413")
-        checkAllOrderMenuButtonClick()
+        checkAllOrderMenuButtonClick();
         menuItemsBlock.style.display = "none";
         menuListBlcok.style.display = "none";
         menuButtonBlock.style.display = "none";
@@ -446,7 +444,7 @@ async function checkOrderListStatusBegin(urlGroupName,urlStoreName,urlStopTime){
         checkOrderListBlock.style.display = "none";
         orderIsDoneBlock.style.display = "none";
         separate1.style.display = "none";
-        orderListStatusForThisPage = "finish"
+        orderListStatusForThisPage = "finish";
     };
 };
 // 1-7 Check member function
@@ -530,12 +528,10 @@ async function sortoutAllMemberOrderListBlock(menuOrderDataForAllMember){
             createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderQuantity${i}`, "checkUserGoOrderListOrderQuantity", orderQuantity);
             createDivElement(eval(`checkUserGoOrderList${i}`), `checkUserGoOrderListOrderPrice${i}`, "checkUserGoOrderListOrderPrice", onePrice);
             memberTotalPriceGoOrder = memberTotalPriceGoOrder+onePrice*orderQuantity;
-        }
+        };
         goOrderTotelPrice.textContent = memberTotalPriceGoOrder;
-    }
-}
-// """"""""""""""""""""""""""
-
+    };
+};
 // 1-7 go to order 
 async function goToOrderSubmitClick(){
     // menuItemsBlock.style.display = "none";
@@ -588,7 +584,7 @@ async function showcheckOrderListBlock(menuOrderDataAll){
 function editOrderSubmitClick(){
     
     checkUserOrderListBlockBlock.remove();
-    location.reload()
+    location.reload();
     checkOrderListBlock.style.display = "none";
     // menuItemsBlock.style.display = "grid";
     // separate1.style.display = "flex";
@@ -614,7 +610,6 @@ async function sendOutOrderSubmitClick(){
             "menuNote":menuNote,            
         };
         let orderPostResult = await orderApiPost(data);
-        console.log("orderPostResult",orderPostResult)
     };
     orderIsDoneBlock.style.display = "flex";
     checkOrderListBlock.style.display = "none";
@@ -754,15 +749,6 @@ async function memberPriceEditFinishSubmitClick(){
         editedTotalPrice = editedTotalPrice + itemtotalPrice;
     }
     goOrderTotelPrice.textContent = editedTotalPrice;
-    // if (orderListStatusForThisPage == "alive"){
-    //     finishOrderSubmit.style.display = "none";
-    // }
-    // if (orderListStatusForThisPage == "ordering"){
-    //     finishOrderSubmit.style.display = "none";
-    // }
-    // if (orderListStatusForThisPage == "finish"){
-    //     finishOrderSubmit.style.display = "none";
-    // }
     
 };
  

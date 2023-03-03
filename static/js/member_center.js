@@ -94,7 +94,7 @@ function userProfileButtonClick(){
     userOrderHistoryBlock.style.display = "none";
     historyTarget.style.display = "none";
     groupTarget.style.display = "flex";
-}
+};
 
 function userOrderHistoryButtonClick(){
     userProfileButton.style.backgroundColor = "#f2f2f2"
@@ -103,7 +103,7 @@ function userOrderHistoryButtonClick(){
     userOrderHistoryBlock.style.display = "flex";
     historyTarget.style.display = "flex";
     groupTarget.style.display = "none";
-}
+};
 
 async function onloadMemberCenterPage(){
     userProfileButtonClick()
@@ -126,7 +126,7 @@ async function onloadMemberCenterPage(){
     userEmailShow.textContent = userEmail;
     userPasswordShow.textContent = "******";
     accountInfoListBlockShow();
-}
+};
 
 async function memberCenterBlockChange(){
     memberCenterBlock.remove();
@@ -134,22 +134,21 @@ async function memberCenterBlockChange(){
     createDivElement(userSignOutButton,"userSignOutContent","memberCenterBlock","會員登出","appendChild");
     userSignOutContent.style.color = "red"
     userSignOutContent.addEventListener("click",userSignOutContentClick);
-}
+};
 
 async function userSignOutContentClick(){
     let userApiDeleteResult = await userApiDelete();
-    window.location = `/`
+    window.location = `/`;
 };
 
 async function accountInfoListBlockShow(){
     let groupApiGetResult = await groupApiGet();
-    let groupList = groupApiGetResult.group
-    console.log("groupList",groupList)
+    let groupList = groupApiGetResult.group;
     if (groupList == null){
         accountInfoItems.remove();
         separate1.remove();
-        // accountInfoListBlock.classList = "contentPositionCenter margin"
-        createDivElement(accountInfoListBlock,`noGroupBlock`,"", null, "appendChild")
+        // accountInfoListBlock.classList = "contentPositionCenter margin";
+        createDivElement(accountInfoListBlock,`noGroupBlock`,"", null, "appendChild");
         createDivElement(noGroupBlock,`noGroupBlockContent`, "margin", "尚未加入任何群組", "appendChild");
     }
     else{
@@ -158,12 +157,12 @@ async function accountInfoListBlockShow(){
             let groupId = groupList[i]["groupId"];
             let groupName = groupList[i]["groupName"];
             let billApiGetResult = await billApiGet(groupName);
-            let userBalance = billApiGetResult.userBalance
-            userBalance = Number(userBalance)
-            let reloadClass = ""
+            let userBalance = billApiGetResult.userBalance;
+            userBalance = Number(userBalance);
+            let reloadClass = "";
             if (userBalance<0){
-                reloadClass = "cRed"
-            }
+                reloadClass = "cRed";
+            };
             createDivElement(accountInfoListBlock,`accountInfoList${groupGetPage}_${i}`,"accountInfoItems", null, "appendChild")
             createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupNameInfo${groupGetPage}_${i}`, "", groupName, "appendChild");
             createDivElement(eval(`accountInfoList${groupGetPage}_${i}`),`groupBalanceInfo${groupGetPage}_${i}`, reloadClass, userBalance, "appendChild");
@@ -171,26 +170,8 @@ async function accountInfoListBlockShow(){
             createDivElement(eval(`goToReloadInfo${groupGetPage}_${i}`),`goToReloadContent${groupGetPage}_${i}`, "goToReloadContent ", "儲值去", "appendChild");
         };
         groupGetPage = groupApiGetResult.nextPage;
-    }
-}
-
-// // IntersectionObserverasy
-// // let groupGetPage=0
-// let callbackGroup = (entries,observer) => {
-//     entries.forEach(async function(entry){
-//         if (groupGetPage != null) {
-//             await accountInfoListBlockShow(); 
-//         } 
-//         else {
-//             observer.unobserve(groupTarget);
-//         }  ;      
-//     });
-// };
-
-// let observerGroup = new IntersectionObserver(callbackGroup, options);
-
-// observerGroup.observe(groupTarget);
-
+    };
+};
 
 
 // ----------------------------------------------------------------------------------------
@@ -198,7 +179,6 @@ async function userOrderHistoryShow(){
     let getStatus = "alive";
     let orderUserApiGetResult = await orderUserApiGet(getStatus);
     let orders = orderUserApiGetResult.order;
-    console.log("orders",orders)
     if (orders == null){
         createDivElement(userOrderHistoryBlock,`noOrderHistory`, "noOrderHistory", null, "appendChild");
         createDivElement(noOrderHistory,`noOrderHistoryContent`, "", "尚未進行任何訂購", "appendChild");
@@ -318,7 +298,6 @@ async function topNameFinishButtonClick(){
         "userStatus":"alive"
     };
     let userApiPatchResult = await userApiPatch(data);
-    console.log("userApiPatchResult",userApiPatchResult)
     if (userApiPatchResult.ok == true){
         replaceToDivElement(userNameShowNew,`userNameShow`,"",userNameShowValue);
         topNameEditButton.style.display = "flex";

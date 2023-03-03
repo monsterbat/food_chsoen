@@ -158,7 +158,6 @@ def store_patch():
     try:
         # Change name
         if store_new_name != None:
-            print("store_new_name",store_new_name)
             sql_command="""
             UPDATE store
             SET store_name = %s
@@ -219,7 +218,6 @@ def store_patch():
 
         # Change status
         if store_new_status == "stop":
-            print("FF",store_id)
             sql_command="""
             UPDATE store
             SET store_status = %s

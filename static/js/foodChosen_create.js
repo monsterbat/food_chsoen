@@ -40,17 +40,14 @@ async function searchButtonClick(){
     blockScreenFilter.style.display = "flex";
     blockScreenFilter.style.opacity = "0.6"
     loadingGif.style.display = "flex";
-    console.log(intoKeywordValue.length)
     if (intoKeywordValue.length<2){
         searchStoreErrorMessageContent.textContent = "請輸入兩個字以上"
     }
     else{
         let storeFoodChosenCreateApiGetResult = await storeFoodChosenCreateApiGet(intoKeywordValue,urlGroupName);
-        console.log("storeFoodChosenCreateApiGetResult",storeFoodChosenCreateApiGetResult);
         eval(`earchStoreListBlockBlock_${storeListCount}`).remove();
         storeListCount+=1;
         createDivElement(searchStoreListBlock,`earchStoreListBlockBlock_${storeListCount}`,"earchStoreListBlockBlock",null,"appendChild");
-        console.log("createDivElement.length");
         createDivElement(eval(`earchStoreListBlockBlock_${storeListCount}`),`earchStoreListBlockTitle_${storeListCount}`,"titleWord","搜尋結果","appendChild");
         createDivElement(eval(`earchStoreListBlockBlock_${storeListCount}`),`earchStoreListBlockTitle_${storeListCount}`,"smallContent","(選擇後按確認)","appendChild");
         
@@ -73,15 +70,12 @@ async function confirmStoreButtonClick(){
     let intoKeywordValue = intoKeyword.value;
     let chosenStore = document.querySelector('input[name=searchStoreCheckBox]:checked');
     let chosenStoreValue = chosenStore.value;
-    console.log("chosenStoreValue",chosenStoreValue)
     let storeIndexData = {
         "intoKeywordValue":intoKeywordValue,
         "storeIndex":chosenStoreValue
-    }
-    console.log("storeIndexData",storeIndexData)
-    let storeFoodChosenCreateApiPostResult = await storeFoodChosenCreateApiPost(storeIndexData)
-    console.log("storeFoodChosenCreateApiPostResult",storeFoodChosenCreateApiPostResult)
-    let gotoStoreName = storeFoodChosenCreateApiPostResult.store_name
+    };
+    let storeFoodChosenCreateApiPostResult = await storeFoodChosenCreateApiPost(storeIndexData);
+    let gotoStoreName = storeFoodChosenCreateApiPostResult.store_name;
 
     blockScreenFilter.style.display = "none";
     loadingGif.style.display = "none";

@@ -286,7 +286,6 @@ function getOrderListStatusFromUrl(){
 // Status check
 async function userStatus(){
     let userApiGetResult = await userApiGet();
-    console.log("userApiGetResult",userApiGetResult)
     if(userApiGetResult.data == null || userApiGetResult.error == true){
         window.location.href = "/";
     }
@@ -299,7 +298,6 @@ async function userStatus(){
 
 async function groupStatus(urlGroupName,getStatus){
     data = await groupInfoApiGet(urlGroupName,getStatus);
-    console.log("data",data)
     if(data.group == null || data.error == true){
         window.location.href = "/";
     }
@@ -336,12 +334,9 @@ async function userCheckInGroup(urlGroupName){
         "groupName":urlGroupName
     }
     let groupCheckUserApiPostResult = await groupCheckUserApiPost(groupCheckUserApiPostData)
-    console.log("groupCheckUserApiPostResult",groupCheckUserApiPostResult)
     if (groupCheckUserApiPostResult.ok == true){
-        console.log("DDD")
     }
     if (groupCheckUserApiPostResult.error == true){
         window.location.href = "/group"
-        console.log("FF")
     }
 }

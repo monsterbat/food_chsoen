@@ -296,15 +296,12 @@ def group_put():
                 data = v_group.group_put_200()
                 return data
             else:
-                print("1234",group_join_check)
                 if group_join_check[0]["user_in_group_status"] == "alive":
                     join_time = group_join_check[0]["join_time"]
                     errorr_message = v_group.group_put_400_already_join()
                     return errorr_message
                 else:
-                    print(group_join_check)
                     user_in_group_id = group_join_check[0]["id"]
-                    print("user_in_group_id",user_in_group_id)
                     # update user_in_group_status
                     sql_command="""
                     UPDATE user_in_group

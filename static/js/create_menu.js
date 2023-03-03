@@ -141,7 +141,6 @@ async function createMenuAddSubmitClick(){
     createMenuPriceValue = createMenuPrice.value;
     createMenuNoteValue = createMenuNote.value;
     createMenuTypeValue = createMenuType.value;
-    console.log("isNaN(createMenuPriceValue)",isNaN(createMenuPriceValue))
 
     if (createMenuNameValue == "" || createMenuPriceValue == "" || isNaN(createMenuPriceValue) == true){
         if (createMenuNameValue == "" || createMenuPriceValue == ""){
@@ -165,7 +164,6 @@ async function createMenuAddSubmitClick(){
                 }
         };
         result = await menuApiPost(data);
-        console.log("result",result)
         if (result.ok == true){
         }
         else{
@@ -180,7 +178,6 @@ async function generateMenu(urlGroupName,urlStoreName){
     let getMenuData = await menuApiGet(urlGroupName,urlStoreName);
     menuList = getMenuData.menu;
     createElement(alreadyCreatedMenuBlcok, "form", "menuBlockFrom", "menuBlockFrom", null, "appendChild");
-    console.log("menuList",menuList)
     if (menuList != null){
         for(i=0;i<Object.keys(menuList).length;i++){
             menuName = menuList[i]["menuName"];
@@ -208,10 +205,9 @@ async function generateMenu(urlGroupName,urlStoreName){
 
 async function createMenuEditMenuButtonClick(){
     let chosenMenu = document.querySelector('input[name=manuCreated]:checked');
-    console.log("chosenMenu",chosenMenu)
-    createMenuErroeMessageContent2.textContent = ""
+    createMenuErroeMessageContent2.textContent = "";
     if (chosenMenu == null){
-        createMenuErroeMessageContent2.textContent = "請選擇項目"
+        createMenuErroeMessageContent2.textContent = "請選擇項目";
     }
     else{
         let chosenMenuId = chosenMenu.id;
@@ -232,7 +228,7 @@ async function createMenuEditMenuButtonClick(){
         createMenuRemoveMenuButton.style.display = "flex";
         createMenuAddMenuButton.style.display = "none";
         createMenuEditMenuButton.style.display = "none";
-    }
+    };
 };
 
 async function createMenuEditFinishMenuButtonClick(){
@@ -265,7 +261,6 @@ async function createMenuEditFinishMenuButtonClick(){
                 "menuNewStatus":"alive"
                 }
         };
-        console.log("data",data)
         let menuApiPatchData = await menuApiPatch(data);
         if (menuApiPatchData.ok == true){
             replaceElement(eval(`menuNewType${menuNumber}`), "div",`menuType${menuNumber}`,"menuType",menuNewTypeValue,inputType = "text");
@@ -295,7 +290,7 @@ async function createMenuEditFinishMenuButtonClick(){
         createMenuEditMenuButton.style.display = "flex";
         createMenuAddMenuButton.style.display = "flex";
         createMenuErroeMessageContent2.style.display = "none";
-    }
+    };
     
 };
 
@@ -347,7 +342,6 @@ async function deleteMenuConfirmYesButtonClick(){
             }
     };
     let menuApiPatchResult = await menuApiPatch(data);
-    console.log("menuApiPatchResult",menuApiPatchResult)
     let dataPatchOrder = {
         "groupId":groupId,
         "userId":null,
@@ -372,11 +366,11 @@ async function deleteMenuConfirmYesButtonClick(){
 
 function createMenuAddMenuButtonClick(){
     noDisplayAll();
-    createMenuAddMenuButton.style.display = "none"
-    createMenuEditMenuButton.style.display = "none"
-    createMenuFinishButton.style.display = "none"
-    createMenuErroeMessage2.style.display = "none"
-    createMenuBlock.style.display = "flex"
+    createMenuAddMenuButton.style.display = "none";
+    createMenuEditMenuButton.style.display = "none";
+    createMenuFinishButton.style.display = "none";
+    createMenuErroeMessage2.style.display = "none";
+    createMenuBlock.style.display = "flex";
 }
 
 function createMenuBackToLoadButtonClick(){

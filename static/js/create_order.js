@@ -55,7 +55,6 @@ async function onloadThisPage(){
     };
     let storeApiDataAll = await storeApiGet(urlGroupName);
     let storeApiDataList = storeApiDataAll.store;
-    console.log("storeApiDataList",storeApiDataList)
     showStoreList(storeApiDataList);
 };
 

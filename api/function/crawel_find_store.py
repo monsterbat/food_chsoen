@@ -31,14 +31,25 @@ import datetime
 def store_keyword_get_correspond_name(store_name_keyword):
     # Step 1, use selenium to find the url
     # 1 驅動路徑
-    chromedriver_path = "./chromedriver"
+    # chromedriver_path = "./chromedriver"
 
+
+    # dir_path = '/usr/local/bin/'
+    # files = os.listdir(dir_path)
+
+    # for file in files:
+    #     print(file)
+    chromedriver_path = "/usr/local/bin/chromedriver"
+    print("c1")
     # 2 視窗顯示
     # 不顯示瀏覽器
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(service=Service(executable_path=chromedriver_path), options=chrome_options)
+    chrome_options.add_argument('--no-sandbox')
+    # chrome_options.add_argument('--disable-dev-shm-usage')
 
+    # chrome_options.add_argument('--headless')
+    driver = webdriver.Chrome(service=Service(executable_path=chromedriver_path), options=chrome_options)
+    print("c2",driver)
     # # 顯示瀏覽器
     # driver = webdriver.Chrome(service=Service(executable_path=chromedriver_path))
     # driver.maximize_window()
@@ -46,12 +57,14 @@ def store_keyword_get_correspond_name(store_name_keyword):
     # 3 進入網頁並點擊
     driver.get("https://dinbendon.net/do/idine")
     link = driver.find_element(By.XPATH, "//span[text()='找一下']")
+    print("c3")
     link.click()
+
     # 4 點擊後輸入值
     wait = WebDriverWait(driver, 10)
     input_field = wait.until(EC.visibility_of_element_located((By.ID, "navigation_panel_form_term")))
     input_field.send_keys(store_name_keyword)
-
+    print("c4")
     search_store = driver.find_element(By.ID, "navigation_panel_form_search")
     search_store.click()
 
@@ -68,6 +81,7 @@ def store_keyword_get_correspond_name(store_name_keyword):
         name_text_all = name_text_all+[store_data]
         name_index+=1
     driver.quit()
+    print("c5")
     return name_text_all
 # 
 
@@ -76,7 +90,8 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
     # =========================================================================================================
     # Step 1, use selenium to find the url
     # 1 驅動路徑
-    chromedriver_path = "./chromedriver"
+    chromedriver_path = "/usr/local/bin/chromedriver"
+
 
     # 2 視窗顯示
     # 不顯示瀏覽器

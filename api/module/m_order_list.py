@@ -164,7 +164,6 @@ def order_list_get(page, keyword=None,urlGroupName=None,urlStoreName=None,urlSto
         "orderList":[]
     }
     # Create data
-    print("order_list_info_check",order_list_info_check)
     if order_list_info_check != []:
         for order_list_ls in order_list_info_check:
             order_list_id = order_list_ls["id"]
@@ -512,7 +511,6 @@ def order_list_check_store(page, keyword=None,urlGroupName=None,urlStoreName=Non
         }
     if order_list_info_check != []:
         order_list_info_check_len = len(order_list_info_check)
-        print(order_list_info_check_len)
         order_list_store_check_data = {
             "result":order_list_info_check_len
         }

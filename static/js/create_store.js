@@ -78,7 +78,6 @@ async function onloadCreateStorePage(){
     };
     let storeApiDataAll = await storeApiGet(urlGroupName);
     let storeApiDataList = storeApiDataAll.store;
-    console.log("storeApiDataList",storeApiDataList)
     // showStoreListAtCreateStore(storeApiDataList);
 };
 // ==== create event listener ====

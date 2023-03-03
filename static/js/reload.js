@@ -39,18 +39,18 @@ async function onloadReloadPage(){
             // return groupManager
         };
     };
-    currentBalanceClick()
+    currentBalanceClick();
 }
 
 async function currentBalanceClick(){
     let billApiGetResult = await billApiGet(urlGroupName);
     let userBalance = billApiGetResult.userBalance;
     userBalance = Number(userBalance);
-    currentBalance.textContent = Number(userBalance.toFixed(0))
+    currentBalance.textContent = Number(userBalance.toFixed(0));
     if (userBalance<0){
-        currentBalance.style.color = "red"
-    }   
-}
+        currentBalance.style.color = "red";
+    };   
+};
 
 async function reloadToBillButtonClick(){
     let reloadPriceValue = reloadPrice.value;

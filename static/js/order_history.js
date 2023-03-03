@@ -51,7 +51,7 @@ async function orderHistoryListShow(){
         createAElement(orderHistoryListBlockBlock,`orderHistoryList${i}`, "buttonFormat groupBGC", null, "appendChild", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/finish`);
         createDivElement(eval(`orderHistoryList${i}`), `orderHistoryListContent${i}`, "buttonContent", orderListContent);
     };
-}
+};
 
 function backToGroupButtonClick(){
     window.location = `/group/${urlGroupName}`;

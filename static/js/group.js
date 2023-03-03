@@ -51,7 +51,6 @@ async function onloadGroupPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
-    console.log("userApiData",userApiData)
     currentUserName = userName;
     currentUserEmail = userApiData.data.userEmail;
     pageTitleContent.textContent = "請選擇或創建群組";
@@ -114,8 +113,6 @@ async function createGroupSubmitClick(){
                 "groupName":createGroupNameValue
             };
             let billApiPostResult = await billApiPost(data);
-            console.log("data",data)
-            console.log("billApiPostResult",billApiPostResult)
             if (billApiPostResult.ok == true){
                 location.reload();
             };

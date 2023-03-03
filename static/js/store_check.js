@@ -32,7 +32,6 @@ async function onloadStoreCheckPage(){
     };
     let storeApiDataAll = await storeApiGet(urlGroupName);
     let storeApiDataList = storeApiDataAll.store;
-    console.log("storeApiDataList",storeApiDataList)
     showStoreListAtCheckStore(storeApiDataList);
 };
 

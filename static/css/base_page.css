@@ -240,3 +240,7 @@ header nav .memberCenterBlock{
 .deleteConfirmButton{
     display:flex;
 }
+
+.noDisplay{
+    display: none;
+}

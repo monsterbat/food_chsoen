@@ -80,12 +80,9 @@ async function onloadEditStorePage(){
         };
     };
     urlStoreName = getStoreNameFromUrl();
-    console.log("urlStoreName",urlStoreName)
     let storeOneInfoGetResult = await storeOneInfoGet(urlGroupName,urlStoreName);
-    console.log("storeOneInfoGetResult",storeOneInfoGetResult)
     inputBlockNoneDisplay();
     showStoreListAtStoreEdit(storeOneInfoGetResult);
-    
 };
 
 function inputBlockNoneDisplay(){
@@ -168,17 +165,14 @@ async function deleteStoreButtonClick(){
     }
     else{
         orderListorderConflict = orderListApiGetResult.result;
-        deleteStoreButtonContent.textContent = "有 "+orderListorderConflict+" 團購未結單，無法刪除"
-        console.log(orderListorderConflict)
-    }
-
-
-}
+        deleteStoreButtonContent.textContent = "有 "+orderListorderConflict+" 團購未結單，無法刪除";
+    };
+};
 
 function deleteConfirmNoButtonClick(){
     blockScreenFilter.style.display = "none";
     deleteConfirmBlock.style.display = "none";
-}
+};
 
 async function deleteConfirmYesButtonClick(){
     let storePatchData = {
@@ -194,20 +188,17 @@ async function deleteConfirmYesButtonClick(){
         "storeNote":null,
     }
     let storeApiPatchResult = await storeApiPatch(storePatchData);
-    console.log("storeApiPatchResult",storeApiPatchResult)
-    
-
     window.location.href = `/group/${urlGroupName}/store_check`;
-}
+};
 
 async function finishEditStoreButtonClick(){
-    let createStoreNameValue = createStoreName.value
-    let createStoreAddressValue = createStoreAddress.value
-    let createStorePhoneValue = createStorePhone.value
-    let createStoreOpenTimeValue = createStoreOpenTime.value
-    let createStoreTypeValue = createStoreType.value
-    let createStoreDeliveryValue = createStoreDelivery.value
-    let createStoreNoteValue = createStoreNote.value
+    let createStoreNameValue = createStoreName.value;
+    let createStoreAddressValue = createStoreAddress.value;
+    let createStorePhoneValue = createStorePhone.value;
+    let createStoreOpenTimeValue = createStoreOpenTime.value;
+    let createStoreTypeValue = createStoreType.value;
+    let createStoreDeliveryValue = createStoreDelivery.value;
+    let createStoreNoteValue = createStoreNote.value;
 
     let storePatchData = {
         "groupName":urlGroupName,
@@ -222,13 +213,12 @@ async function finishEditStoreButtonClick(){
         "storeNote":createStoreNoteValue,
     }
     let storeApiPatchResult = await storeApiPatch(storePatchData);
-    console.log("storeApiPatchResult",storeApiPatchResult)
     window.location.href = `/group/${urlGroupName}/store_edit/${createStoreNameValue}`;
-}
+};
 
 function checkMenuButtonClick(){
     window.location.href = `/group/${urlGroupName}/store/${urlStoreName}`;
-}
+};
 function createStroeBackGroupSubmitClick(){
     window.location.href = `/group/${urlGroupName}/store_check`;
-}
+};
