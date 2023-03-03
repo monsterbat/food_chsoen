@@ -1,6 +1,7 @@
 .homePageImg{
     position: relative;
     object-fit: cover;
+    width: 350px;
     border-radius: 5px;
 }
 .smailIconOnTop{

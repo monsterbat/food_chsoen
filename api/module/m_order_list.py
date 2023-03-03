@@ -480,3 +480,42 @@ def order_list_history_get(page, keyword=None,urlGroupName=None,urlStoreName=Non
             order_list_data["orderList"].append(order_list_ls_data)
 
     return jsonify(order_list_data) ,200
+
+def order_list_check_store(page, keyword=None,urlGroupName=None,urlStoreName=None,getStatus=None):
+    # Define page Qty
+    one_page_quanity=100
+    data_start=int(page*one_page_quanity)
+
+    # Use cookie to know which user
+    user_info = user_token_check()
+    if user_info["data"] == None:
+        errorr_message = v_order_list.order_list_get_403()
+        return errorr_message
+    user_id = user_info["data"]["id"]
+
+    # Find group id
+    group_id = sql_group_name_find_id(urlGroupName,"alive")
+    # Already in orderlist to find orderlist id
+    # Use store_name find store id
+    store_id = sql_store_name_find_id_alive(urlStoreName,group_id,getStatus)
+    # Find if any order list has the store id
+    sql_command="""
+    SELECT id, stop_time
+    FROM order_list
+    WHERE group_id = %s AND store_id=%s AND order_list_status=%s;
+    """
+    value_input=(group_id,store_id, getStatus)
+    order_list_info_check = query_data(sql_command,value_input)
+    if order_list_info_check == []:
+        order_list_store_check_data = {
+            "result":"no data"
+        }
+    if order_list_info_check != []:
+        order_list_info_check_len = len(order_list_info_check)
+        print(order_list_info_check_len)
+        order_list_store_check_data = {
+            "result":order_list_info_check_len
+        }
+    return jsonify(order_list_store_check_data) ,200
+
+   

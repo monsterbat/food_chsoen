@@ -160,8 +160,19 @@ function editStoreButtonClick(){
 }
 
 async function deleteStoreButtonClick(){
-    blockScreenFilter.style.display = "flex";
-    deleteConfirmBlock.style.display = "flex";
+    let orderListApiGetResult = await orderListCheckStoreApiGet(urlGroupName,urlStoreName,"alive")
+
+    if (orderListApiGetResult.result == "no data"){
+        blockScreenFilter.style.display = "flex";
+        deleteConfirmBlock.style.display = "flex";
+    }
+    else{
+        orderListorderConflict = orderListApiGetResult.result;
+        deleteStoreButtonContent.textContent = "有 "+orderListorderConflict+" 團購未結單，無法刪除"
+        console.log(orderListorderConflict)
+    }
+
+
 }
 
 function deleteConfirmNoButtonClick(){
@@ -186,7 +197,7 @@ async function deleteConfirmYesButtonClick(){
     console.log("storeApiPatchResult",storeApiPatchResult)
     
 
-    // window.location.href = `/group/${urlGroupName}/store_check`;
+    window.location.href = `/group/${urlGroupName}/store_check`;
 }
 
 async function finishEditStoreButtonClick(){

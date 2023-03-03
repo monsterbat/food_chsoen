@@ -42,7 +42,7 @@ createGroupBlock.style.display = "none";
 onloadGroupPage();
 // ==== create event listener ====
 backGroupSubmit.addEventListener("click",backSubmit);
-createGroupSubmit.addEventListener("click",createGroup);
+createGroupSubmit.addEventListener("click",createGroupSubmitClick);
 memberCenterBlock.addEventListener("click",memberCenterBlockClick);
 addGroupBlock.addEventListener("click",addGroupBlockClick);
 
@@ -51,7 +51,9 @@ async function onloadGroupPage(){
     let userApiData = await userStatus();
     let userId = userApiData.data.userId;
     let userName = userApiData.data.userName;
+    console.log("userApiData",userApiData)
     currentUserName = userName;
+    currentUserEmail = userApiData.data.userEmail;
     pageTitleContent.textContent = "請選擇或創建群組";
 }
 
@@ -91,7 +93,7 @@ async function generateGroup(){
     };
 };
 
-async function createGroup(){
+async function createGroupSubmitClick(){
     let createGroupNameValue = createGroupName.value;
     let createGroupPasswordValue = createGroupPassword.value;
 
@@ -106,12 +108,14 @@ async function createGroup(){
         let groupApiPostResult = await groupApiPost(data)
         if(groupApiPostResult.ok == true){
             let data = {
-                "billUserEmail":currentUserName,
+                "billUserEmail":currentUserEmail,
                 "orderListId":null,
                 "groupId":null,
                 "groupName":createGroupNameValue
             };
             let billApiPostResult = await billApiPost(data);
+            console.log("data",data)
+            console.log("billApiPostResult",billApiPostResult)
             if (billApiPostResult.ok == true){
                 location.reload();
             };

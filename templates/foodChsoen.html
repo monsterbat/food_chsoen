@@ -9,6 +9,9 @@
 {% block content %}
 <main>
     <!-- 1-3 -->
+    <div id="drawLostAnimeBlock" class="">
+        <img id="drawLostAnime" class="drawLostAnime" src="{{ url_for('static', filename='image/gachapon.gif') }}">
+    </div>
     <div id="drawLotsBlock" class="contentPositionCenter margin">
 
         <div id="classifyTypeBlock" class="contentPositionCenter infoBackround inputValueBigBlock margin padding">
@@ -27,6 +30,11 @@
         <div id="goDrawLotsButton" class="buttonFormat confirmBGC">
             <div id="goDrawLotsContent" class="buttonContent">
                 直接開抽
+            </div>
+        </div>
+        <div id="goCreateStoreButton" class="buttonFormat createBGC">
+            <div id="goCreateStoreButtonContent" class="buttonContent">
+                建立店家
             </div>
         </div>
         <div id="backToAskFoodChosenButton" class="buttonFormat backBGC">

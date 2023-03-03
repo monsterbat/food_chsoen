@@ -95,7 +95,7 @@ async function onloadThisPage(){
     let userApiData = await userStatus();
     userId = userApiData.data.userId;
     userName = userApiData.data.userName;
-
+    
     urlGroupName = getGroupNameFromUrl();
     // 
     userCheckInGroup(urlGroupName);
@@ -115,6 +115,7 @@ async function onloadThisPage(){
     oriGroupNameShow(urlGroupName);
     checkAllOrderMenuButtonClick();
     showAllmemberAndMoneyInGroup();
+    pageTitle.style.cursor = "pointer"
 }
 
 editGroupBlock.style.display = "none";
@@ -267,8 +268,8 @@ function editGroupPasswordButtonClick(){
 };
 
 async function finishGroupPasswordButtonClick(){
-    editGroupOriPasswordInputValue = editGroupOriPasswordInput.value;
-    editGroupNewPasswordInputValue = editGroupNewPassword.value;
+    let editGroupOriPasswordInputValue = editGroupOriPasswordInput.value;
+    let editGroupNewPasswordInputValue = editGroupNewPassword.value;
     if (editGroupOriPasswordInputValue != editGroupNewPasswordInputValue && editGroupNewPasswordInputValue != ""){
         let data = {
             "groupName":urlGroupName,
@@ -284,17 +285,18 @@ async function finishGroupPasswordButtonClick(){
             editGroupNewPasswordTitle.style.display = "none";
             editGroupNewPasswordInput.style.display = "none";
             replaceElement(editGroupOriPasswordInput, "div", "editGroupPasswordInput", "userInfoInputBlock", elementText = "******");
+            editGroupErrorOrOkMessageContent.style.display = "none";
         }
         else{
             resultMessage = result.message;
             editGroupErrorOrOkMessageContent.textContent = resultMessage;
         };
     }
-    else if (editGroupOriPasswordInputValue == editGroupNewPasswordInputValue){
-        editGroupErrorOrOkMessageContent.textContent = "與原始密碼相同";
-    }
     else if (editGroupNewPasswordInputValue == ""){
         editGroupErrorOrOkMessageContent.textContent = "請勿使用空白密碼";
+    }
+    else if (editGroupOriPasswordInputValue == editGroupNewPasswordInputValue){
+        editGroupErrorOrOkMessageContent.textContent = "與原始密碼相同";
     }
     else{
         replaceElement(editGroupOriPasswordInput, "div", "editGroupPasswordInput", "userInfoInputBlock", elementText = "******");
@@ -414,6 +416,7 @@ async function inviteMemberSubmitClick(){
             };
             let billApiPostResult = await billApiPost(data);
             inviteMemberMessageContent.textContent = `${inviteMemberEmailValue} 成功加入`;
+            inviteMemberMessageContent.style.color = "green"
         }
         else{
             resultMessage = result.message;
@@ -540,9 +543,10 @@ async function showAllGrooupOrderAliveListBlock(orderListData){
         let stopTimeArray = stopTime.split('-');
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
-        let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/alive`);
-        createDivElement(eval(`managerOrderList${i}`), `managerOrderListContent${i}`, "buttonContent", orderListContent);
+        let orderListContent = "日期："+stopTimeDate+" - "+"截止："+stopTimeTime;
+        createAElement(managerOrderListBlock,`managerOrderList${i}`, "buttonFormat groupBGC heightHigher", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/alive`);
+        createDivElement(eval(`managerOrderList${i}`), `managerOrderListContent${i}`, "buttonContent orderListButtonContent", orderListContent);
+        createDivElement(eval(`managerOrderList${i}`), `managerOrderListContent${i}`, "buttonContent orderListButtonContent", storeName);
     };
 };
 
@@ -560,9 +564,13 @@ async function showAllGrooupOrderListOrderingBlock(orderListData){
         let stopTimeArray = stopTime.split('-');
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
-        let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/ordering`);
-        createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent", orderListContent);
+        // let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
+        // createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/ordering`);
+        // createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent", orderListContent);
+        let orderListContent = "日期："+stopTimeDate+" - "+"截止："+stopTimeTime;
+        createAElement(managerOrderListOrderingBlock,`managerOrderListOrdering${i}`, "buttonFormat deleteBGC heightHigher", null, "prepend", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/ordering`);
+        createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent orderListButtonContent", orderListContent);
+        createDivElement(eval(`managerOrderListOrdering${i}`), `managerOrderListOrderingContent${i}`, "buttonContent orderListButtonContent", storeName);
     };
 };
 

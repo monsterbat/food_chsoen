@@ -88,7 +88,6 @@ async function homePageShow(){
             gotoStart.style.display = "block";
             helloUserWelcome1.style.display = "none";
             helloUserWelcome2.style.display = "none";
-            helloUser.textContent = "您好  "+data.data.userName;
         };
     })
 };

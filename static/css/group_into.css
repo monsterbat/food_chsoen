@@ -7,3 +7,15 @@
     text-align: center;
     margin: 10px 0px 5px 0px ;
 }
+
+.heightHigher{
+    flex-direction: column;
+    height: 60px;
+}
+.orderListButtonContent{
+    margin: 4px;
+    position: relative;
+    top: 25%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}

@@ -272,21 +272,17 @@ def menu_info_crawler_to_sql(store_name,group_id,menu_name,menu_size,menu_type,m
 
 
 def parse_input(s):
-    words = s.split()  # 将字符串按空格分割成单词
+    words = s.split()
     result_str = ''
     result_num = None
     
     for word in words:
         if word.isnumeric():
-            # 如果单词是数字，则直接将其转换为整数
             result_num = int(word)
         else:
-            # 如果单词不是数字，则将其添加到字符串结果中
             result_str += word + ' '
     
     if result_num is None:
-        # 如果没有数字，则返回所有单词组成的字符串
         return result_str.strip()
     else:
-        # 如果有数字，则返回最后一个数字及其之前的所有单词组成的字符串
         return result_str.strip(), result_num

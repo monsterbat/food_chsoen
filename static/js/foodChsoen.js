@@ -1,5 +1,6 @@
 // ==== Get element ====
 // 1-3
+let drawLostAnimeBlock = document.getElementById("drawLostAnimeBlock");
 let drawLotsBlock = document.getElementById("drawLotsBlock");
 let drawLotsAnimationBlcok = document.getElementById("drawLotsAnimationBlcok");
 let settingDrawLotsConditionButton = document.getElementById("settingDrawLotsConditionButton");
@@ -43,6 +44,7 @@ onloadByFatePage();
 // ==== create event listener ====
 // 1-3
 goDrawLotsButton.addEventListener("click",goDrawLotsButtonClick);
+goCreateStoreButton.addEventListener("click",goCreateStoreButtonButtonClick);
 backToAskFoodChosenButton.addEventListener("click",backToAskFoodChosenButtonClick);
 // 1-5
 drawLostAgainButton.addEventListener("click",drawLostAgainButtonClick);
@@ -56,6 +58,8 @@ backToDrawLotsButton.addEventListener("click",backToDrawLotsButtonClick);
 // ==== Function ====
  
 async function onloadByFatePage(){
+    pageTitleContent.textContent = "Food Chsoen 幫你選"
+    drawLostAnimeBlock.style.display = "none";
     foodChosenNoneDisplay();
     drawLotsBlock.style.display = "flex";
     let userApiData = await userStatus();
@@ -67,8 +71,19 @@ async function onloadByFatePage(){
     userCheckInGroup(urlGroupName);
     storeDrawLotsApiGetResult = await storeDrawLotsApiGet(urlGroupName);
     storeDrawLotsStoreList = storeDrawLotsApiGetResult.store;
-    storeTypeSortOutData = await findStoreType(storeDrawLotsStoreList);
-    showStoreList(storeTypeSortOutData);
+    if (storeDrawLotsStoreList == null){
+        classifyTypeBlock.style.display = "none";
+        goDrawLotsButton.style.display = "none";
+        createDivElement(drawLotsBlock,"drawLotsNoDataTitle","titleWord margin","尚未建立任何店家","prepend")
+
+    }
+    else{
+        goCreateStoreButton.style.display = "none";
+        let storeTypeSortOutData = await findStoreType(storeDrawLotsStoreList);
+        showStoreList(storeTypeSortOutData);
+    }
+
+    
 }
 
 function foodChosenNoneDisplay(){
@@ -164,24 +179,36 @@ async function findStoreType(dataList){
 }
 // Do Draw lots
 async function doDrawLots(){
-    let storeNameValue = classifyTypeSelectDropdown.options[classifyTypeSelectDropdown.selectedIndex].value;
-    let drawLotsData;
-    if (storeNameValue == "請選擇"){
-        drawLotsData = storeDrawLotsApiGetResult.store;
-    }else if(storeNameValue == "未分類店家"){
-        drawLotsData = storeTypeSortOutData[-1].storeItems;
-    }else{
-        drawLotsData = storeTypeSortOutData[storeNameValue].storeItems;
-    };
-    let drawLotsNumberLength = drawLotsData.length;
-    let randomNum = Math.floor(Math.random() * (drawLotsNumberLength));
-    drawLotsResult = drawLotsData[randomNum];
-    foodChosenStoreNameContent.textContent = drawLotsResult.storeName;
-    foodChosenStoreTypeContent.textContent = drawLotsResult.storeType;
-    foodChosenStoreAddressContent.textContent = drawLotsResult.storeaddress;
-    foodChosenStorePhoneNumberContent.textContent = drawLotsResult.storePhoneNumber;
-    foodChosenStoreOpenTimeContent.textContent = drawLotsResult.storeOpenTime;
-    foodChosenStoreDelCondiContent.textContent = drawLotsResult.storeDeliveryCondition;
+    setTimeout(function(){
+        drawLostAnimeBlock.style.display = "none";
+        blockScreenFilter.style.display = "none";
+        let storeNameValue = classifyTypeSelectDropdown.options[classifyTypeSelectDropdown.selectedIndex].value;
+        console.log("storeNameValue",storeNameValue)
+        console.log("storeDrawLotsApiGetResult",storeDrawLotsApiGetResult)
+        let drawLotsData;
+        if (storeNameValue == "請選擇"){
+            drawLotsData = storeDrawLotsApiGetResult.store;
+        }else if(storeNameValue == "未分類店家"){
+            drawLotsData = storeTypeSortOutData[-1].storeItems;
+        }else{
+            drawLotsData = storeTypeSortOutData[storeNameValue].storeItems;
+        };
+        let drawLotsNumberLength = drawLotsData.length;
+        let randomNum = Math.floor(Math.random() * (drawLotsNumberLength));
+
+        drawLotsResult = drawLotsData[randomNum];
+        foodChosenStoreNameContent.textContent = drawLotsResult.storeName;
+        foodChosenStoreTypeContent.textContent = drawLotsResult.storeType;
+        foodChosenStoreAddressContent.textContent = drawLotsResult.storeaddress;
+        foodChosenStorePhoneNumberContent.textContent = drawLotsResult.storePhoneNumber;
+        foodChosenStoreOpenTimeContent.textContent = drawLotsResult.storeOpenTime;
+        foodChosenStoreDelCondiContent.textContent = drawLotsResult.storeDeliveryCondition;
+    }, 6000);
+    showdrawLostAnime();
+
+}
+function goCreateStoreButtonButtonClick(){
+    window.location.href = `/group/${urlGroupName}/create_store`;
 }
 // 1-3
 async function settingDrawLotsConditionButtonClick(){
@@ -212,6 +239,11 @@ async function showStoreList(storeTypeSortOutData){
         createOptionElement(classifyTypeSelectDropdown,`chooseStoreType${i}`,"",storeTypeSortOutDataLsWithQuantity,"appendChild",i);
     };
 };
+function showdrawLostAnime(){
+    drawLostAnimeBlock.style.display = "flex";
+    blockScreenFilter.style.display = "flex";
+}
+
 
 // 1-5
 async function drawLostAgainButtonClick(){

@@ -63,3 +63,17 @@ def order_list_history():
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
+        
+@c_order_list.route("/api/order_list/check_store", methods=["POST", "GET", "PATCH"])
+def order_list_check_store():
+    if request.method == "GET":
+        try:
+            page = int(request.args.get("page",0))
+            keyword = request.args.get("keyword",False)
+            urlGroupName = request.args.get("urlGroupName",False)
+            urlStoreName = request.args.get("urlStoreName",False)
+            getStatus = request.args.get("getStatus",False)
+            message = m_order_list.order_list_check_store(page, keyword,urlGroupName,urlStoreName,getStatus)
+            return message
+        except Exception as ex:
+            return jsonify(error="true", message=f"{ex}"), 500

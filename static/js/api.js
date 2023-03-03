@@ -310,6 +310,17 @@ async function orderListApiGet(urlGroupName,urlStoreName,urlStopTime,getStatus){
         return data;
     })
 };
+
+async function orderListCheckStoreApiGet(urlGroupName,urlStoreName,getStatus){
+    return fetch(`/api/order_list/check_store?page=${page}&keyword=${keyword}&urlGroupName=${urlGroupName}&urlStoreName=${urlStoreName}&getStatus=${getStatus}`,{
+        method:"GET",
+    }).then(function(response){
+        return response.json();
+    }).then(function(data){
+        return data;
+    })
+};
+
 async function orderListApiPatch(data){
     return fetch(`/api/order_list`,{
         method:"PATCH",
