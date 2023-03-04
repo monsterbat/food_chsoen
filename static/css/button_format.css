@@ -3,6 +3,19 @@
   width: 300px;
   height: 30px;
   padding: 2px;
+  top:0px;
+  margin: 10px 30px 5px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.buttonFormatOrderHistory{
+  display: flex;
+  width: 300px;
+  height: 60px;
+  padding: 2px;
   margin: 10px 30px 5px 30px;
   border-radius: 5px;
   text-decoration: none;
@@ -32,6 +45,14 @@
     left:50%;
     transform: translate(-50%, -50%);
     /*  */
+}
+
+.historyButtonContent{
+  margin: 4px;
+  position: relative;
+  top: 25%;
+  left:50%;
+  transform: translate(-50%, -50%);
 }
 .positionAbsolute{
   position: absolute;

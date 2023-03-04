@@ -41,7 +41,7 @@ async function searchButtonClick(){
     blockScreenFilter.style.opacity = "0.6"
     loadingGif.style.display = "flex";
     if (intoKeywordValue.length<2){
-        searchStoreErrorMessageContent.textContent = "請輸入兩個字以上"
+        searchStoreErrorMessageContent.textContent = "請輸入兩個字以上";
     }
     else{
         let storeFoodChosenCreateApiGetResult = await storeFoodChosenCreateApiGet(intoKeywordValue,urlGroupName);

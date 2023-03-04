@@ -21,6 +21,7 @@ import datetime
 
 # Create bill account
 def bill_post():
+    print("c1")
     # Use cookie to know which user
     user_info = user_token_check()
     user_email = user_info["data"]["user_email"]
@@ -31,10 +32,12 @@ def bill_post():
     order_list_id = create_bill_data["orderListId"]
     group_id = create_bill_data["groupId"]
     group_name = create_bill_data["groupName"]
+    print("c2",bill_user_email)
     # Calculate time
     current_time_code = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     bill_time = current_time_code
     if bill_user_email != None:
+        print("c3")
         init_order_id = 1
         init_order_price = 0
         balance = 0
@@ -52,6 +55,7 @@ def bill_post():
     """
     value_input = (order_list_id,"alive")
     user_order_check = query_data(sql_command,value_input)
+    print("c4",user_order_check)
     if user_order_check ==[]:
         data = v_bill.bill_post_200()
         return data
@@ -60,11 +64,17 @@ def bill_post():
         order_user_id = user_order_check_ls["user_id"]
         order_price = user_order_check_ls["order_price"]
         # Find balance
+        print("order_id",order_id) 
+        print("group_id",group_id)
+        print("order_user_id",order_user_id)  
+        print("order_price",order_price)      
         user_balance_check = sql_bill_latest_balance(order_user_id,group_id,"alive")
+        print("c5",user_balance_check)
         user_balance = user_balance_check        
-
+        
         #Calculate balance
         balance = float(user_balance) - float(order_price)
+        print("c6",balance)
         # Input information 
         sql_insert_into_bill(user_id,group_id,order_id, order_price, balance, bill_time,"","alive")
     data = v_bill.bill_post_200()

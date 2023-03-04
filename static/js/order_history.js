@@ -47,9 +47,14 @@ async function orderHistoryListShow(){
         let stopTimeArray = stopTime.split('-');
         let stopTimeDate = stopTimeArray[1]+"/"+stopTimeArray[2];
         let stopTimeTime = stopTimeArray[3];
-        let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
-        createAElement(orderHistoryListBlockBlock,`orderHistoryList${i}`, "buttonFormat groupBGC", null, "appendChild", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/finish`);
-        createDivElement(eval(`orderHistoryList${i}`), `orderHistoryListContent${i}`, "buttonContent", orderListContent);
+        // let orderListContent = stopTimeDate+"  "+stopTimeTime+"  "+storeName;
+        // createAElement(orderHistoryListBlockBlock,`orderHistoryList${i}`, "buttonFormat groupBGC", null, "appendChild", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/finish`);
+        // createDivElement(eval(`orderHistoryList${i}`), `orderHistoryListContent${i}`, "buttonContent", orderListContent);
+
+        let orderListContent = "日期："+stopTimeDate+" - "+"截止："+stopTimeTime;
+        createAElement(orderHistoryListBlockBlock,`orderHistoryList${i}`, "buttonFormatOrderHistory groupBGC heightHigher", null, "appendChild", hrefContent = `/group/${urlGroupName}/store/${storeName}/${stopTimeUrl}/finish`);
+        createDivElement(eval(`orderHistoryList${i}`), `orderHistoryListContent1_${i}`, "buttonContent historyButtonContent", orderListContent);
+        createDivElement(eval(`orderHistoryList${i}`), `orderHistoryListContent2_${i}`, "buttonContent historyButtonContent", storeName);
     };
 };
 
