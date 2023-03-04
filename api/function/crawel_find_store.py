@@ -31,7 +31,7 @@ import datetime
 def store_keyword_get_correspond_name(store_name_keyword):
     # Step 1, use selenium to find the url
     # 1 驅動路徑
-    # chromedriver_path = "./chromedriver"
+    chromedriver_path = "./chromedriver"
 
 
     # dir_path = '/usr/local/bin/'
@@ -39,15 +39,15 @@ def store_keyword_get_correspond_name(store_name_keyword):
 
     # for file in files:
     #     print(file)
-    chromedriver_path = "/usr/local/bin/chromedriver"
+    # chromedriver_path = "/usr/local/bin/chromedriver"
     print("c1")
     # 2 視窗顯示
     # 不顯示瀏覽器
     chrome_options = Options()
     chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-dev-shm-usage')
 
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(service=Service(executable_path=chromedriver_path), options=chrome_options)
     print("c2",driver)
     # # 顯示瀏覽器
