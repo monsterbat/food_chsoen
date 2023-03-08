@@ -90,7 +90,7 @@ def store_name_create_menu(store_name_keyword,box_index,group_id):
     # =========================================================================================================
     # Step 1, use selenium to find the url
     # 1 驅動路徑
-    chromedriver_path = "/usr/local/bin/chromedriver"
+    chromedriver_path = "./chromedriver"
 
 
     # 2 視窗顯示
