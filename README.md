@@ -3,6 +3,7 @@
 # Food Chosen
 Food Chosen is a lightweight ordering and group-buying web platform that allows users to easily place orders in the most intuitive and efficient way possible. It primarily features three main functions, which include meal group-buying, accounting calculation, and meal selection.
 ## How to use
+![usage](./static/image/usage.png)
 Upon entering the homepage, there is a demo animation that briefly describes the functions of this website. Click "Login" to proceed, and if you do not have an account, please register first.
 
 This website is group-oriented, so you need to enter a group to perform any actions. You can create your own group or accept invitations.
@@ -21,6 +22,7 @@ Afterwards, you can browse through the group order list to view the order detail
 ### Frontend Technology
 The frontend part of this project uses JavaScript, CSS, and HTML. In JavaScript, we did not use any frameworks or libraries but used native JavaScript instead. This approach helps to make the code lightweight and reduce external library dependencies.
 
+![usage](./static/image/tech.png)
 ### Backend Technology
 The backend part of the project is developed using Python language with Flask framework as the web application framework. To connect to the MySQL database, we used mysql.connector and mysql.connector.pooling packages to facilitate database management and access. Additionally, we used the JWT framework to establish a token mechanism to improve database security and created a .env file using the dotenv package to ensure that account passwords are not exposed within the project.
 
