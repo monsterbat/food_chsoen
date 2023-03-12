@@ -88,7 +88,7 @@ async function orderListSubmitClick(){
     else{
         let data = {
             "groupName":urlGroupName,
-            "userName":userName,
+            // "userName":userName,
             "storeName":storeNameValue,
             "stopTime":stopTime,
             "orderListNote":createOrderNoteInputValue
