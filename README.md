@@ -28,6 +28,13 @@ The backend part of the project is developed using Python language with Flask fr
 
 In terms of architecture, we adopted the MVC architecture and separated the frontend and backend. This approach improves code readability, maintainability, and extensibility.
 
+### SQL
+![SQL](./static/image/sql.png)
+
+### API
+
+https://app.swaggerhub.com/apis-docs/monsterbat/FoodChosenX/1.0.0#/
+![api](./static/image/api.png)
 ### Deployment Technology
 To facilitate easy deployment and operation of the application, we used Docker for packaging. This approach ensures consistent operation of the application across different environments and reduces issues arising from environmental differences. We deployed the application on AWS EC2 using Ubuntu as the primary operating system and Nginx as the web server to enhance the performance and security of the application. We used Git as the version control system to facilitate team collaboration and code management.
 

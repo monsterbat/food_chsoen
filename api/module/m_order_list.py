@@ -37,7 +37,7 @@ def order_list_post():
     # Get data from front-end
     create_order_list_data = request.get_json()
     group_name = create_order_list_data["groupName"]
-    user_name = create_order_list_data["userName"]
+    # user_name = create_order_list_data["userName"]
     store_name = create_order_list_data["storeName"]
     stop_time = create_order_list_data["stopTime"]
     order_list_note = create_order_list_data["orderListNote"]
