@@ -15,8 +15,11 @@ c_group = Blueprint(
 @c_group.route("/api/group", methods=["POST", "GET", "PATCH", "PUT", "DELETE"])
 def group():
     if request.method == "POST":
+        print("1",request)
         try:
+            
             message = m_group.group_post()
+            print("message",message)
             return message
         except Exception as ex:
             return jsonify(error="true", message=f"{ex}"), 500
